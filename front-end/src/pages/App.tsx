@@ -1,13 +1,16 @@
 import React from 'react';
-import '../styles/App.css';
+import "../index.css"
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
+    <>
+      <div className="bg-blue-500 font-bold px-10 App-header">
         Hey
-      </header>
-    </div>
+      </div>
+      <div> 
+        Yo
+      </div>
+    </>
   );
 }
 
