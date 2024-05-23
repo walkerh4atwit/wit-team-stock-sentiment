@@ -1,9 +1,17 @@
+import { ListFormat } from 'typescript'
 import '../styles/App.css'
 import '../styles/TopLinks.css'
 
-let TopLinks = () => {
+interface TopLinksProps {
+	links?: {
+		name: string;
+		link: string;
+	}[]
+}
+
+const TopLinks = (props: TopLinksProps) => {
 	return (
-		<div className='pl-8 Top-links'>
+		<div className='Top-links'>
 			<div>Henry</div>
 			<div>Walker</div>
 			<div>Is</div>
@@ -12,4 +20,4 @@ let TopLinks = () => {
 	)
 }
 
-export default TopLinks
+export default TopLinks;
