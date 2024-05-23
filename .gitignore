@@ -1,2 +1,4 @@
 node-modules/*
 venv/*
+package-lock.json
+package.json
