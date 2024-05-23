@@ -2,20 +2,26 @@ import { ListFormat } from 'typescript'
 import '../styles/App.css'
 import '../styles/TopLinks.css'
 
-interface TopLinksProps {
-	links?: {
-		name: string;
+export interface TopLinksProps {
+	links?:
+	{
+		text: string;
 		link: string;
 	}[]
 }
 
-const TopLinks = (props: TopLinksProps) => {
+const TopLinks = ({links}: TopLinksProps, props: any) => {
 	return (
 		<div className='Top-links'>
-			<div>Henry</div>
-			<div>Walker</div>
-			<div>Is</div>
-			<div>Cool</div>
+			{
+				links
+				&&
+				links.map(
+					(link) => <a href={link.link}>
+						{link.text}
+					</a>
+				)
+			}
 		</div>
 	)
 }
