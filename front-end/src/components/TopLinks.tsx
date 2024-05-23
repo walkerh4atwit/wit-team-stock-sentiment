@@ -1,4 +1,4 @@
-import { ListFormat } from 'typescript'
+import { Link } from 'react-router-dom'
 import '../styles/App.css'
 import '../styles/TopLinks.css'
 
@@ -15,9 +15,7 @@ const TopLinks = (props: TopLinksProps) => {
 		<div className='Top-links'>
 			{
 				props.links.map(
-					(link) => <a href={link.link}>
-						{link.text}
-					</a>
+					(link) => <Link to={link.link}>{link.text}</Link>
 				)
 			}
 		</div>

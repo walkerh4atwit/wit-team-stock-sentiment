@@ -1,12 +1,16 @@
 {
     "links": [
         {
-            "text": "Callback",
-            "link": "localhost:3000"
+            "text": "One page",
+            "link": "/henry"
         },
         {
-            "text": "New page",
-            "link": "localhost:3000"
+            "text": "Root",
+            "link": "/"
+        },
+        {
+            "text": "Another new page",
+            "link": "/hello"
         }
     ]
 }
