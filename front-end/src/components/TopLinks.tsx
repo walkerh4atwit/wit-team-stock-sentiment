@@ -3,20 +3,18 @@ import '../styles/App.css'
 import '../styles/TopLinks.css'
 
 export interface TopLinksProps {
-	links?:
+	links:
 	{
 		text: string;
 		link: string;
 	}[]
 }
 
-const TopLinks = ({links}: TopLinksProps, props: any) => {
+const TopLinks = (props: TopLinksProps) => {
 	return (
 		<div className='Top-links'>
 			{
-				links
-				&&
-				links.map(
+				props.links.map(
 					(link) => <a href={link.link}>
 						{link.text}
 					</a>

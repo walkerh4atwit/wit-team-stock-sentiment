@@ -1,30 +1,23 @@
 import TopLinks from '../components/TopLinks'
 import { TopLinksProps } from '../components/TopLinks'
 import MyForm from '../components/MyForm'
+import resTopLinks from "../resources/topLinks.json"
 import "../styles/App.css"
 import "../styles/bg-gradient.css"
 
 const App = () => {
-	const linkObj: TopLinksProps = {
-		links:
-		[
-			{
-				text: "Callback",
-				link: "localhost:3000"
-			},
-			{
-				text: "New page",
-				link: "localhost:3000"
-			}
-		]
+	const topLinks: TopLinksProps = {
+		links: resTopLinks.links
 	}
 
 	return (
 		<>
 			<div className="my-Header-Gradient App-header">
-				<TopLinks links={linkObj.links}/>
+				<TopLinks links={topLinks.links} />
 			</div>
-			<MyForm />
+			<div className="App-body">
+				<MyForm />
+			</div>
 		</>
 	);
 }

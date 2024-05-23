@@ -1,0 +1,12 @@
+{
+    "links": [
+        {
+            "text": "Callback",
+            "link": "localhost:3000"
+        },
+        {
+            "text": "New page",
+            "link": "localhost:3000"
+        }
+    ]
+}
