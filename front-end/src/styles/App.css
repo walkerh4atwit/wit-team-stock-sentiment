@@ -1,13 +1,28 @@
 /* Smartphones */
 @media only screen and (max-width: 768px) {
     .App-header {
-        height: 16vh;
+        height: 15vh;
     }
 }
 
 /* Tablet, desktop */
 @media only screen and (min-width: 769px) {
     .App-header {
-        height: 160px;
+        height: 15vh;
+    }
+
+    .App-body {
+        height: 85vh;
+    }
+
+    .my-Form-Container {
+        position: absolute;
+        top: 10vh;
+        height: 80vh;
+        width: calc(100% - 30px);
+        border-radius: 15px;
+        padding: 15px;
+        margin-left: 15px;
+        margin-right: 15px;
     }
 }
