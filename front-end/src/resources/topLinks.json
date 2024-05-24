@@ -1,16 +1,16 @@
 {
     "links": [
         {
-            "text": "One page",
+            "text": "FAQ",
             "link": "/henry"
         },
         {
-            "text": "Root",
-            "link": "/"
+            "text": "Documentation",
+            "link": "/evan"
         },
         {
-            "text": "Another new page",
-            "link": "/hello"
+            "text": "Callback",
+            "link": "/"
         }
     ]
 }
