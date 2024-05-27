@@ -14,14 +14,14 @@ def get_finnhub_news_to_csv(finnhub_data, csv_path):
 
     # last index in new and current dataset
     last_index_nd = len(new_data)-1
-    last_index_cd = len(current_data) - 1
 
     # for the len of existing csv file
     for i in range(len(new_data)):
         # if the most up to date pull of the csv file is older than then current pull
-        if new_data['datetime'][last_index_nd] > current_dt:
+        if new_data['datetime'][last_index_nd-i] > current_dt:
+            print(i, "true")
             # append that line to the last
-            new_data.iloc[[last_index_cd-i]].to_csv(csv_path, mode='a', index=False, header=False)
+            new_data.iloc[[last_index_nd-i]].to_csv(csv_path, mode='a', index=False, header=False)
 
 
 data = finnhub_client.general_news('general', min_id=0)
