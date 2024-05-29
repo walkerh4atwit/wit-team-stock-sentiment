@@ -1,10 +1,11 @@
 import React from 'react'
 import { Row, Col, Form, } from 'react-bootstrap'
+import SearchBar from './SearchBar'
 import "../styles/bg-gradient.css"
 
 const MyForm = () => {
     return (
-        <Form bg-light className='my-Form-Gradient my-Form-Container'>
+        <Form className='my-Form-Gradient my-Form-Container'>
             <Row>
                 <Form.Label column>
                     Step 1
@@ -23,8 +24,8 @@ const MyForm = () => {
                     <Form.Check type="radio" label="Radio2" 
                     name="formHorizontalRadios"/>
                 </Form.Group>
-                <Form.Group as={Col}>
-                    
+                <Form.Group as={Col} style={{'padding': '1rem'}}>
+                    <SearchBar/>
                 </Form.Group>
                 <Form.Group as={Col}>
 

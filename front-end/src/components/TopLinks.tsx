@@ -15,7 +15,7 @@ const TopLinks = (props: TopLinksProps) => {
 		<div className='Top-links'>
 			{
 				props.links.map(
-					(link) => <Link to={link.link}>{link.text}</Link>
+					(link) => <Link key={link.text} to={link.link}>{link.text}</Link>
 				)
 			}
 		</div>
