@@ -4,6 +4,10 @@ import SearchBar from './SearchBar'
 import "../styles/bg-gradient.css"
 
 const MyForm = () => {
+    const dropDownHandler = (option: any, onClick: () => void): JSX.Element => {
+        return <div key={option} onClick={onClick}>{option}</div>
+    }
+
     return (
         <Form className='my-Form-Gradient my-Form-Container'>
             <Row>
@@ -25,7 +29,7 @@ const MyForm = () => {
                     name="formHorizontalRadios"/>
                 </Form.Group>
                 <Form.Group as={Col} style={{'padding': '1rem'}}>
-                    <SearchBar/>
+                    <SearchBar optionMapper={dropDownHandler}/>
                 </Form.Group>
                 <Form.Group as={Col}>
 

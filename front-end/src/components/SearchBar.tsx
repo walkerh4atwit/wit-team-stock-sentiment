@@ -5,7 +5,7 @@ import '../styles/bg-gradient.css'
 import '../styles/Dropdown.css'
 
 
-const SearchBar = () => {
+const SearchBar = (props: {optionMapper: (option: any, onClick: () => void) => JSX.Element}) => {
     const mockValues = tickers.tickers
     const [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState("")
@@ -44,7 +44,7 @@ const SearchBar = () => {
             {isOpen && <div className='dropdown my-Header-Gradient'>
                 {myFilter(mockValues).map((value: string) => {
                     return (
-                        <div key={value} onClick={(e) => selectOption(value)}>{value}</div>
+                        props.optionMapper(value, () => selectOption(value))
                     )
                 })}
             </div>}
