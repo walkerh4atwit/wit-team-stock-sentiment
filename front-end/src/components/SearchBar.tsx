@@ -1,23 +1,35 @@
 import Form from 'react-bootstrap/Form'
 import tickers from '../resources/mockSearch.json'
 import { useState, useEffect, useRef } from 'react'
+import '../styles/bg-gradient.css'
+import '../styles/Dropdown.css'
+
 
 const SearchBar = () => {
     const mockValues = tickers.tickers
-    console.log(mockValues)
+    const [isOpen, setIsOpen] = useState(false)
+    const [query, setQuery] = useState("")
 
     const inputRef = useRef(null)
+
     const clickToggle = (e: any) => {
         setIsOpen(e && e.target === inputRef.current)
     }
 
-    const [isOpen, setIsOpen] = useState(false)
-    const [query, setQuery] = useState('')
+    const getValue = () => {
+        if (query) return query
+        return ""
+    }
+
+    const selectOption = (option: string) => {
+        setQuery(() => option)
+        setIsOpen((isOpen) => !isOpen)
+    }
 
     useEffect(() => {
         document.addEventListener('click', clickToggle);
-        return () => 
-        document.removeEventListener('click', clickToggle);
+        return () =>
+            document.removeEventListener('click', clickToggle);
     }, [])
 
     const myFilter = (options: string[]): string[] => (
@@ -27,9 +39,16 @@ const SearchBar = () => {
     )
 
     return (
-        <Form.Control ref={inputRef} placeholder='Enter Stock' onChange={(e) => {isOpen && setQuery(e.target.value)}}>
-            {}
-        </Form.Control>
+        <>
+            <Form.Control value={getValue()} ref={inputRef} placeholder='Enter Stock' onChange={(e) => { isOpen && setQuery(e.target.value) }} />
+            {isOpen && <div className='dropdown my-Header-Gradient'>
+                {myFilter(mockValues).map((value: string) => {
+                    return (
+                        <div key={value} onClick={(e) => selectOption(value)}>{value}</div>
+                    )
+                })}
+            </div>}
+        </>
     )
 }
 
