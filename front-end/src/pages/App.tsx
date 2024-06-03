@@ -1,19 +1,25 @@
-import React from 'react';
 import TopLinks from '../components/TopLinks'
-import "../index.css"
+import { TopLinksProps } from '../components/TopLinks'
+import MyForm from '../components/MyForm'
+import resTopLinks from "../resources/topLinks.json"
 import "../styles/App.css"
+import "../styles/bg-gradient.css"
 
-let App = () => {
-  return (
-    <>
-      <div className="bg-gradient-to-t from-cyan-200 to-blue-500 App-header">
-        <TopLinks/>
-      </div>
-      <div> 
-        Yo
-      </div>
-    </>
-  );
+const App = () => {
+	const topLinks: TopLinksProps = {
+		links: resTopLinks.links
+	}
+
+	return (
+		<>
+			<div className="my-Header-Gradient App-header">
+				<TopLinks links={topLinks.links} />
+			</div>
+			<div className="App-body">
+				<MyForm />
+			</div>
+		</>
+	);
 }
 
 export default App;

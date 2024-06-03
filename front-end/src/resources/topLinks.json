@@ -1,0 +1,16 @@
+{
+    "links": [
+        {
+            "text": "FAQ",
+            "link": "/henry"
+        },
+        {
+            "text": "Documentation",
+            "link": "/evan"
+        },
+        {
+            "text": "Callback",
+            "link": "/"
+        }
+    ]
+}
