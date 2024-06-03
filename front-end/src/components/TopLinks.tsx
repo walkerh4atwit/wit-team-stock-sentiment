@@ -1,15 +1,25 @@
+import { Link } from 'react-router-dom'
 import '../styles/App.css'
 import '../styles/TopLinks.css'
 
-let TopLinks = () => {
-  return (
-    <div className='pl-8 Top-links'>
-      <div>Henry</div>
-      <div>Walker</div>
-      <div>Is</div>
-      <div>Cool</div>
-    </div>
-  )
+export interface TopLinksProps {
+	links:
+	{
+		text: string;
+		link: string;
+	}[]
 }
 
-export default TopLinks
+const TopLinks = (props: TopLinksProps) => {
+	return (
+		<div className='Top-links'>
+			{
+				props.links.map(
+					(link) => <Link key={link.text} to={link.link}>{link.text}</Link>
+				)
+			}
+		</div>
+	)
+}
+
+export default TopLinks;
