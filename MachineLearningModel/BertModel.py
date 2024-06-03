@@ -49,22 +49,9 @@ sentiment_mapping = {
     4: 'Very Positive'
 }
 
-text['ticker'] = 'AAPL'
+text['sentiment_interpretation'] = text['sentiment'].map(sentiment_mapping)
 
-aggregate = text[['sentiment','ticker']].groupby(['ticker']).mean()
+# Display the results
+print(text[['text', 'sentiment', 'sentiment_interpretation']])
 
-aggregate['sentiment'] = int(round(aggregate['sentiment'],0))
-
-sentiment_mapping = {
-    0: 'Very Negative',
-    1: 'Negative',
-    2: 'Neutral',
-    3: 'Positive',
-    4: 'Very Positive'
-}
-
-aggregate['sentiment_interpretation'] = text['sentiment'].map(sentiment_mapping)
-
-print(aggregate)
-
-aggregate.to_csv('MachineLearningModel/finhub_data_sentiment.csv')
+text.to_csv('MachineLearningModel/finhub_data_sentiment.csv',index=False)
