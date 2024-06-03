@@ -49,7 +49,7 @@ CREATE TABLE ArticleTickers (
 
 CREATE TABLE MarketSentiment (
     id NUMBER PRIMARY KEY,
-    date DATE,
+    day DATE,
     sentiment_score FLOAT,
     sector_id NUMBER,
     FOREIGN KEY (sector_id) REFERENCES Sectors(id)
