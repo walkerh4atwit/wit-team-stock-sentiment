@@ -38,11 +38,11 @@ def do_action(id):
 # This route helps the front-end show
 # the ticker values according to a first
 # character that is provided in the request
-@app.route("/ticker/<fst>")
+@app.route("/tickers")
 def get_tickers(fst):
     response = make_response(
         jsonify({
-            "ticker": "AAPL"
+            "tickers": "AAPL"
         })
     )
     response.status_code = 200
