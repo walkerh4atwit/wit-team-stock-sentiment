@@ -1,4 +1,5 @@
 from flask import Flask, make_response, jsonify
+from gettickers import getTickers
 
 app = Flask(__name__)
 
@@ -39,11 +40,9 @@ def do_action(id):
 # the ticker values according to a first
 # character that is provided in the request
 @app.route("/tickers")
-def get_tickers(fst):
+def get_tickers():
     response = make_response(
-        jsonify({
-            "tickers": "AAPL"
-        })
+        jsonify(getTickers())
     )
     response.status_code = 200
     return response
