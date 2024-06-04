@@ -1,7 +1,22 @@
 .dropdown {
-    border-bottom-left-radius: 15px;
+    position: relative;
+    width: 80%;
+}
+
+.dropdown .options {
+    display: block;
     border-bottom-right-radius: 15px;
-    margin-left: 5px;
-    margin-right: 5px;
-    padding-left: 0.75rem;
+    border-bottom-left-radius: 15px;
+    box-sizing: border-box;
+    margin-top: -1px;
+    max-height: 80px;
+    overflow-y: auto;
+    position: absolute;
+    top: 100%;
+    left: 5px;
+    width: calc(100% - 10px);
+}
+
+.option {
+    padding-left: 10px;
 }
