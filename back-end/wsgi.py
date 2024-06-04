@@ -1,7 +1,10 @@
 from flask import Flask, make_response, jsonify
+from flask_cors import CORS, cross_origin
 from gettickers import getTickers
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 # Routed to the root URL of this server
 # This route will not do anything and has
@@ -44,7 +47,6 @@ def get_tickers():
     response = make_response(
         jsonify(getTickers())
     )
-    response.status_code = 200
     return response
 
-app.run()
+app.run(port=3131)

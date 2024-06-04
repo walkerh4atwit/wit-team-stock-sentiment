@@ -1,14 +1,14 @@
 import Form from 'react-bootstrap/Form'
-import tickers from '../resources/mockSearch.json'
 import { useState, useEffect, useRef } from 'react'
 import '../styles/bg-gradient.css'
 import '../styles/Dropdown.css'
+import { async } from 'q'
 
 
 const SearchBar = (props: { optionMapper: (option: any, onClick: () => void) => JSX.Element }) => {
-    const mockValues = tickers.tickers
     const [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState("")
+    const [tickers, setTickers] = useState([])
 
     const inputRef = useRef(null)
 
@@ -38,12 +38,24 @@ const SearchBar = (props: { optionMapper: (option: any, onClick: () => void) => 
         ))
     )
 
+    useEffect(() => {
+        fetch('http://localhost:3131/tickers', {
+            method: 'GET', headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "text/plain"
+            }
+        }).then((tks) => { return tks.json() }).then((tks) =>
+            setTickers(tks.map((tk: any) => tk[1] == null ? tk[0] : tk[1])))
+    }, [])
+
+
+
     return (
         <div className='dropdown'>
             <Form.Control value={getValue()} ref={inputRef} placeholder='Enter Stock' onChange={(e) => { isOpen && setQuery(e.target.value) }}
                 style={{ 'borderTopRightRadius': 0, 'borderBottomRightRadius': 0 }} />
             {isOpen && <div className="options my-Header-Gradient">
-                {myFilter(mockValues).map((value: string) => {
+                {myFilter(tickers).map((value: string) => {
                     return (
                         props.optionMapper(value, () => selectOption(value))
                     )

@@ -19,4 +19,8 @@ def getTickers():
 
     result = cursor.fetchall()
 
+    print(result)
+
     return result
+
+getTickers()
