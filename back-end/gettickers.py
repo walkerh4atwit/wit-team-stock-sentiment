@@ -13,14 +13,10 @@ def getTickers():
 
     cursor = connection.cursor()
 
-    query = 'SELECT TICKER, COMPANY_NAME FROM ADMIN.TICKERS'
+    query = 'SELECT TICKER, COMPANY_NAME FROM ADMIN.TICKERS ORDER BY TICKER'
     
     cursor.execute(query)
 
     result = cursor.fetchall()
 
-    print(result)
-
     return result
-
-getTickers()
