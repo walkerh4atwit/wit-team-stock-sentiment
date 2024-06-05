@@ -10,6 +10,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 # This route will not do anything and has
 # no reroute
 @app.route("/")
+@cross_origin()
 def root_request():
     response = make_response(
         "Bad request to root\n"
@@ -47,6 +48,9 @@ def get_tickers():
     response = make_response(
         jsonify(getTickers())
     )
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Headers", "*")
+    response.headers.add("Access-Control-Allow-Methods", "*")
     return response
 
-app.run(port=3131)
+app.run(port=3131, host='0.0.0.0')

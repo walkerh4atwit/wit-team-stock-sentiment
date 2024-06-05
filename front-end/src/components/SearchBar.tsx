@@ -39,7 +39,7 @@ const SearchBar = (props: { optionMapper: (option: any, onClick: () => void) => 
     )
 
     useEffect(() => {
-        fetch('http://localhost:3131/tickers', {
+        fetch('http://10.220.49.168:3131/tickers', {
             method: 'GET', headers: {
                 "Access-Control-Allow-Origin": "*",
                 "Content-Type": "text/plain"
