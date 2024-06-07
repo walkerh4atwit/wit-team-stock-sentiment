@@ -2,7 +2,6 @@ import Form from 'react-bootstrap/Form'
 import { useState, useEffect, useRef } from 'react'
 import '../styles/bg-gradient.css'
 import '../styles/Dropdown.css'
-import { async } from 'q'
 
 
 const SearchBar = (props: { optionMapper: (option: any, onClick: () => void) => JSX.Element }) => {
@@ -39,7 +38,7 @@ const SearchBar = (props: { optionMapper: (option: any, onClick: () => void) => 
     )
 
     useEffect(() => {
-        fetch('http://10.220.49.168:3131/tickers', {
+        fetch('http://localhost:3131/tickers', {
             method: 'GET', headers: {
                 "Access-Control-Allow-Origin": "*",
                 "Content-Type": "text/plain"
