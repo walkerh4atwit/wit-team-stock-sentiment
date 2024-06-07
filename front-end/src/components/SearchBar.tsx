@@ -4,7 +4,7 @@ import '../styles/bg-gradient.css'
 import '../styles/Dropdown.css'
 
 
-const SearchBar = (props: { optionMapper: (option: any, onClick: () => void) => JSX.Element }) => {
+const SearchBar = (props: { optionRender: (option: any, onClick: () => void) => JSX.Element, type: string}) => {
     const [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState("")
     const [tickers, setTickers] = useState([])
@@ -51,12 +51,12 @@ const SearchBar = (props: { optionMapper: (option: any, onClick: () => void) => 
 
     return (
         <div className='dropdown'>
-            <Form.Control value={getValue()} ref={inputRef} placeholder='Enter Stock' onChange={(e) => { isOpen && setQuery(e.target.value) }}
+            <Form.Control value={getValue()} ref={inputRef} placeholder={"Enter name"} onChange={(e) => { isOpen && setQuery(e.target.value) }}
                 style={{ 'borderTopRightRadius': 0, 'borderBottomRightRadius': 0 }} />
-            {isOpen && <div className="options my-Header-Gradient">
+            {isOpen && props.type && <div className="options my-Header-Gradient">
                 {myFilter(tickers).map((value: string) => {
                     return (
-                        props.optionMapper(value, () => selectOption(value))
+                        props.optionRender(value, () => selectOption(value))
                     )
                 })}
             </div>}

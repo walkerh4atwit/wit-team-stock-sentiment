@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { ChangeEvent, EventHandler, useState } from 'react'
 import { Row, Col, Form, InputGroup, Button as BootButton } from 'react-bootstrap'
 import SearchBar from './SearchBar'
-import "../styles/Dropdown.css"
+import '../styles/Form.css'
 import "../styles/bg-gradient.css"
 
 const MyForm = () => {
@@ -9,30 +9,41 @@ const MyForm = () => {
         return <div className='option' key={option} onClick={onClick}>{option}</div>
     }
 
+    const handleRadio = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setRadioChoice(e.target.value)
+    }
+
+    const [radioChoice, setRadioChoice] = useState("")
+
     return (
         <Form className='my-Form-Gradient my-Form-Container'>
             <Row>
                 <Form.Label column>
-
+                    Step 1: Choose...
                 </Form.Label>
                 <Form.Label column xs={6}>
-                    Choose a stock
+                    {`Step 2: Find${radioChoice ? " a " + radioChoice : "..."}`}
                 </Form.Label>
                 <Form.Label column>
 
                 </Form.Label>
             </Row>
             <Row>
-                <Form.Group as={Col} style={{ 'padding': '1rem' }}>
-                    {/* <Form.Check type="radio" label="Radio1" 
-                    name="formHorizontalRadios" style={{'paddingBottom': '1rem'}}/>
-                    <Form.Check type="radio" label="Radio2" 
-                    name="formHorizontalRadios"/> */}
+                <Form.Group as={Col}>
+                    <Form.Check type="radio" label="Single stock" value="stock"
+                        name="formHorizontalRadios" style={{ 'paddingBottom': '1rem' }} 
+                        onChange={handleRadio}/>
+                    <Form.Check type="radio" label="Market sector" value="sector"
+                        name="formHorizontalRadios" 
+                        onChange={handleRadio}/>
+                    <Form.Check type="radio" label="Whole market" value="market"
+                        name="formHorizontalRadios" 
+                        onChange={handleRadio}/>
                 </Form.Group>
-                <Form.Group md={6} as={Col} style={{ 'padding': '1rem' }}>
+                <Form.Group md={6} as={Col}>
                     <InputGroup>
-                        <SearchBar optionMapper={dropDownHandler} />
-                        <BootButton variant='success' style={{width:'20%'}}>
+                        <SearchBar optionRender={dropDownHandler} type={radioChoice}/>
+                        <BootButton variant='success' style={{ width: '20%' }}>
                             Submit!
                         </BootButton>
                     </InputGroup>
@@ -40,6 +51,9 @@ const MyForm = () => {
                 <Form.Group as={Col}>
 
                 </Form.Group>
+            </Row>
+            <Row>
+
             </Row>
         </Form>
     )
