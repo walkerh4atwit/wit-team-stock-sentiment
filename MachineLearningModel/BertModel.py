@@ -1,18 +1,19 @@
 from transformers import TFBertForSequenceClassification, BertTokenizer
 import tensorflow as tf
 import pandas as pd
+import oracledb
 
-
-data = pd.read_csv("MachineLearningModel/finnhub_data.csv")
+#Process Data
+data = pd.read_csv("MachineLearningModel/alpaca_news_data.csv")
 data['text'] = data['headline'] + " " + data['summary']
-text = data[['text']]
-text.dropna(inplace=True)
-print(text)
+data.dropna(subset=['text'],inplace=True)
 
+
+#Initialize Model
 tokenizer = BertTokenizer.from_pretrained('nlptown/bert-base-multilingual-uncased-sentiment')
 model = TFBertForSequenceClassification.from_pretrained('nlptown/bert-base-multilingual-uncased-sentiment')
 
-
+#Function to Encode Text
 def encode_texts(texts, tokenizer, max_length):
     input_ids = []
     attention_masks = []
@@ -31,40 +32,90 @@ def encode_texts(texts, tokenizer, max_length):
 
     return tf.squeeze(tf.convert_to_tensor(input_ids)), tf.squeeze(tf.convert_to_tensor(attention_masks))
 
-max_length = 128
 
-input_ids, attention_masks = encode_texts(text['text'].values, tokenizer, max_length)
+max_length = 512
 
+input_ids, attention_masks = encode_texts(data['text'].values, tokenizer, max_length)
+
+#Make Predictions
 predictions = model.predict({'input_ids': input_ids, 'attention_mask': attention_masks})
 
 predicted_classes = tf.math.argmax(predictions.logits, axis=-1).numpy()
 
-text['sentiment'] = predicted_classes
+#Assign sentiments to tickers
+data['sentiment'] = predicted_classes
 
-sentiment_mapping = {
-    0: 'Very Negative',
-    1: 'Negative',
-    2: 'Neutral',
-    3: 'Positive',
-    4: 'Very Positive'
-}
+data.to_csv('MachineLearningModel/alpaca_sentimts.csv')
 
-text['ticker'] = 'AAPL'
 
-aggregate = text[['sentiment','ticker']].groupby(['ticker']).mean()
+#connect to db
+connection=oracledb.connect(
+     config_dir=r"D:\WIT\Senior Project\Wallet_database1",
+     user="admin",
+     password="Database1Pass",
+     dsn="database1_low",
+     wallet_location=r"D:\WIT\Senior Project\Wallet_database1",
+     wallet_password="Password1")
 
-aggregate['sentiment'] = int(round(aggregate['sentiment'],0))
+cursor = connection.cursor()
 
-sentiment_mapping = {
-    0: 'Very Negative',
-    1: 'Negative',
-    2: 'Neutral',
-    3: 'Positive',
-    4: 'Very Positive'
-}
+#SQL queries for db communication 
+check_ticker_query = """
+SELECT COUNT(*) FROM Tickers WHERE ticker = :1
+"""
+check_article_query = """
+SELECT COUNT(*) FROM Tickers WHERE title = :1
+"""
+get_ticker_id_query = """
+SELECT id FROM Tickers WHERE ticker = :1
+"""
+get_article_id_query = """
+SELECT id FROM Tickers WHERE title = :1
+"""
+insert_ticker_query = """
+INSERT INTO Tickers (ticker)
+VALUES (:1, :2)
+"""
+insert_article_query = """
+INSERT INTO Articles (title, url, summary, data_published)
+VALUES (:1, :2, :3, :4)
+"""
+insert_articleticker_query = """
+INSERT INTO ArticleTickers (article_id, ticker_id, sentiment_score)
+VALUES (:1, :2, :3, :4)
+"""
 
-aggregate['sentiment_interpretation'] = text['sentiment'].map(sentiment_mapping)
+#Create Tickers if not in DB else just update sentiment
+for index, row in data.iterrows():
+    newArticle = False
+    article = row['headline']
+    sentiment_score = row['sentiment']
+    cursor.execute(check_article_query, (article,))
+    countArticle = cursor.fetchone()[0]
 
-print(aggregate)
+    if countArticle == 0:
+        cursor.execute(insert_article_query, (article, row['url'], row['summary'], row['created_at']))
+        print(f"Inserted new article {article}")
+        newArticle = True
 
-aggregate.to_csv('MachineLearningModel/finhub_data_sentiment.csv')
+    for ticker in row['symbols']:
+            
+        cursor.execute(check_ticker_query, (ticker,))
+        countTicker = cursor.fetchone()[0]
+            
+        if countTicker == 0:
+            cursor.execute(insert_ticker_query, (ticker))
+            print(f"Inserted new ticker {ticker}")
+
+        if newArticle:
+            cursor.execute(get_ticker_id_query, (ticker,))
+            ticker_id = cursor.fetchone()[0]
+            cursor.execute(get_article_id_query, (article,))
+            article_id = cursor.fetchone()[0]
+            cursor.execute(insert_articleticker_query, (article_id,ticker_id,sentiment_score))
+
+
+        
+        
+connection.commit()
+print("Database update complete")
