@@ -2,15 +2,11 @@
     "links": [
         {
             "text": "FAQ",
-            "link": "/henry"
+            "link": "/faq"
         },
         {
             "text": "Documentation",
-            "link": "/evan"
-        },
-        {
-            "text": "Callback",
-            "link": "/"
+            "link": "/docs"
         }
     ]
 }

@@ -1,11 +1,16 @@
 from flask import Flask, make_response, jsonify
+from flask_cors import CORS, cross_origin
+from gettickers import getTickers
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 # Routed to the root URL of this server
 # This route will not do anything and has
 # no reroute
 @app.route("/")
+@cross_origin()
 def root_request():
     response = make_response(
         "Bad request to root\n"
@@ -38,14 +43,14 @@ def do_action(id):
 # This route helps the front-end show
 # the ticker values according to a first
 # character that is provided in the request
-@app.route("/ticker/<fst>")
-def get_tickers(fst):
+@app.route("/tickers")
+def get_tickers():
     response = make_response(
-        jsonify({
-            "ticker": "AAPL"
-        })
+        jsonify(getTickers())
     )
-    response.status_code = 200
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Headers", "*")
+    response.headers.add("Access-Control-Allow-Methods", "*")
     return response
 
-app.run()
+app.run(port=3131, host='0.0.0.0')
