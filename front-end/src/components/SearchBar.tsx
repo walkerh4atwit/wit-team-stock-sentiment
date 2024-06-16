@@ -1,5 +1,6 @@
 import Form from 'react-bootstrap/Form'
 import { useState, useEffect, useRef } from 'react'
+import ipInfo from '../resources/ipInfo.json'
 import '../styles/bg-gradient.css'
 import '../styles/Dropdown.css'
 
@@ -38,7 +39,7 @@ const SearchBar = (props: { optionRender: (option: any, onClick: () => void) => 
     )
 
     useEffect(() => {
-        fetch('http://localhost:3131/tickers', {
+        fetch('http://' + ipInfo.ipv4 + ':3131/tickers', {
             method: 'GET', headers: {
                 "Access-Control-Allow-Origin": "*",
                 "Content-Type": "text/plain"
