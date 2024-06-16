@@ -26,11 +26,11 @@ def clean(df):
 
     # headline + summary
     for i in range(len(df['headline'])):
+        df.loc[i, 'headline-summary'] = df.loc[i, 'headline']
         df.loc[i, 'headline'] += " "
         df.loc[i, 'headline'] += df.loc[i, 'summary']
 
-    df.drop(columns=['id', 'content', 'author', 'updated_at', 'summary', 'content', 'images', 'source'], inplace=True)
-    df.rename(columns={"headline": "headline-summary"}, inplace=True)
+    df.drop(columns=['id', 'content', 'author', 'updated_at', 'content', 'images', 'source'], inplace=True)
 
     return df
 
@@ -51,6 +51,7 @@ while True:
     while i < 50:
         if dataf.loc[i, 'created_at'] > most_recent_timestamp:
             df_slice = dataf.loc[i]
+            print(dataf.loc[i, 'created_at'])
             pass_to_model(df_slice)
             # adds line to csv
             #dataf.iloc[[i]].to_csv("temp1.csv", mode='a', header=False)
