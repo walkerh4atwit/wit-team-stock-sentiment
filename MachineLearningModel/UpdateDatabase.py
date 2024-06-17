@@ -2,17 +2,17 @@ import pandas as pd
 import oracledb
 from datetime import datetime
 
-data = pd.read_csv("MachineLearningModel/alpaca_sentimts.csv")
+
 
 
 #connect to db
 connection=oracledb.connect(
-     config_dir=r"D:\WIT\Senior Project\Wallet_database1",
-     user="admin",
-     password="Database1Pass",
-     dsn="database1_low",
-     wallet_location=r"D:\WIT\Senior Project\Wallet_database1",
-     wallet_password="Password1")
+    config_dir=r"D:\WIT\Senior Project\Wallet_database1",
+    user="admin",
+    password="Database1Pass",
+    dsn="database1_low",
+    wallet_location=r"D:\WIT\Senior Project\Wallet_database1",
+    wallet_password="Password1")
 
 cursor = connection.cursor()
 
@@ -52,19 +52,19 @@ for index, row in data.iterrows():
 
     if countArticle == 0:
 
-          created_at = row['created_at']
-          parsed_datetime = datetime.strptime(created_at, "%Y-%m-%dT%H:%M:%SZ")
-          oracle_datetime = parsed_datetime.strftime("%Y-%m-%d %H:%M:%S")
+        created_at = row['created_at']
+        parsed_datetime = datetime.strptime(created_at, "%Y-%m-%dT%H:%M:%SZ")
+        oracle_datetime = parsed_datetime.strftime("%Y-%m-%d %H:%M:%S")
 
-          cursor.execute(insert_article_query, (article, row['url'], row['summary'], oracle_datetime))
-          print(f"Inserted new article {article}")
-          newArticle = True
+        cursor.execute(insert_article_query, (article, row['url'], row['summary'], oracle_datetime))
+        print(f"Inserted new article {article}")
+        newArticle = True
 
     for ticker in str(row['symbols']).split(", "):
-            
+                
         cursor.execute(check_ticker_query, (ticker,))
         countTicker = cursor.fetchone()[0]
-            
+                
         if countTicker == 0:
             cursor.execute(insert_ticker_query, (ticker,))
             print(f"Inserted new ticker {ticker}")
@@ -77,7 +77,7 @@ for index, row in data.iterrows():
             cursor.execute(insert_articleticker_query, (article_id,ticker_id,sentiment_score))
 
 
-        
-        
+            
+            
 connection.commit()
 print("Database update complete")
