@@ -13,7 +13,11 @@
 /* Tablet, desktop */
 @media only screen and (min-width: 769px) {
     .Top-links {
-        display: flex;
+        display: inline-flex;
+        overflow-x: hidden;
+        margin-left: 1rem;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
     }
 
     .Top-links * {
