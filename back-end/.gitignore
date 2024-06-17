@@ -1,4 +1,4 @@
-venv/*
-Wallet*
-__pycache__/*
+/venv
+/Wallet*
+/__pycache__
 .DS_Store
