@@ -1,7 +1,7 @@
 import pandas as pd
 import oracledb
 
-def getTickers():
+def getSearchOptions():
     connection=oracledb.connect(
         config_dir="Wallet_database1",
         user="backend",

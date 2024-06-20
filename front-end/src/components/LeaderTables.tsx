@@ -70,7 +70,7 @@ const LeaderTables = (props: LeaderTablesProps) => {
         const tableBody: ReactElement = <>
             {data.map((row: {}, index) => {
                 return (
-                    <div>{index + 1}</div>
+                    <div key={index}>{index + 1}</div>
                 )
             })}
         </>
@@ -88,7 +88,7 @@ const LeaderTables = (props: LeaderTablesProps) => {
         <>
             {dataGroupsSchema.map(
                 (group) => {
-                    return (<Col>
+                    return (<Col key={group.dataKey}>
                         {tableRender(group.label, data[group.dataKey])}
                     </Col>)
                 }

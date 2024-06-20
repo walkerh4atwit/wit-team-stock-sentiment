@@ -62,7 +62,7 @@ const SearchBar = (props: {
     // function to get the data
     const pullTickers = async () => {
         try {
-            const response = await fetch('http://' + ipInfo.devHost + ':3131/tickers', {
+            const response = await fetch('http://' + ipInfo.devHost + ':3131/searchoptions', {
                 method: 'GET', headers: {
                     "Access-Control-Allow-Origin": "*",
                     "Content-Type": "text/plain"
