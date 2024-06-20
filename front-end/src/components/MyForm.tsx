@@ -13,36 +13,41 @@ const MyForm = () => {
         setRadioChoice(e.target.value)
     }
 
+    const [backEndStatus, setBackEndStatus] = useState('Online')
     const [radioChoice, setRadioChoice] = useState("")
 
     return (
         <Form className='my-Form-Gradient my-Form-Container'>
             <Row>
-                <Form.Label column>
+                <Form.Label column style={{paddingTop: '0px'}}>
                     Step 1: Choose...
                 </Form.Label>
-                <Form.Label column xs={6}>
+                <Form.Label column md={6} style={{paddingTop: '0px'}}>
                     {`Step 2: Find${radioChoice ? " a " + radioChoice : "..."}`}
                 </Form.Label>
-                <Form.Label column>
-
+                <Form.Label column style={{paddingTop: '0px'}}>
+                    <div style={{ display: 'flex', justifyContent: 'right' }}>
+                        Status:
+                        <div style={{paddingRight: '1rem', paddingLeft: '1rem'}}>({backEndStatus})</div>
+                        <div style={{borderRadius: '50%', backgroundColor: `${backEndStatus == 'Online' ? 'green' : 'red'}`, width: '25px'}}></div>    
+                    </div>
                 </Form.Label>
             </Row>
             <Row>
                 <Form.Group as={Col}>
                     <Form.Check type="radio" label="Single stock" value="stock"
-                        name="formHorizontalRadios" style={{ 'paddingBottom': '1rem' }} 
-                        onChange={handleRadio}/>
+                        name="formHorizontalRadios"
+                        onChange={handleRadio} />
                     <Form.Check type="radio" label="Market sector" value="sector"
-                        name="formHorizontalRadios" 
-                        onChange={handleRadio}/>
+                        name="formHorizontalRadios"
+                        onChange={handleRadio} />
                     <Form.Check type="radio" label="Whole market" value="market"
-                        name="formHorizontalRadios" 
-                        onChange={handleRadio}/>
+                        name="formHorizontalRadios"
+                        onChange={handleRadio} />
                 </Form.Group>
                 <Form.Group md={6} as={Col}>
                     <InputGroup>
-                        <SearchBar optionRender={dropDownHandler} type={radioChoice}/>
+                        <SearchBar optionRender={dropDownHandler} type={radioChoice} setBackEndStatus={setBackEndStatus} />
                         <BootButton variant='success' style={{ width: '20%' }}>
                             Submit!
                         </BootButton>

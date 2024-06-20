@@ -5,7 +5,12 @@ import '../styles/bg-gradient.css'
 import '../styles/Dropdown.css'
 
 
-const SearchBar = (props: { optionRender: (option: any, onClick: () => void) => JSX.Element, type: string}) => {
+const SearchBar = (props: {
+    optionRender: (option: any, onClick: () => void) => JSX.Element,
+    type: string,
+    setBackEndStatus: any
+}) => {
+
     const [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState("")
     const [tickers, setTickers] = useState([])
@@ -26,6 +31,22 @@ const SearchBar = (props: { optionRender: (option: any, onClick: () => void) => 
         setIsOpen((isOpen) => !isOpen)
     }
 
+    const pullTickers = async () => {
+        try {
+            const response = await fetch('http://' + ipInfo.ipv4 + ':3131/tickers', {
+                method: 'GET', headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Content-Type": "text/plain"
+                }
+            });
+            const data = await response.json();
+            setTickers(data.map((tk: any) => tk[1] == null ? tk[0] : tk[1]));
+        }
+        catch (error) {
+            props.setBackEndStatus("Offline")
+        }
+    }
+
     useEffect(() => {
         document.addEventListener('click', clickToggle);
         return () =>
@@ -38,17 +59,8 @@ const SearchBar = (props: { optionRender: (option: any, onClick: () => void) => 
         ))
     )
 
-    useEffect(() => {
-        fetch('http://' + ipInfo.ipv4 + ':3131/tickers', {
-            method: 'GET', headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Content-Type": "text/plain"
-            }
-        }).then((tks) => { return tks.json() }).then((tks) =>
-            setTickers(tks.map((tk: any) => tk[1] == null ? tk[0] : tk[1])))
-    }, [])
-
-
+    // This effect is to pull the data from the back for ticker info
+    useEffect(() => { pullTickers() }, [])
 
     return (
         <div className='dropdown'>

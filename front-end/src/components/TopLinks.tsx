@@ -16,7 +16,7 @@ const TopLinks = (props: TopLinksProps) => {
 		<div className='Top-links my-Form-Gradient'>
 			{
 				props.links.map(
-					(link) => <Link key={link.text} to={link.link}>{link.text}</Link>
+					(link) => <Link style={{color: 'black'}} key={link.text} to={link.link}>{link.text}</Link>
 				)
 			}
 		</div>
