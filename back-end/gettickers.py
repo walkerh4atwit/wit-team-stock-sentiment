@@ -14,14 +14,20 @@ def getTickers():
     cursor = connection.cursor()
     result = {}
 
-    query_ticker = 'SELECT * FROM ADMIN.TICKERS ORDER BY TICKER'
-    query_sector = 'SELECT * FROM ADMIN.SECTORS ORDER BY NAME'
-    
-    cursor.execute(query_ticker)
+    # ID, NAME, COMPANY, COUNT
+    query_file = open('queries/ArticlesTickersCount.sql', 'r')
+    query_string = query_file.read()
+    query_file.close()
+
+    cursor.execute(query_string)
     result['stock'] = cursor.fetchall()
 
-    cursor.execute(query_sector)
+    # ID, SECTOR, COUNT
+    query_file = open('queries/ArticlesSectorsCount.sql', 'r')
+    query_string = query_file.read()
+    query_file.close()
+    
+    cursor.execute(query_string)
     result['sector'] = cursor.fetchall()
-
 
     return result
