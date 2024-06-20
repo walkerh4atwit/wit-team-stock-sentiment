@@ -12,11 +12,16 @@ def getTickers():
     )
 
     cursor = connection.cursor()
+    result = {}
 
-    query = 'SELECT TICKER, COMPANY_NAME FROM ADMIN.TICKERS ORDER BY TICKER'
+    query_ticker = 'SELECT * FROM ADMIN.TICKERS ORDER BY TICKER'
+    query_sector = 'SELECT * FROM ADMIN.SECTORS ORDER BY NAME'
     
-    cursor.execute(query)
+    cursor.execute(query_ticker)
+    result['stock'] = cursor.fetchall()
 
-    result = cursor.fetchall()
+    cursor.execute(query_sector)
+    result['sector'] = cursor.fetchall()
+
 
     return result

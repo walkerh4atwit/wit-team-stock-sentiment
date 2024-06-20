@@ -4,6 +4,9 @@ import ipInfo from '../resources/ipInfo.json'
 import '../styles/bg-gradient.css'
 import '../styles/Dropdown.css'
 
+interface ITickers {
+    [key: string] : string[]
+}
 
 const SearchBar = (props: {
     optionRender: (option: any, onClick: () => void) => JSX.Element,
@@ -11,11 +14,16 @@ const SearchBar = (props: {
     setBackEndStatus: any
 }) => {
 
-    const backEndHost = process.env.NODE_ENV == 'development' ? ipInfo.devHost : ipInfo.prodHost
+    // this differentiates the server between dev and prod
+    const backEndHost: string = process.env.NODE_ENV == 'development' ? ipInfo.devHost : ipInfo.prodHost
 
     const [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState("")
-    const [tickers, setTickers] = useState([])
+    const [data, setData] = useState<ITickers>({
+        "stock": [],
+        "sector": [],
+        "market": []
+    })
 
     const inputRef = useRef(null)
 
@@ -43,7 +51,7 @@ const SearchBar = (props: {
             });
             const data = await response.json();
             props.setBackEndStatus("Online")
-            setTickers(data.map((tk: any) => tk[1] == null ? tk[0] : tk[1]));
+            setData(data.map((tk: string) => tk[1] == null ? tk[0] : tk[1]));
         }
         catch (error) {
             props.setBackEndStatus("Offline")
@@ -70,7 +78,7 @@ const SearchBar = (props: {
             <Form.Control value={getValue()} ref={inputRef} placeholder={"Enter name"} onChange={(e) => { isOpen && setQuery(e.target.value) }}
                 style={{ 'borderTopRightRadius': 0, 'borderBottomRightRadius': 0 }} />
             {isOpen && props.type && <div className="options my-Header-Gradient">
-                {myFilter(tickers).map((value: string) => {
+                {myFilter(data[props.type]).map((value: string) => {
                     return (
                         props.optionRender(value, () => selectOption(value))
                     )

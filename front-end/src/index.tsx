@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './pages/App';
-import FAQ from './pages/FAQ'
+import FAQ from './pages/FAQ';
+import Documentation from './pages/Documentation';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
@@ -21,7 +22,7 @@ const router = createBrowserRouter([
 	},
 	{
 		path: '/docs',
-		element: <>What's good</>
+		element: <Documentation />
 	}
 ])
 

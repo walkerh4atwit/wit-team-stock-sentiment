@@ -1,4 +1,4 @@
 {
-    "prodHost": "instance-1",
+    "prodHost": "",
     "devHost": "localhost"
 }
