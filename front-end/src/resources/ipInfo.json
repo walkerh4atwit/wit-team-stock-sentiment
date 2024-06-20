@@ -1,3 +1,4 @@
 {
-    "ipv4": "localhost"
+    "prodHost": "instance-1",
+    "devHost": "localhost"
 }

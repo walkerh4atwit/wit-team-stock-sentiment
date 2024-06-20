@@ -11,6 +11,8 @@ const SearchBar = (props: {
     setBackEndStatus: any
 }) => {
 
+    const backEndHost = process.env.NODE_ENV == 'development' ? ipInfo.devHost : ipInfo.prodHost
+
     const [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState("")
     const [tickers, setTickers] = useState([])
@@ -33,13 +35,14 @@ const SearchBar = (props: {
 
     const pullTickers = async () => {
         try {
-            const response = await fetch('http://' + ipInfo.ipv4 + ':3131/tickers', {
+            const response = await fetch('http://' + ipInfo.devHost + ':3131/tickers', {
                 method: 'GET', headers: {
                     "Access-Control-Allow-Origin": "*",
                     "Content-Type": "text/plain"
                 }
             });
             const data = await response.json();
+            props.setBackEndStatus("Online")
             setTickers(data.map((tk: any) => tk[1] == null ? tk[0] : tk[1]));
         }
         catch (error) {
