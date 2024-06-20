@@ -22,7 +22,7 @@ def getTickers():
     cursor.execute(query_string)
     result['stock'] = cursor.fetchall()
 
-    # ID, SECTOR, COUNT
+    # ID, SECTOR, NULL, COUNT
     query_file = open('queries/ArticlesSectorsCount.sql', 'r')
     query_string = query_file.read()
     query_file.close()

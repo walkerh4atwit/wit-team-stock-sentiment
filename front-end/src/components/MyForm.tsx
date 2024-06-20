@@ -6,14 +6,20 @@ import '../styles/Form.css'
 import "../styles/bg-gradient.css"
 
 const MyForm = () => {
-    const dropDownHandler = (option: any, onClick: () => void): JSX.Element => {
-        return <div className='option' key={option} onClick={onClick}>{option}</div>
+    // this function handles rendering the dropdown of the searchbar in a certain way
+    const dropDownHandler = (option: any[], index: number, onClick: () => void): JSX.Element => {
+        const [id, alternate_name, name, count] = option
+        const useName: string = name == null ? alternate_name : name
+        // renders div after selecting the name to use
+        return <div className='option' key={index} onClick={onClick}>{useName}</div>
     }
 
+    // changes the radiochoice based on the radio being pressed
     const handleRadio = (e: React.ChangeEvent<HTMLInputElement>) => {
         setRadioChoice(e.target.value)
     }
 
+    //states
     const [backEndStatus, setBackEndStatus] = useState('Online')
     const [radioChoice, setRadioChoice] = useState("")
 

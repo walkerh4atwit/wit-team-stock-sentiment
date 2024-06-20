@@ -7,19 +7,27 @@ export interface LeaderTablesProps {
 
 }
 
+// this represents how the data
+// will come in from the backend
 interface IDataGroups {
-    [key: string]: number[]
+    [key: string]: any[][]
 }
 
 const LeaderTables = (props: LeaderTablesProps) => {
+    // this state is the data used to populate the tables
+    // it is expecting to conform to the IDataGroups interface
+    // as does its initial value
     const [data, setData] = useState<IDataGroups>({
-        "descendingStocks": [1, 2, 3, 4, 5],
+        "descendingStocks": [[]],
         "ascendingStocks": [],
         "descendingSectors": [],
         "ascendingSectors": []
     })
 
-    const dataGroups: {
+    // this is the information about
+    // the headers and what data they will
+    // need underneath
+    const dataGroupsSchema: {
         label: string,
         dataKey: string
     }[] = [
@@ -44,7 +52,8 @@ const LeaderTables = (props: LeaderTablesProps) => {
     // this differentiates the server between dev and prod
     const backEndHost = process.env.NODE_ENV == 'development' ? ipInfo.devHost : ipInfo.prodHost
 
-    const getData = async () => {
+    // pulls data from the backend
+    const pullData = async () => {
         try {
             const response = await fetch('');
             const data = await response.json()
@@ -53,8 +62,11 @@ const LeaderTables = (props: LeaderTablesProps) => {
         catch { }
     }
 
+    // this function is the way that a table will render the header and each row
     const tableRender = (label: string, data: any[]) => {
+        // a div for the header
         const tableHeader: ReactElement = <div className='my-Table-Header'>{label}</div>
+        // a map of divs for the rows in empty tags
         const tableBody: ReactElement = <>
             {data.map((row: {}, index) => {
                 return (
@@ -62,16 +74,19 @@ const LeaderTables = (props: LeaderTablesProps) => {
                 )
             })}
         </>
+        // returns them as siblings (oldest is header)
         return <>{tableHeader} {tableBody}</>
     }
 
+    // makes sure that pulldata 
+    // is used at render-time
     useEffect(() => {
-        getData();
+        pullData();
     }, [])
 
     return (
         <>
-            {dataGroups.map(
+            {dataGroupsSchema.map(
                 (group) => {
                     return (<Col>
                         {tableRender(group.label, data[group.dataKey])}
