@@ -1,18 +1,24 @@
-import React, { ChangeEvent, EventHandler, useState } from 'react'
-import { Row, Col, Form, InputGroup, Button as BootButton } from 'react-bootstrap'
-import SearchBar from './SearchBar'
-import LeaderTables from './LeaderTables'
-import { IDataPage } from '../pages/Data'
-import '../styles/Form.css'
+import React, { useState } from "react"
+import { Row, Col, Form, InputGroup, Button as BootButton } from "react-bootstrap"
+import SearchBar from "./SearchBar"
+import LeaderTables from "./LeaderTables"
+import { IDataPage } from "../pages/Data"
+import "../styles/Form.css"
 import "../styles/bg-gradient.css"
 
-const MyForm = (props: { handleSubmit: ({ id, type, downloadHandler }: IDataPage) => void }) => {
+const MyForm = (props:
+    {
+        handleSubmit:
+        ({ id, type, downloadHandler }: IDataPage) => void
+    }) => {
     // this function handles rendering the dropdown of the searchbar in a certain way
     const dropDownHandler = (option: any[], index: number, onClick: () => void): JSX.Element => {
         const [id, alternate_name, name, count] = option
         const useName: string = name == null ? alternate_name : name
         // renders div after selecting the name to use
-        return <div className='option' key={index} onClick={onClick}>{useName}</div>
+        return <div className='option'
+            key={index}
+            onClick={onClick}>{useName}</div>
     }
 
     // this function handles the creation of a downloadble html file on the report-end

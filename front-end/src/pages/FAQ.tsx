@@ -1,6 +1,6 @@
-import logo from '../images/logo-cropped.svg'
-import TopLinks, { TopLinksProps } from '../components/TopLinks'
-import resTopLinks from '../resources/topLinks.json'
+import logo from "../images/logo-cropped.svg"
+import TopLinks, { TopLinksProps } from "../components/TopLinks"
+import resTopLinks from "../resources/topLinks.json"
 
 const FAQ = () => {
     const topLinks: TopLinksProps = {
@@ -9,7 +9,13 @@ const FAQ = () => {
 
     return (
         <>
-            <img src={logo} style={{ position: 'absolute', top: '0px', height: '20vh', left: '40vh' }} />
+            <img src={logo}
+                style={{
+                    position: 'absolute',
+                    top: '0px',
+                    height: '20vh',
+                    left: '40vh'
+                }} />
             <div className="my-Header-Gradient App-header">
                 <TopLinks links={topLinks.links} />
             </div>

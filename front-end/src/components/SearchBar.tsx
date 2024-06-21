@@ -1,8 +1,8 @@
-import Form from 'react-bootstrap/Form'
-import { useState, useEffect, useRef } from 'react'
-import ipInfo from '../resources/ipInfo.json'
-import '../styles/bg-gradient.css'
-import '../styles/Dropdown.css'
+import Form from "react-bootstrap/Form"
+import { useState, useEffect, useRef } from "react"
+import ipInfo from "../resources/ipInfo.json"
+import "../styles/bg-gradient.css"
+import "../styles/Dropdown.css"
 
 // shape of the incoming data
 interface IDataResponse {
@@ -19,7 +19,9 @@ const SearchBar = (props: {
 }) => {
 
     // this differentiates the server between dev and prod
-    const backEndHost: string = process.env.NODE_ENV == 'development' ? ipInfo.devHost : ipInfo.prodHost
+    const backEndHost: string =
+        process.env.NODE_ENV ==
+            'development' ? ipInfo.devHost : ipInfo.prodHost
 
     // states
     const [isOpen, setIsOpen] = useState(false)
@@ -62,12 +64,13 @@ const SearchBar = (props: {
     // function to get the data
     const pullTickers = async () => {
         try {
-            const response = await fetch('http://' + ipInfo.devHost + ':3131/searchoptions', {
-                method: 'GET', headers: {
-                    "Access-Control-Allow-Origin": "*",
-                    "Content-Type": "text/plain"
-                }
-            });
+            const response = await
+                fetch('http://' + ipInfo.devHost + ':3131/searchoptions', {
+                    method: 'GET', headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Content-Type": "text/plain"
+                    }
+                });
             const responseData = await response.json()
             props.setBackEndStatus("Online")
             setData(responseData)
@@ -101,8 +104,13 @@ const SearchBar = (props: {
 
     return (
         <div className='dropdown'>
-            <Form.Control value={query} ref={inputRef} placeholder={"Enter name"} onChange={(e) => { isOpen && setQuery(e.target.value) }}
-                style={{ 'borderTopRightRadius': 0, 'borderBottomRightRadius': 0 }} />
+            <Form.Control
+                value={query}
+                ref={inputRef}
+                placeholder={"Enter name"}
+                onChange={(e) => { isOpen && setQuery(e.target.value) }}
+                style={{ 'borderTopRightRadius': 0, 'borderBottomRightRadius': 0 }}
+            />
             {isOpen && props.type && <div className="options my-Header-Gradient">
                 {myFilter(data[props.type]).map((value: any[], index: number) => {
                     return (
