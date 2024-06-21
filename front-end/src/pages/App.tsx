@@ -1,36 +1,28 @@
-import TopLinks, { TopLinksProps } from '../components/TopLinks';
-import MyForm from '../components/MyForm';
+import TopLinks, { TopLinksProps } from "../components/TopLinks";
+import MyForm from "../components/MyForm";
 import resTopLinks from "../resources/topLinks.json";
-import Data from './Data';
-import ReactDOMServer from "react-dom/server"
-import logo from '../images/logo-cropped.svg';
-import { IDataPage } from './Data';
+import Data from "./Data";
+import ReactDOMServer from "react-dom/server";
+import logo from "../images/logo-cropped.svg";
+import { IDataPage } from "./Data";
 import "../styles/App.css";
 import "../styles/bg-gradient.css";
-import { useRef } from 'react';
 
 const App = () => {
 	const topLinks: TopLinksProps = {
 		links: resTopLinks.links
 	}
 
-	const handleSubmit = ({ id, type }: IDataPage) => {
+	// this function handles the submit button on the form
+	const handleSubmit = ({ id, type, downloadHandler }: IDataPage) => {
+		// opens a new tab and assigns the variable for the Window
 		const newTab = window.open('')
 
-		const downloadHandler = () => {
-			const blob = new Blob([document.documentElement.outerHTML], {type: 'text/html'});
-			const url = URL.createObjectURL(blob);
-
-			const a = document.createElement('a');
-			a.href = url;
-			a.download = 'report.html'
-			document.head.appendChild(a)
-			a.click()
-			document.head.removeChild(a)
-			URL.revokeObjectURL(url);
-		}
-
-		const newHtml = ReactDOMServer.renderToString(<Data downloadHandler={downloadHandler} id={id} type={type} />)
+		const newHtml = ReactDOMServer.renderToString(<Data
+			downloadHandler={downloadHandler}
+			id={id}
+			type={type}
+		/>)
 
 		// this function puts all the css from this file into text
 		const extractCSSRules = () => {
@@ -66,13 +58,22 @@ const App = () => {
 			</body>
 			</html>`
 
-		newTab?.document.write(htmlString);
-		newTab?.document.close();
+		if (newTab) {
+			newTab.document.write(htmlString);
+			newTab.document.close();
+		} else {
+			// throw error?
+		}
 	}
 
 	return (
 		<>
-			<img src={logo} style={{ position: 'absolute', top: '0px', height: '20vh', left: '40vh' }} />
+			<img src={logo} style={{
+				position: 'absolute',
+				top: '0px',
+				height: '20vh',
+				left: '40vh'
+			}} />
 			<div className="my-Header-Gradient App-header">
 				<TopLinks links={topLinks.links} />
 			</div>

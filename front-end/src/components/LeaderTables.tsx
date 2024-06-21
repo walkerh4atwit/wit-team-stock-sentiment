@@ -1,7 +1,7 @@
 import { ReactElement, useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import ipInfo from "../resources/ipInfo.json"
-import '../styles/LeaderTables.css'
+import "../styles/LeaderTables.css"
 
 export interface LeaderTablesProps {
 
@@ -50,7 +50,11 @@ const LeaderTables = (props: LeaderTablesProps) => {
         ]
 
     // this differentiates the server between dev and prod
-    const backEndHost = process.env.NODE_ENV == 'development' ? ipInfo.devHost : ipInfo.prodHost
+    const backEndHost =
+        process.env.NODE_ENV ==
+            'development' ?
+            ipInfo.devHost
+            : ipInfo.prodHost;
 
     // pulls data from the backend
     const pullData = async () => {
@@ -65,7 +69,8 @@ const LeaderTables = (props: LeaderTablesProps) => {
     // this function is the way that a table will render the header and each row
     const tableRender = (label: string, data: any[]) => {
         // a div for the header
-        const tableHeader: ReactElement = <div className='my-Table-Header'>{label}</div>
+        const tableHeader: ReactElement =
+            <div className='my-Table-Header'>{label}</div>
         // a map of divs for the rows in empty tags
         const tableBody: ReactElement = <>
             {data.map((row: {}, index) => {

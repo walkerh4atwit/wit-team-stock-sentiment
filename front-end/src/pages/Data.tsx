@@ -1,5 +1,5 @@
-import logo from '../images/logo-cropped.svg'
-import "../styles/App.css"
+import logo from "../images/logo-cropped.svg";
+import "../styles/App.css";
 import "../styles/bg-gradient.css";
 
 export interface IDataPage {

@@ -6,13 +6,33 @@ import { IDataPage } from '../pages/Data'
 import '../styles/Form.css'
 import "../styles/bg-gradient.css"
 
-const MyForm = (props: { handleSubmit: ({ id, type }: IDataPage) => void }) => {
+const MyForm = (props: { handleSubmit: ({ id, type, downloadHandler }: IDataPage) => void }) => {
     // this function handles rendering the dropdown of the searchbar in a certain way
     const dropDownHandler = (option: any[], index: number, onClick: () => void): JSX.Element => {
         const [id, alternate_name, name, count] = option
         const useName: string = name == null ? alternate_name : name
         // renders div after selecting the name to use
         return <div className='option' key={index} onClick={onClick}>{useName}</div>
+    }
+
+    // this function handles the creation of a downloadble html file on the report-end
+    // I used some help from chatgpt to conceptualize what exactly I did here
+    const myDownloadHandler = () => {
+        // creates a file to download using the html from the page itself
+        const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html' });
+        // this line constructs a url based on the file generated
+        const url = URL.createObjectURL(blob);
+
+        // here we download the file to the computer
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'report.html'
+        document.head.appendChild(a)
+        a.click()
+
+        // cleanup of URL and the element
+        document.head.removeChild(a)
+        URL.revokeObjectURL(url);
     }
 
     // changes the radiochoice based on the radio being pressed
@@ -37,8 +57,13 @@ const MyForm = (props: { handleSubmit: ({ id, type }: IDataPage) => void }) => {
                 <Col style={{ paddingTop: '0px' }}>
                     <div style={{ display: 'flex', justifyContent: 'right' }}>
                         Status:
-                        <div style={{ paddingRight: '1rem', paddingLeft: '1rem' }}>({backEndStatus})</div>
-                        <div style={{ borderRadius: '50%', backgroundColor: `${backEndStatus == 'Online' ? 'green' : 'red'}`, width: '25px' }}></div>
+                        <div style={{ paddingRight: '1rem', paddingLeft: '1rem' }}>
+                            ({backEndStatus})</div>
+                        <div style={{
+                            borderRadius: '50%',
+                            backgroundColor: `${backEndStatus == 'Online' ? 'green' : 'red'}`,
+                            width: '25px'
+                        }}></div>
                     </div>
                 </Col>
             </Row>
@@ -56,9 +81,19 @@ const MyForm = (props: { handleSubmit: ({ id, type }: IDataPage) => void }) => {
                 </Form.Group>
                 <Form.Group md={6} as={Col}>
                     <InputGroup>
-                        <SearchBar optionRender={dropDownHandler} type={radioChoice} setBackEndStatus={setBackEndStatus} />
-                        <BootButton variant='success' style={{ width: '20%' }} onClick={() => props.handleSubmit({ id: idSelection, type: radioChoice })}>
-                            Submit!
+                        <SearchBar optionRender={dropDownHandler}
+                            type={radioChoice}
+                            setBackEndStatus={setBackEndStatus} />
+                        <BootButton
+                            variant='success'
+                            style={{ width: '20%' }}
+                            onClick={() =>
+                                props.handleSubmit({
+                                    id: idSelection,
+                                    type: radioChoice,
+                                    downloadHandler: myDownloadHandler
+                                })}>
+                            Submit
                         </BootButton>
                     </InputGroup>
                 </Form.Group>

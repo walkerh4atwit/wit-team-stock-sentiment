@@ -1,6 +1,6 @@
-import logo from '../images/logo-cropped.svg'
-import TopLinks, { TopLinksProps } from '../components/TopLinks'
-import resTopLinks from '../resources/topLinks.json'
+import logo from "../images/logo-cropped.svg"
+import TopLinks, { TopLinksProps } from "../components/TopLinks"
+import resTopLinks from "../resources/topLinks.json"
 
 const Documentation = () => {
     const topLinks: TopLinksProps = {
