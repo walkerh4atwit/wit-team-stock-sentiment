@@ -57,7 +57,7 @@ const MyForm = (props: { handleSubmit: ({ id, type }: IDataPage) => void }) => {
                 <Form.Group md={6} as={Col}>
                     <InputGroup>
                         <SearchBar optionRender={dropDownHandler} type={radioChoice} setBackEndStatus={setBackEndStatus} />
-                        <BootButton variant='success' type='submit' style={{ width: '20%' }} onSubmit={() => props.handleSubmit({ id: idSelection, type: radioChoice })}>
+                        <BootButton variant='success' style={{ width: '20%' }} onClick={() => props.handleSubmit({ id: idSelection, type: radioChoice })}>
                             Submit!
                         </BootButton>
                     </InputGroup>

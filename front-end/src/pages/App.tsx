@@ -2,8 +2,8 @@ import TopLinks, { TopLinksProps } from '../components/TopLinks';
 import MyForm from '../components/MyForm';
 import resTopLinks from "../resources/topLinks.json";
 import Data from './Data';
-import logo from '../images/logo-cropped.svg';
 import ReactDOMServer from "react-dom/server"
+import logo from '../images/logo-cropped.svg';
 import { IDataPage } from './Data';
 import "../styles/App.css";
 import "../styles/bg-gradient.css";
@@ -13,9 +13,31 @@ const App = () => {
 		links: resTopLinks.links
 	}
 
-	const handleSubmit = ({id, type}: IDataPage) => {
-		const dataHtml = ReactDOMServer.renderToStaticMarkup(<Data id={id} type={type} />)
-		const newTab = window.open()
+	const handleSubmit = ({ id, type }: IDataPage) => {
+		const newTab = window.open('')
+		
+		const newHtml = ReactDOMServer.renderToString(<Data id={id} type={type} />)
+
+		// this function puts all the css from this file into text
+		const extractCSSRules = () => {
+			let css = '';
+			// Convert StyleSheetList to an array
+			const styleSheets = Array.from(document.styleSheets);
+			for (const styleSheet of styleSheets) {
+				try {
+					// Convert CSSRuleList to an array
+					const rules = Array.from(styleSheet.cssRules);
+					for (const rule of rules) {
+						css += rule.cssText;
+					}
+				} catch (e) {
+					console.log('Access to stylesheet %s is denied. Ignoring.', styleSheet.href);
+				}
+			}
+			return css;
+		};
+
+		const css = extractCSSRules();
 
 		newTab?.document.write(
 			`<!DOCTYPE html>
@@ -23,15 +45,16 @@ const App = () => {
 			<head>
 				<meta charset="UTF-8">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<title>About Page</title>
+				<title>Your Report</title>
+				<style>${css}</style>
 			</head>
 			<body>
-				<div id="root">${dataHtml}</div>
+				<div id="root">${newHtml}</div>
 			</body>
 			</html>`
-		)
+		);
 
-		newTab?.document.close()
+		newTab?.document.close();
 	}
 
 	return (
@@ -41,7 +64,7 @@ const App = () => {
 				<TopLinks links={topLinks.links} />
 			</div>
 			<div className="App-body">
-				<MyForm handleSubmit={handleSubmit}/>
+				<MyForm handleSubmit={handleSubmit} />
 			</div>
 		</>
 	);
