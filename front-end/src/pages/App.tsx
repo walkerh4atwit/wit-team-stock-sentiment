@@ -7,6 +7,7 @@ import logo from '../images/logo-cropped.svg';
 import { IDataPage } from './Data';
 import "../styles/App.css";
 import "../styles/bg-gradient.css";
+import { useRef } from 'react';
 
 const App = () => {
 	const topLinks: TopLinksProps = {
@@ -15,8 +16,21 @@ const App = () => {
 
 	const handleSubmit = ({ id, type }: IDataPage) => {
 		const newTab = window.open('')
-		
-		const newHtml = ReactDOMServer.renderToString(<Data id={id} type={type} />)
+
+		const downloadHandler = () => {
+			const blob = new Blob([document.documentElement.outerHTML], {type: 'text/html'});
+			const url = URL.createObjectURL(blob);
+
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = 'report.html'
+			document.head.appendChild(a)
+			a.click()
+			document.head.removeChild(a)
+			URL.revokeObjectURL(url);
+		}
+
+		const newHtml = ReactDOMServer.renderToString(<Data downloadHandler={downloadHandler} id={id} type={type} />)
 
 		// this function puts all the css from this file into text
 		const extractCSSRules = () => {
@@ -39,8 +53,7 @@ const App = () => {
 
 		const css = extractCSSRules();
 
-		newTab?.document.write(
-			`<!DOCTYPE html>
+		const htmlString = `<!DOCTYPE html>
 			<html lang="en">
 			<head>
 				<meta charset="UTF-8">
@@ -52,8 +65,8 @@ const App = () => {
 				<div id="root">${newHtml}</div>
 			</body>
 			</html>`
-		);
 
+		newTab?.document.write(htmlString);
 		newTab?.document.close();
 	}
 

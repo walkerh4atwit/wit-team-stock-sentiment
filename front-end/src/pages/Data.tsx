@@ -3,7 +3,7 @@ import "../styles/App.css"
 import "../styles/bg-gradient.css";
 
 export interface IDataPage {
-    id: number, type: string
+    id: number, type: string, downloadHandler: () => void
 }
 
 const Data = (props: IDataPage) => {
