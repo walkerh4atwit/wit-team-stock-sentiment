@@ -2,9 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 import App from './pages/App';
 import FAQ from './pages/FAQ';
 import Documentation from './pages/Documentation';
+
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(

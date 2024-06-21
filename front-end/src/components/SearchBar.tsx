@@ -5,7 +5,7 @@ import '../styles/bg-gradient.css'
 import '../styles/Dropdown.css'
 
 // shape of the incoming data
-interface IData {
+interface IDataResponse {
     [key: string]: any[][]
 }
 
@@ -24,7 +24,7 @@ const SearchBar = (props: {
     // states
     const [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState("")
-    const [data, setData] = useState<IData>({
+    const [data, setData] = useState<IDataResponse>({
         "stock": [],
         "sector": [],
         "market": []
