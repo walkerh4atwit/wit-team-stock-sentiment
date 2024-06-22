@@ -14,8 +14,11 @@ const SearchBar = (props: {
     optionRender: (option: any[], index: number, onClick: () => void) => JSX.Element,
     // type as defined by the radio buttons from myForm.tsx
     type: string,
-    // this is a function passed down from the above component to handle change in online status
-    setBackEndStatus: any
+    // this is a function passed down from the 
+    // above component to handle change in online/offline status
+    setBackEndStatus: any,
+    // a function to tell other components what id we are working with from the bar
+    setIdSelection: (id: number) => any
 }) => {
 
     // this differentiates the server between dev and prod
@@ -43,7 +46,8 @@ const SearchBar = (props: {
         setIsOpen(e && e.target === inputRef.current)
     }
 
-    // functional way to access the query value, not in use rn
+    // functional way to access the query 
+    // value, not in use right now
     // const getValue = () => {
     //     if (query) return query
     //     return ""
@@ -57,6 +61,8 @@ const SearchBar = (props: {
         const useName = name == null ? alternate_name : name
         // sets query
         setQuery(() => useName)
+        // this needs to happen here
+        props.setIdSelection(id)
         // closes the search options
         setIsOpen((isOpen) => !isOpen)
     }
@@ -81,12 +87,16 @@ const SearchBar = (props: {
         }
     }
 
-    // adds a click listener to add click-out functionality to the searchbar
+    // adds a click listener to add click-out functionality
     useEffect(() => {
         document.addEventListener('click', clickToggle);
         return () =>
             document.removeEventListener('click', clickToggle);
     }, [])
+
+    // useEffect(() => {
+    //     props.setIdSelection(-1)
+    // }, [query])
 
     // filters the data based on the search query
     const myFilter = (options: any[][]): any[][] => (

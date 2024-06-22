@@ -7,10 +7,12 @@ import "../styles/Form.css"
 import "../styles/bg-gradient.css"
 
 const MyForm = (props:
-    {
-        handleSubmit:
+    { // these are the props for myForm
+        handleSubmit: // handlesubmit has a shape of...
+        // having an IDataPage interface
         ({ id, type, downloadHandler }: IDataPage) => void
     }) => {
+
     // this function handles rendering the dropdown of the searchbar in a certain way
     const dropDownHandler = (option: any[], index: number, onClick: () => void): JSX.Element => {
         const [id, alternate_name, name, count] = option
@@ -89,7 +91,9 @@ const MyForm = (props:
                     <InputGroup>
                         <SearchBar optionRender={dropDownHandler}
                             type={radioChoice}
-                            setBackEndStatus={setBackEndStatus} />
+                            setBackEndStatus={setBackEndStatus}
+                            setIdSelection={setIdSelection}
+                        />
                         <BootButton
                             variant='success'
                             style={{ width: '20%' }}
@@ -97,11 +101,14 @@ const MyForm = (props:
                                 props.handleSubmit({
                                     id: idSelection,
                                     type: radioChoice,
-                                    downloadHandler: myDownloadHandler
+                                    downloadHandler:
+                                        myDownloadHandler
                                 })}>
+                            {/* The text for the button below */}
                             Submit
                         </BootButton>
                     </InputGroup>
+                    {/* (debug) <div>Asset id: {idSelection}</div> */}
                 </Form.Group>
                 <Form.Group as={Col}>
 

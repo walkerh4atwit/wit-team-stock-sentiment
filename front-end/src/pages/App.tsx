@@ -16,7 +16,7 @@ const App = () => {
 	// this function handles the submit button on the form
 	const handleSubmit = ({ id, type, downloadHandler }: IDataPage) => {
 		// opens a new tab and assigns the variable for the Window
-		const newTab = window.open('')
+		const newTab = window.open('hello.html')
 
 		const newHtml = ReactDOMServer.renderToString(<Data
 			downloadHandler={downloadHandler}
@@ -29,19 +29,20 @@ const App = () => {
 			let css = '';
 			// Convert StyleSheetList to an array
 			const styleSheets = Array.from(document.styleSheets);
-			for (const styleSheet of styleSheets) {
+			styleSheets.map((styleSheet) => {
 				try {
 					// Convert CSSRuleList to an array
 					const rules = Array.from(styleSheet.cssRules);
-					for (const rule of rules) {
+					rules.map((rule) => {
 						css += rule.cssText;
-					}
+					})
 				} catch (e) {
-					console.log('Access to stylesheet %s is denied. Ignoring.', styleSheet.href);
+					console.log('Access to stylesheet %s is denied. Ignoring.',
+						styleSheet.href);
 				}
-			}
+			})
 			return css;
-		};
+		}
 
 		const css = extractCSSRules();
 
@@ -64,7 +65,7 @@ const App = () => {
 		} else {
 			// throw error?
 		}
-	}
+	};
 
 	return (
 		<>
