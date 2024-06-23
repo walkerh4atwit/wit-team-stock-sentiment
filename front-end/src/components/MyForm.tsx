@@ -10,18 +10,21 @@ const MyForm = (props:
     { // these are the props for myForm
         handleSubmit: // handlesubmit has a shape of...
         // having an IDataPage interface
-        ({ id, type, downloadHandler }: IDataPage) => void
+        ({ id, type }: IDataPage) => void
     }) => {
 
     // this function handles rendering the dropdown of the searchbar in a certain way
-    const dropDownHandler = (option: any[], index: number, onClick: () => void): JSX.Element => {
-        const [id, alternate_name, name, count] = option
-        const useName: string = name == null ? alternate_name : name
-        // renders div after selecting the name to use
-        return <div className='option'
-            key={index}
-            onClick={onClick}>{useName}</div>
-    }
+    const dropDownHandler =
+        (option: any[],
+            index: number,
+            onClick: () => void): JSX.Element => {
+            const [id, alternate_name, name, count] = option
+            const useName: string = name == null ? alternate_name : name
+            // renders div after selecting the name to use
+            return <div className='option'
+                key={index}
+                onClick={onClick}>{useName}</div>
+        }
 
     // this function handles the creation of a downloadble html file on the report-end
     // I used some help from chatgpt to conceptualize what exactly I did here
@@ -100,9 +103,7 @@ const MyForm = (props:
                             onClick={() =>
                                 props.handleSubmit({
                                     id: idSelection,
-                                    type: radioChoice,
-                                    downloadHandler:
-                                        myDownloadHandler
+                                    type: radioChoice
                                 })}>
                             {/* The text for the button below */}
                             Submit
@@ -111,7 +112,7 @@ const MyForm = (props:
                     {/* (debug) <div>Asset id: {idSelection}</div> */}
                 </Form.Group>
                 <Form.Group as={Col}>
-
+                    
                 </Form.Group>
             </Row>
             <Row style={{ paddingTop: '20vh' }}>

@@ -14,12 +14,11 @@ const App = () => {
 	}
 
 	// this function handles the submit button on the form
-	const handleSubmit = ({ id, type, downloadHandler }: IDataPage) => {
+	const handleSubmit = ({ id, type }: IDataPage) => {
 		// opens a new tab and assigns the variable for the Window
-		const newTab = window.open('hello.html')
+		let newTab = window.open('')
 
-		const newHtml = ReactDOMServer.renderToString(<Data
-			downloadHandler={downloadHandler}
+		let newHtml = ReactDOMServer.renderToString(<Data
 			id={id}
 			type={type}
 		/>)
@@ -44,9 +43,9 @@ const App = () => {
 			return css;
 		}
 
-		const css = extractCSSRules();
+		let css = extractCSSRules();
 
-		const htmlString = `<!DOCTYPE html>
+		let htmlString = `<!DOCTYPE html>
 			<html lang="en">
 			<head>
 				<meta charset="UTF-8">
