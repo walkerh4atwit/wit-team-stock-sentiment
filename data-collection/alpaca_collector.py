@@ -1,4 +1,3 @@
-import pandas
 from alpaca.data.requests import NewsRequest
 from alpaca.data.historical.news import NewsClient
 import pandas as pd
