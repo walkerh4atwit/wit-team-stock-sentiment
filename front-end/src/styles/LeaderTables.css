@@ -1,4 +1,20 @@
 .my-Table-Header {
     border-bottom: solid 1px;
+    padding: 0.5rem;
     border-color: black;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.my-Table-Row {
+    padding: 0.5rem;
+}
+
+.table {
+    margin: 0.5rem;
+    padding: 0;
+    border-radius: 10px;
+    background-color: white;
+    display: grid;
+    grid-auto-rows: min-content;
 }

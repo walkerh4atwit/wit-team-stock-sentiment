@@ -55,6 +55,7 @@ const MyForm = (props:
     const [backEndStatus, setBackEndStatus] = useState('Online')
     const [radioChoice, setRadioChoice] = useState("")
     const [idSelection, setIdSelection] = useState(-1)
+    const [canSubmit, setCanSubmit] = useState(false)
 
     return (
         <Form className='my-Form-Gradient my-Form-Container'>
@@ -96,9 +97,10 @@ const MyForm = (props:
                             type={radioChoice}
                             setBackEndStatus={setBackEndStatus}
                             setIdSelection={setIdSelection}
+                            setCanSubmit={setCanSubmit}
                         />
                         <BootButton
-                            variant='success'
+                            variant={canSubmit ? 'success' : 'secondary'}
                             style={{ width: '20%' }}
                             onClick={() =>
                                 props.handleSubmit({
@@ -115,7 +117,7 @@ const MyForm = (props:
                     
                 </Form.Group>
             </Row>
-            <Row style={{ paddingTop: '20vh' }}>
+            <Row style={{ marginTop: '20vh', display: 'flex', alignItems: 'flex-start' }}>
                 <LeaderTables />
             </Row>
         </Form>

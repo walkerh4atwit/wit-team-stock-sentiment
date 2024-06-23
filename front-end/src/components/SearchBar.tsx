@@ -19,6 +19,7 @@ const SearchBar = (props: {
     setBackEndStatus: any,
     // a function to tell other components what id we are working with from the bar
     setIdSelection: (id: number) => any
+    setCanSubmit: (canSubmit: boolean) => any
 }) => {
 
     // this differentiates the server between dev and prod
@@ -94,9 +95,9 @@ const SearchBar = (props: {
             document.removeEventListener('click', clickToggle);
     }, [])
 
-    // useEffect(() => {
-    //     props.setIdSelection(-1)
-    // }, [query])
+    useEffect(() => {
+        props.setCanSubmit(query != "")
+    }, [query])
 
     // filters the data based on the search query
     const myFilter = (options: any[][]): any[][] => (
@@ -110,7 +111,7 @@ const SearchBar = (props: {
     )
 
     // This effect is to pull the data from the back for ticker info
-    useEffect(() => { pullTickers() }, [props.type])
+    useEffect(() => { pullTickers() }, [])
 
     return (
         <div className='dropdown'>

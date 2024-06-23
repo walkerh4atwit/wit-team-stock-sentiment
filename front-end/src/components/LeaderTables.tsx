@@ -18,7 +18,7 @@ const LeaderTables = (props: LeaderTablesProps) => {
     // it is expecting to conform to the IDataGroups interface
     // as does its initial value
     const [data, setData] = useState<IDataGroups>({
-        "descendingStocks": [[]],
+        "descendingStocks": [[], []],
         "ascendingStocks": [],
         "descendingSectors": [],
         "ascendingSectors": []
@@ -70,12 +70,12 @@ const LeaderTables = (props: LeaderTablesProps) => {
     const tableRender = (label: string, data: any[]) => {
         // a div for the header
         const tableHeader: ReactElement =
-            <div className='my-Table-Header'>{label}</div>
+            <div className='my-Table-Header my-Header-Gradient'>{label}</div>
         // a map of divs for the rows in empty tags
         const tableBody: ReactElement = <>
             {data.map((row: {}, index) => {
                 return (
-                    <div key={index}>{index + 1}</div>
+                    <div className="my-Table-Row" key={index}>{index + 1}</div>
                 )
             })}
         </>
@@ -85,15 +85,13 @@ const LeaderTables = (props: LeaderTablesProps) => {
 
     // makes sure that pulldata 
     // is used at render-time
-    useEffect(() => {
-        pullData();
-    }, [])
+    useEffect(() => { pullData(); }, [])
 
     return (
         <>
             {dataGroupsSchema.map(
                 (group) => {
-                    return (<Col key={group.dataKey}>
+                    return (<Col className="table" key={group.dataKey}>
                         {tableRender(group.label, data[group.dataKey])}
                     </Col>)
                 }
