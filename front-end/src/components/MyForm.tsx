@@ -2,9 +2,9 @@ import React, { useState } from "react"
 import { Row, Col, Form, InputGroup, Button as BootButton } from "react-bootstrap"
 import SearchBar from "./SearchBar"
 import LeaderTables from "./LeaderTables"
-import { IDataPage } from "../pages/Data"
 import "../styles/Form.css"
 import "../styles/bg-gradient.css"
+import { IDataPage } from "../pages/Data"
 
 const MyForm = (props:
     { // these are the props for myForm
@@ -28,23 +28,24 @@ const MyForm = (props:
 
     // this function handles the creation of a downloadble html file on the report-end
     // I used some help from chatgpt to conceptualize what exactly I did here
-    const myDownloadHandler = () => {
-        // creates a file to download using the html from the page itself
-        const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html' });
-        // this line constructs a url based on the file generated
-        const url = URL.createObjectURL(blob);
+    // SCRAPPED IDEA TO DOWNLOAD THE REPORT, MAYBE WILL DO PDF DOWNLOAD LATER
+    // const myDownloadHandler = () => {
+    //     // creates a file to download using the html from the page itself
+    //     const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html' });
+    //     // this line constructs a url based on the file generated
+    //     const url = URL.createObjectURL(blob);
 
-        // here we download the file to the computer
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'report.html'
-        document.head.appendChild(a)
-        a.click()
+    //     // here we download the file to the computer
+    //     const a = document.createElement('a');
+    //     a.href = url;
+    //     a.download = 'report.html'
+    //     document.head.appendChild(a)
+    //     a.click()
 
-        // cleanup of URL and the element
-        document.head.removeChild(a)
-        URL.revokeObjectURL(url);
-    }
+    //     // cleanup of URL and the element
+    //     document.head.removeChild(a)
+    //     URL.revokeObjectURL(url);
+    // }
 
     // changes the radiochoice based on the radio being pressed
     const handleRadio = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,9 +88,9 @@ const MyForm = (props:
                     <Form.Check type="radio" label="Market sector" value="sector"
                         name="formHorizontalRadios"
                         onChange={handleRadio} />
-                    <Form.Check type="radio" label="Whole market" value="market"
+                    {/* <Form.Check type="radio" label="Whole market" value="market"
                         name="formHorizontalRadios"
-                        onChange={handleRadio} />
+                        onChange={handleRadio} /> */}
                 </Form.Group>
                 <Form.Group md={6} as={Col}>
                     <InputGroup>
@@ -99,14 +100,11 @@ const MyForm = (props:
                             setIdSelection={setIdSelection}
                             setCanSubmit={setCanSubmit}
                         />
-                        <BootButton
-                            variant={canSubmit ? 'success' : 'secondary'}
+                        <BootButton disabled={!canSubmit || (backEndStatus === "Offline")}
+                            variant='success'
                             style={{ width: '20%' }}
                             onClick={() =>
-                                props.handleSubmit({
-                                    id: idSelection,
-                                    type: radioChoice
-                                })}>
+                                props.handleSubmit({ id: idSelection, type: radioChoice })}>
                             {/* The text for the button below */}
                             Submit
                         </BootButton>
@@ -114,14 +112,14 @@ const MyForm = (props:
                     {/* (debug) <div>Asset id: {idSelection}</div> */}
                 </Form.Group>
                 <Form.Group as={Col}>
-                    
+
                 </Form.Group>
             </Row>
             <Row style={{ marginTop: '20vh', display: 'flex', alignItems: 'flex-start' }}>
-                <LeaderTables />
+                {backEndStatus === "Online" && <LeaderTables />}
             </Row>
         </Form>
     )
 }
 
-export default MyForm
+export default MyForm;

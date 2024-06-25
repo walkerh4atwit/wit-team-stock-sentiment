@@ -104,9 +104,13 @@ const SearchBar = (props: {
         options.filter((option) => {
             // unpacks the list into components
             const [id, alternate_name, name, count] = option
-            const useName = name == null ? alternate_name : name
             // uses indexof to string search
-            return useName.toLowerCase().indexOf(query.toLowerCase()) > -1
+            if (name != null) {
+                return name.toLowerCase().indexOf(query.toLowerCase()) > -1 ||
+                    alternate_name.toLowerCase().indexOf(query.toLowerCase()) > -1
+            } else {
+                return alternate_name.toLowerCase().indexOf(query.toLowerCase()) > -1
+            }
         })
     )
 
