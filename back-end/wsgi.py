@@ -54,7 +54,7 @@ def get_tickers():
     # response.headers.add("Access-Control-Allow-Methods", "*")
     return response
 
-@app.route("leadertables")
+@app.route("/leadertables")
 def leaderTables():
     response = make_response(
         jsonify(getLeaderTables())

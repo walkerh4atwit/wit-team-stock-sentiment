@@ -1,9 +1,13 @@
 import { ReactElement, useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Container } from "react-bootstrap";
 import ipInfo from "../resources/ipInfo.json"
 import "../styles/LeaderTables.css"
 
 export interface LeaderTablesProps {
+
+}
+
+interface ILeaderDataPoint {
 
 }
 
@@ -18,8 +22,8 @@ const LeaderTables = (props: LeaderTablesProps) => {
     // it is expecting to conform to the IDataGroups interface
     // as does its initial value
     const [data, setData] = useState<IDataGroups>({
-        "descStocks": [],
-        "ascStocks": [],
+        "descTickers": [],
+        "ascTickers": [],
         "descSectors": [],
         "ascSectors": []
     })
@@ -33,11 +37,11 @@ const LeaderTables = (props: LeaderTablesProps) => {
     }[] = [
             {
                 label: "Top 5 stocks",
-                dataKey: "descStocks"
+                dataKey: "descTickers"
             },
             {
                 label: "Bottom 5 stocks",
-                dataKey: "ascStocks"
+                dataKey: "ascTickers"
             },
             {
                 label: "Top 5 sectors",
@@ -59,8 +63,9 @@ const LeaderTables = (props: LeaderTablesProps) => {
     // pulls data from the backend
     const pullData = async () => {
         try {
-            const response = await fetch('');
+            const response = await fetch('http://' + backEndHost + ":3131/leadertables");
             const data = await response.json()
+            console.log(data)
             setData(data)
         }
         catch { }
@@ -73,9 +78,19 @@ const LeaderTables = (props: LeaderTablesProps) => {
             <div className='my-Table-Header my-Header-Gradient'>{label}</div>
         // a map of divs for the rows in empty tags
         const tableBody: ReactElement = <>
-            {data.map((row: {}, index) => {
+            {data.map((data, index) => {
                 return (
-                    <div className="my-Table-Row" key={index}>{index + 1}</div>
+                    <Row className="my-Table-Row" key={index}>
+                        <Col className="my-Table-Column" style={{ maxWidth: "10%" }}>
+                            {data[2]}
+                        </Col>
+                        <Col className="my-Table-Column" style={{ minWidth: "70%", marginRight: "0.5rem" }}>
+                            {data[0]}
+                        </Col>
+                        <Col className="my-Table-Column">
+                            {data[1].toFixed(2)}
+                        </Col>
+                    </Row>
                 )
             })}
         </>
@@ -91,9 +106,11 @@ const LeaderTables = (props: LeaderTablesProps) => {
         <>
             {dataGroupsSchema.map(
                 (group) => {
-                    return (<Col className="table" key={group.dataKey}>
-                        {tableRender(group.label, data[group.dataKey])}
-                    </Col>)
+                    return (
+                        <Col xs className="my-Table" key={group.dataKey}>
+                            {tableRender(group.label, data[group.dataKey])}
+                        </Col>
+                    )
                 }
             )}
         </>

@@ -28,7 +28,7 @@ def handleTies(data: list[any], count: int):
         else:
             rank += 1
         if i==4 and count:
-            data_push.append([str(count) + " TIED", rankstring])
+            data_push.append([str(count) + " TIED", row[1], rankstring])
             continue
         data_push.append([*list(row), rankstring])
 
@@ -61,19 +61,17 @@ def getLeaderTables():
         {"order": "desc","table": "Sectors","id":"name"}
     ]):
         cursor.execute(query_string
-                       .replace(":1", table['order'])
-                       .replace(":2", table['table'])
-                       .replace(":3", table['id']))
+            .replace(":1", table['order'])
+            .replace(":2", table['table'])
+            .replace(":3", table['id']))
         
         data_in.append(cursor.fetchall())
 
         count = countTies(data_in[i], cursor)
-        data_out[table["order"] + table["table"]] = handleTies(data_in[i], count)
+        data_out[table["order"] + table["table"]] = handleTies(data_in[i], count)[:5]
 
-    
+    return data_out
 
-    # print(data_push)
+    # print(data_out)
 
-    print(data_out)
-
-getLeaderTables()
+# getLeaderTables()

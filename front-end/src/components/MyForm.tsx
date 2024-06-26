@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Row, Col, Form, InputGroup, Button as BootButton } from "react-bootstrap"
+import { Row, Col, Form, InputGroup, Button as BootButton, Container } from "react-bootstrap"
 import SearchBar from "./SearchBar"
 import LeaderTables from "./LeaderTables"
 import "../styles/Form.css"
@@ -115,10 +115,14 @@ const MyForm = (props:
 
                 </Form.Group>
             </Row>
-            <Row style={{ marginTop: '20vh', display: 'flex', alignItems: 'flex-start' }}>
-                {backEndStatus === "Online" && <LeaderTables />}
-            </Row>
+
+            <Container fluid className="my-Leader-Tables">
+                <Row>
+                    {backEndStatus === "Online" && <LeaderTables />}
+                </Row>
+            </Container>
         </Form>
+
     )
 }
 
