@@ -1,6 +1,7 @@
 from flask import Flask, make_response, jsonify
 from flask_cors import CORS, cross_origin
 from searchbar import getSearchOptions
+from leadertables import getLeaderTables
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -51,6 +52,14 @@ def get_tickers():
     # response.headers.add("Access-Control-Allow-Origin", "*")
     # response.headers.add("Access-Control-Allow-Headers", "*")
     # response.headers.add("Access-Control-Allow-Methods", "*")
+    return response
+
+@app.route("leadertables")
+def leaderTables():
+    response = make_response(
+        jsonify(getLeaderTables())
+    )
+
     return response
 
 app.run(port=3131, host='0.0.0.0')

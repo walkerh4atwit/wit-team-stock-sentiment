@@ -18,10 +18,10 @@ const LeaderTables = (props: LeaderTablesProps) => {
     // it is expecting to conform to the IDataGroups interface
     // as does its initial value
     const [data, setData] = useState<IDataGroups>({
-        "descendingStocks": [[], []],
-        "ascendingStocks": [],
-        "descendingSectors": [],
-        "ascendingSectors": []
+        "descStocks": [],
+        "ascStocks": [],
+        "descSectors": [],
+        "ascSectors": []
     })
 
     // this is the information about
@@ -33,19 +33,19 @@ const LeaderTables = (props: LeaderTablesProps) => {
     }[] = [
             {
                 label: "Top 5 stocks",
-                dataKey: "descendingStocks"
+                dataKey: "descStocks"
             },
             {
                 label: "Bottom 5 stocks",
-                dataKey: "ascendingStocks"
+                dataKey: "ascStocks"
             },
             {
                 label: "Top 5 sectors",
-                dataKey: "descendingSectors"
+                dataKey: "descSectors"
             },
             {
                 label: "Bottom 5 sectors",
-                dataKey: "ascendingSectors"
+                dataKey: "ascSectors"
             }
         ]
 
