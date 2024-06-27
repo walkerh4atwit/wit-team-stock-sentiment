@@ -59,65 +59,67 @@ const MyForm = (props:
     const [canSubmit, setCanSubmit] = useState(false)
 
     return (
-        <Form className='my-Form-Gradient my-Form-Container'>
-            <Row>
-                <Col>
-                    Step 1: Choose...
-                </Col>
-                <Col md={6} style={{ paddingTop: '0px' }}>
-                    {`Step 2: Find${radioChoice ? " a " + radioChoice : "..."}`}
-                </Col>
-                <Col style={{ paddingTop: '0px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'right' }}>
-                        Status:
-                        <div style={{ paddingRight: '1rem', paddingLeft: '1rem' }}>
-                            ({backEndStatus})</div>
-                        <div style={{
-                            borderRadius: '50%',
-                            backgroundColor: `${backEndStatus == 'Online' ? 'green' : 'red'}`,
-                            width: '25px'
-                        }}></div>
-                    </div>
-                </Col>
-            </Row>
-            <Row>
-                <Form.Group as={Col}>
-                    <Form.Check type="radio" label="Single stock" value="stock"
-                        name="formHorizontalRadios"
-                        onChange={handleRadio} />
-                    <Form.Check type="radio" label="Market sector" value="sector"
-                        name="formHorizontalRadios"
-                        onChange={handleRadio} />
-                    {/* <Form.Check type="radio" label="Whole market" value="market"
+        <Form className='my-Form-Gradient my-Form-Blob'>
+            <Container fluid className="my-Form">
+                <Row className="my-Form-Row">
+                    <Col>
+                        Step 1: Choose...
+                    </Col>
+                    <Col md={6}>
+                        {`Step 2: Find${radioChoice ? " a " + radioChoice : "..."}`}
+                    </Col>
+                    <Col style={{ paddingTop: '0px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            Status:
+                            <div style={{ paddingRight: '1rem', paddingLeft: '1rem' }}>
+                                ({backEndStatus})</div>
+                            <div style={{
+                                borderRadius: '50%',
+                                backgroundColor: `${backEndStatus == 'Online' ? 'green' : 'red'}`,
+                                width: '25px'
+                            }}></div>
+                        </div>
+                    </Col>
+                </Row>
+                <Row className="my-Form-Row">
+                    <Form.Group as={Col}>
+                        <Form.Check type="radio" label="Single stock" value="stock"
+                            name="formHorizontalRadios"
+                            onChange={handleRadio} />
+                        <Form.Check type="radio" label="Market sector" value="sector"
+                            name="formHorizontalRadios"
+                            onChange={handleRadio} />
+                        {/* <Form.Check type="radio" label="Whole market" value="market"
                         name="formHorizontalRadios"
                         onChange={handleRadio} /> */}
-                </Form.Group>
-                <Form.Group md={6} as={Col}>
-                    <InputGroup>
-                        <SearchBar optionRender={dropDownHandler}
-                            type={radioChoice}
-                            setBackEndStatus={setBackEndStatus}
-                            setIdSelection={setIdSelection}
-                            setCanSubmit={setCanSubmit}
-                        />
-                        <BootButton disabled={!canSubmit || (backEndStatus === "Offline")}
-                            variant='success'
-                            style={{ width: '20%' }}
-                            onClick={() =>
-                                props.handleSubmit({ id: idSelection, type: radioChoice })}>
-                            {/* The text for the button below */}
-                            Submit
-                        </BootButton>
-                    </InputGroup>
-                    {/* (debug) <div>Asset id: {idSelection}</div> */}
-                </Form.Group>
-                <Form.Group as={Col}>
+                    </Form.Group>
+                    <Form.Group md={6} as={Col}>
+                        <InputGroup>
+                            <SearchBar optionRender={dropDownHandler}
+                                type={radioChoice}
+                                setBackEndStatus={setBackEndStatus}
+                                setIdSelection={setIdSelection}
+                                setCanSubmit={setCanSubmit}
+                            />
+                            <BootButton disabled={!canSubmit || (backEndStatus === "Offline")}
+                                variant='success'
+                                style={{ width: '20%' }}
+                                onClick={() =>
+                                    props.handleSubmit({ id: idSelection, type: radioChoice })}>
+                                {/* The text for the button below */}
+                                Submit
+                            </BootButton>
+                        </InputGroup>
+                        {/* (debug) <div>Asset id: {idSelection}</div> */}
+                    </Form.Group>
+                    <Form.Group as={Col}>
 
-                </Form.Group>
-            </Row>
+                    </Form.Group>
+                </Row>
+            </Container>
 
             <Container fluid className="my-Leader-Tables">
-                <Row>
+                <Row style={{ margin: '0' }}>
                     {backEndStatus === "Online" && <LeaderTables />}
                 </Row>
             </Container>

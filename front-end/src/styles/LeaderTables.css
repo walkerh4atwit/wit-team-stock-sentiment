@@ -1,5 +1,9 @@
-/* .my-Leader-Tables {
-} */
+.my-Leader-Tables {
+    padding: 0;
+    position: absolute;
+    bottom: 1rem;
+    max-width: calc(100% - 2rem);
+}
 
 .my-Table-Header {
     border-bottom: solid 1px;

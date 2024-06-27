@@ -1,15 +1,16 @@
-/* .form-check {
-    padding-bottom: 1rem;
+.my-Form {
+    padding: 0;
 }
 
-.col-md-6 {
-    padding: 1rem;
+.my-Form-Row {
+    margin: 0;
+    align-items: center;
 }
 
-.col-6 {
-    padding: 1rem;
+.my-Form-Row > .col {
+    padding: 0.5rem;
 }
 
-.col {
-    padding: 1rem;
-} */
+.my-Form-Row > .col-md-6 {
+    padding: 0.5rem;
+}
