@@ -1,6 +1,10 @@
 {
     "links": [
         {
+            "text": "Home",
+            "link": "/"
+        },
+        {
             "text": "FAQ",
             "link": "/faq"
         },
