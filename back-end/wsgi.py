@@ -1,21 +1,19 @@
 from flask import Flask, make_response, jsonify
-from flask_cors import CORS, cross_origin
 from searchbar import getSearchOptions
 from leadertables import getLeaderTables
+import sys
 
 app = Flask(__name__)
-cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
 
 # Routed to the root URL of this server
 # This route will not do anything and has
 # no reroute
 @app.route("/")
-@cross_origin()
 def root_request():
     response = make_response(
         "Bad request to root\n"
     )
+    response.headers.add("Access-Control-Allow-Origin", "*")
     response.status_code = 404
     return response
 
@@ -26,6 +24,7 @@ def sentiment_request(ticker):
     response = make_response(
         "Sentiment with " + ticker + "\n"
     )
+    response.headers.add("Access-Control-Allow-Origin", "*")
     response.status_code = 200
     return response
 
@@ -38,6 +37,7 @@ def do_action(id):
     response = make_response(
         "Do action " + id + "\n"
     )
+    response.headers.add("Access-Control-Allow-Origin", "*")
     response.status_code = 200
     return response
 
@@ -49,17 +49,19 @@ def get_tickers():
     response = make_response(
         jsonify(getSearchOptions())
     )
-    # response.headers.add("Access-Control-Allow-Origin", "*")
-    # response.headers.add("Access-Control-Allow-Headers", "*")
-    # response.headers.add("Access-Control-Allow-Methods", "*")
+    response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
+# This route provides the data
+# for the leader tables
 @app.route("/leadertables")
 def leaderTables():
     response = make_response(
         jsonify(getLeaderTables())
     )
-
+    response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
-app.run(port=3131, host='0.0.0.0')
+# development environment
+if len(sys.argv) == 1:
+    app.run(port=3131, host='0.0.0.0')

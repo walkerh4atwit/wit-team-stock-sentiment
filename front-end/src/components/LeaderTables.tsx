@@ -63,9 +63,9 @@ const LeaderTables = (props: LeaderTablesProps) => {
     // pulls data from the backend
     const pullData = async () => {
         try {
-            const response = await fetch('http://' + backEndHost + ":3131/leadertables");
+            const response = await 
+                fetch('http://' + backEndHost + "/leadertables");
             const data = await response.json()
-            console.log(data)
             setData(data)
         }
         catch { }
