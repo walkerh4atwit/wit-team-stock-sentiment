@@ -17,6 +17,10 @@
     width: calc(100% - 10px);
 }
 
+.options {
+    z-index: 1;
+}
+
 .option {
     padding-left: 10px;
     cursor: pointer;

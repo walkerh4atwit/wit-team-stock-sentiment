@@ -25,7 +25,9 @@ const SearchBar = (props: {
     // this differentiates the server between dev and prod
     const backEndHost: string =
         process.env.NODE_ENV ==
-            'development' ? ipInfo.devHost : ipInfo.prodHost
+            'development' ? 
+                ipInfo.devHost : 
+                ipInfo.prodHost
 
     // states
     const [isOpen, setIsOpen] = useState(false)
@@ -72,12 +74,7 @@ const SearchBar = (props: {
     const pullTickers = async () => {
         try {
             const response = await
-                fetch('http://' + ipInfo.devHost + ':3131/searchoptions', {
-                    method: 'GET', headers: {
-                        "Access-Control-Allow-Origin": "*",
-                        "Content-Type": "text/plain"
-                    }
-                });
+                fetch('http://' + backEndHost + '/searchoptions');
             const responseData = await response.json()
             props.setBackEndStatus("Online")
             setData(responseData)

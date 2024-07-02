@@ -1,4 +1,4 @@
 {
-    "prodHost": "193.122.153.48",
-    "devHost": "localhost"
+    "prodHost": "150.136.169.207",
+    "devHost": "localhost:3131"
 }
