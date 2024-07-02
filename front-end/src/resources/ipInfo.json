@@ -1,3 +1,4 @@
 {
-    "ipv4": "localhost"
+    "prodHost": "150.136.169.207",
+    "devHost": "localhost:3131"
 }

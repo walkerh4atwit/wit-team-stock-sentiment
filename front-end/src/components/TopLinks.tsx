@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom'
-import '../styles/App.css'
-import '../styles/TopLinks.css'
-import '../styles/bg-gradient.css'
+import { Link } from "react-router-dom"
+import "../styles/App.css"
+import "../styles/TopLinks.css"
+import "../styles/bg-gradient.css"
 
 export interface TopLinksProps {
 	links:
@@ -16,7 +16,7 @@ const TopLinks = (props: TopLinksProps) => {
 		<div className='Top-links my-Form-Gradient'>
 			{
 				props.links.map(
-					(link) => <Link key={link.text} to={link.link}>{link.text}</Link>
+					(link) => <Link style={{color: 'black'}} key={link.text} to={link.link}>{link.text}</Link>
 				)
 			}
 		</div>

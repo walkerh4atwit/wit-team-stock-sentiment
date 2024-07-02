@@ -8,17 +8,17 @@
 /* Tablet, desktop */
 @media only screen and (min-width: 769px) {
     .App-header {
-        height: 15vh;
+        height: 25vh;
     }
 
     .App-body {
-        height: 85vh;
+        height: 75vh;
         font-family: sans-serif;
     }
 
-    .my-Form-Container {
+    .my-Form-Blob {
         position: absolute;
-        top: 10vh;
+        top: 18vh;
         height: 80vh;
         width: calc(100% - 30px);
         border-radius: 15px;
