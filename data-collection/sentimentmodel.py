@@ -39,7 +39,7 @@ class NewsDataset(Dataset):
         return encoding['input_ids'].squeeze(), encoding['attention_mask'].squeeze(), torch.tensor(label_id)
 
 
-df = pd.read_csv("train_data0.csv")
+df = pd.read_csv("csv/train_data0.csv")
 content = df['headline'].to_list()
 labels = df['score'].to_list()
 
@@ -54,6 +54,7 @@ train_dataloader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True
 test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=True)
 
 model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=3)
+#model.load_state_dict(torch.load("saved-models/4-3e6bm512.pth"))
 #model.load_state_dict(torch.load("saved-models/bert_model_512.pth"))
 
 model.to(device)
@@ -62,11 +63,13 @@ optimizer = torch.optim.AdamW(model.parameters(), lr=5e-5)
 criterion = torch.nn.CrossEntropyLoss()
 
 stepi = []
-lossi = []
-acci = []
+train_lossi = []
+test_lossi = []
+test_acci = []
+i = 0
 correct = 0
 total = 0
-i = 0
+
 for epoch in range(EPOCHS):
     model.train()
     for batch in train_dataloader:
@@ -84,18 +87,10 @@ for epoch in range(EPOCHS):
         print(f"{i} ___ loss: {loss}")
         i += 1
 
-        ### eval metrics
-        #preds = torch.argmax(outputs.logits, dim=1)
-        #total += labels.size(0)
-        #correct += (preds == labels).sum().item()
-
         stepi.append(i)
-        lossi.append(loss.item())
-        #acci.append(correct / total)
+        train_lossi.append(loss.item())
 
     print(f"epoch: {epoch}")
-
-torch.save(model.state_dict(), "saved-models/bert_model_512.pth")
 
 
 model.eval()
@@ -107,11 +102,23 @@ with torch.no_grad():
         labels = labels.to(device)
 
         outputs = model(input_ids=input_ids, attention_mask=attention_mask)
+        test_loss = criterion(outputs.logits, labels)
+
         preds = torch.argmax(outputs.logits, dim=1)
         total += labels.size(0)
         correct += (preds == labels).sum().item()
 
+        test_acci.append(correct / total)
+        test_lossi.append(test_loss.item())
+
+
+#torch.save(model.state_dict(), "saved-models/4-3e6bm512.pth")
+
 print(f"Accuracy: {correct / total}")
 
-#plt.plot(stepi, lossi, acci)
-#plt.show()
+# train_loss vs eval accuracy
+plt.plot(stepi, train_lossi, test_acci)
+plt.show()
+# train_loss vs test_loss
+plt.plot(stepi, train_lossi, test_lossi)
+plt.show()

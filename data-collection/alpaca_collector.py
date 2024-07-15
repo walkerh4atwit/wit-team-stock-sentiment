@@ -31,8 +31,8 @@ def clean(df):
     return df
 
 
-def pass_to_model(df_slice, col):
-    model_load_test.model_function(df_slice, col)
+def pass_to_model(text):
+    model_load_test.model_function(text)
 
 
 DF_COL = 'headline-summary'
@@ -48,7 +48,8 @@ while True:
     i = 0
     while i < 50:
         if dataf.loc[i, 'created_at'] > most_recent_timestamp:
-            pass_to_model(dataf.loc[i], DF_COL)
+            pass_to_model(dataf.loc[i, DF_COL])
+            print(dataf.loc[i, 'created_at'])
         i += 1
 
     most_recent_timestamp = dataf.loc[0, 'created_at']
