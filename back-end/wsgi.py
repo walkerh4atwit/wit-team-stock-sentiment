@@ -1,6 +1,7 @@
 from flask import Flask, make_response, jsonify
 from searchbar import getSearchOptions
 from leadertables import getLeaderTables
+from singleassetdata import getAssetData
 import sys
 
 app = Flask(__name__)
@@ -19,10 +20,10 @@ def root_request():
 
 # This route attemps to build a sentiment
 # report for a certain stock ticker
-@app.route("/sentiment/<ticker>")
-def sentiment_request(ticker):
+@app.route("/sentiment/<type_asset>/<id>")
+def sentiment_request(type_asset, id):
     response = make_response(
-        "Sentiment with " + ticker + "\n"
+        getAssetData(type_asset, id)
     )
     response.headers.add("Access-Control-Allow-Origin", "*")
     response.status_code = 200
