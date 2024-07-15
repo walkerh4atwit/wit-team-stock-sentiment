@@ -20,7 +20,7 @@ const FAQ = () => {
                 <TopLinks links={topLinks.links} />
             </div>
             <div className="App-body">
-                <div className="my-Form-Gradient my-Form-Container">
+                <div className="my-Form-Gradient my-Form-Blob">
                     Frequently Asked Questions:
                 </div>
             </div>

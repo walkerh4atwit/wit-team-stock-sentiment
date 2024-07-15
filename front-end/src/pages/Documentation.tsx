@@ -14,8 +14,8 @@ const Documentation = () => {
                 <TopLinks links={topLinks.links} />
             </div>
             <div className="App-body">
-                <div className="my-Form-Gradient my-Form-Container">
-                    Documentation for this project:
+                <div className="my-Form-Gradient my-Form-Blob">
+                    
                 </div>
             </div>
         </>
