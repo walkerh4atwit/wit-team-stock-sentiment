@@ -22,7 +22,7 @@ def getAssetData(asset_type: str, id: int):
 
     cursor.execute(query_string.replace(':1', id))
 
-    data_in = cursor.fetchall()[0]
+    data_in = cursor.fetchone()
 
     if asset_type == 'stock':
         result['sector'] = data_in[5]
