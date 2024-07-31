@@ -24,6 +24,14 @@ def getAssetData(asset_type: str, id: int):
 
     data_in = cursor.fetchone()
 
+    if not data_in:
+        return {
+            'sector': '',
+            'score': 0,
+            'name': '',
+            'ticker': ''
+        }
+
     if asset_type == 'stock':
         result['sector'] = data_in[5]
         result['score'] = data_in[4]
