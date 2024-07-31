@@ -5,19 +5,19 @@
     }
 
     .App-body {
-        height: 75vh;
         font-family: sans-serif;
+        min-height: 80vh;
     }
 
     .my-Form-Blob {
         position: absolute;
         top: 18vh;
-        height: 80vh;
         width: calc(100% - 10px);
         border-radius: 5px;
         padding: 5px;
         margin-left: 5px;
         margin-right: 5px;
+        margin-bottom: 1rem;
     }
 }
 
@@ -25,21 +25,23 @@
 @media only screen and (min-width: 769px) {
     .App-header {
         height: 25vh;
+        margin-bottom: -5vh;
     }
 
     .App-body {
-        height: 75vh;
+        position: relative;
         font-family: sans-serif;
+        min-height: 80vh;
     }
 
     .my-Form-Blob {
-        position: absolute;
-        top: 18vh;
-        height: 80vh;
+        position: relative;
+        min-height: calc(80vh - 1rem);
         width: calc(100% - 30px);
         border-radius: 15px;
         padding: 15px;
         margin-left: 15px;
         margin-right: 15px;
+        margin-bottom: 1rem;
     }
 }
