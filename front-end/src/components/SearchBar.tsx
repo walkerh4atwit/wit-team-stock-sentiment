@@ -25,9 +25,9 @@ const SearchBar = (props: {
     // this differentiates the server between dev and prod
     const backEndHost: string =
         process.env.NODE_ENV ==
-            'development' ? 
-                ipInfo.devHost : 
-                ipInfo.prodHost
+            'development' ?
+            ipInfo.devHost :
+            ipInfo.prodHost
 
     // states
     const [isOpen, setIsOpen] = useState(false)
@@ -111,16 +111,24 @@ const SearchBar = (props: {
         })
     )
 
+    const handleKeyPress = (event: React.KeyboardEvent) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+        }
+    };
+
     // This effect is to pull the data from the back for ticker info
     useEffect(() => { pullTickers() }, [])
 
     return (
         <div className='dropdown'>
             <Form.Control
+                onKeyDown={e => {if (e.key === 'Enter') {e.preventDefault()}}}
                 value={query}
                 ref={inputRef}
                 placeholder={"Enter name"}
-                onChange={(e) => { isOpen && setQuery(e.target.value) }}
+                onChange={(e) => { props.setIdSelection(-1)
+                    isOpen && setQuery(e.target.value); }}
                 style={{ 'borderTopRightRadius': 0, 'borderBottomRightRadius': 0 }}
             />
             {isOpen && props.type && <div className="options my-Header-Gradient">

@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { ProgressBar } from "react-bootstrap";
 import '../styles/DataPage.css'
 
-export interface IDataPageQuery {
+export interface IDataQuery {
     id: number, type: string
 }
 
@@ -36,7 +36,7 @@ const Data = () => {
             ipInfo.devHost :
             ipInfo.prodHost
 
-    const pullData = async (qry: IDataPageQuery) => {
+    const pullData = async (qry: IDataQuery) => {
         try {
             const response = await fetch("http://" + backEndHost + "/sentiment/" + qry.type + "/" + qry.id)
             const responseData = await response.json()
@@ -78,10 +78,9 @@ const Data = () => {
                     </div>
                     <div>
                         <ProgressBar
-                            now={data.score / 4.0 * 100}
+                            now={data.score > 0.1 ? data.score / 2.0 * 100 : 10}
                             label={data.score.toFixed(2)}
-                            variant={data.score > 3 ? 'success' : data.score > 2 ? 'warning' : 'danger'}>
-
+                            variant={data.score > 1 ? 'success' : 'danger'}>
                         </ProgressBar>
                     </div>
                 </div>
