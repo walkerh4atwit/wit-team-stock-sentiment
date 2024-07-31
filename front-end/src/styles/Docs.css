@@ -1,0 +1,23 @@
+.docs-quote {
+    font-size: 200%;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.docs-row{
+    display: flex;
+}
+
+.docs-quote-image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.docs-quote-image img {
+    display: block;
+}
+
+.docs-quoted-name {
+    font-size: 120%;
+    font-family: 'Times New Roman', Times, serif;
+}
