@@ -1,0 +1,11 @@
+.faq-question {
+    font-size: 160%;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.faq-answer {
+    font-size: 120%;
+    margin-left: 2rem;
+    margin-bottom: 1rem;
+    font-family: 'Times New Roman', Times, serif;
+}
