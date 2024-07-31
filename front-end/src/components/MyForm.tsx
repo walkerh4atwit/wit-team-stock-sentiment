@@ -4,13 +4,13 @@ import SearchBar from "./SearchBar"
 import LeaderTables from "./LeaderTables"
 import "../styles/Form.css"
 import "../styles/bg-gradient.css"
-import { IDataPage } from "../pages/Data"
+import { IDataQuery } from "../pages/Data"
 
 const MyForm = (props:
     { // these are the props for myForm
         handleSubmit: // handlesubmit has a shape of...
-        // having an IDataPage interface
-        ({ id, type }: IDataPage) => void
+        // having an IDataPageQuery interface
+        ({ id, type }: IDataQuery) => void
     }) => {
 
     // this function handles rendering the dropdown of the searchbar in a certain way
@@ -52,11 +52,14 @@ const MyForm = (props:
         setRadioChoice(e.target.value)
     }
 
-    //states
+
+
+    // states
     const [backEndStatus, setBackEndStatus] = useState('Online')
     const [radioChoice, setRadioChoice] = useState("")
     const [idSelection, setIdSelection] = useState(-1)
     const [canSubmit, setCanSubmit] = useState(false)
+    const [entryErrorStatus, setEntryErrorStatus] = useState(false)
 
     return (
         <Form className='my-Form-Gradient my-Form-Blob'>
@@ -104,8 +107,13 @@ const MyForm = (props:
                             <BootButton disabled={!canSubmit || (backEndStatus === "Offline")}
                                 variant='success'
                                 style={{ width: '20%' }}
-                                onClick={() =>
-                                    props.handleSubmit({ id: idSelection, type: radioChoice })}>
+                                onClick={() => {
+                                    if (idSelection == -1) { setEntryErrorStatus(true) }
+                                    else {
+                                        setEntryErrorStatus(false)
+                                        props.handleSubmit({ id: idSelection, type: radioChoice })
+                                    }
+                                }}>
                                 {/* The text for the button below */}
                                 Submit
                             </BootButton>

@@ -1,20 +1,39 @@
 import TopLinks, { TopLinksProps } from "../components/TopLinks";
 import MyForm from "../components/MyForm";
 import resTopLinks from "../resources/topLinks.json";
-import { IDataPage } from "./Data";
+import { IDataQuery as IDataQuery } from "./Data";
 import logo from "../images/logo-cropped.svg";
 import "../styles/App.css";
+import ipInfo from "../resources/ipInfo.json"
 import "../styles/bg-gradient.css";
+
+// this differentiates the server between dev and prod
+export const backEndHost: string =
+	process.env.NODE_ENV ==
+		'development' ?
+		ipInfo.devHost :
+		ipInfo.prodHost
 
 const App = () => {
 	const topLinks: TopLinksProps = {
 		links: resTopLinks.links
 	}
 
+	const preLoadData = async ( id: number, type: string ) => {
+		const response = await fetch("http://" + backEndHost + "/sentiment/" + type + "/" + id)
+		const responseData = await response.json()
+		return responseData ? true : false
+	}
+
 	// this function handles the submit button on the form
-	const handleSubmit = ({ id, type }: IDataPage) => {
+	const handleSubmit =  async({ id, type }: IDataQuery) => {
 		const url = "/data/" + type + "/" + id
-		window.open(url, '_blank')
+		if (await preLoadData(id, type)) {
+			window.open(url, '_blank')
+		} else {
+			return false
+		}
+
 		// opens a new tab and assigns the variable for the Window
 		// let newTab = window.open('')
 
