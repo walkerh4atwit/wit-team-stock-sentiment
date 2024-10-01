@@ -2,3 +2,4 @@
 /venv
 /.vscode
 /notebook
+/config/build-config.json
