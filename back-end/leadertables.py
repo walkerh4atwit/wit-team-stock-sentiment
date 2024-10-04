@@ -9,9 +9,8 @@ def countTies(data: list[any], cursor: Cursor):
             query_file = open("queries/LeaderTablesCountTies.sql", "r")
 
             query_string = query_file.read()
-            query_string = query_string.replace(":1", "ADMIN.TICKERS")
 
-            cursor.execute(query_string, (data[4][1],))
+            cursor.execute(query_string, ("ADMIN.TICKERS", data[4][1],))
 
             return cursor.fetchone()[0]
         else: 
@@ -34,16 +33,7 @@ def handleTies(data: list[any], count: int):
 
     return data_push
 
-def getLeaderTables():
-    connection=oracledb.connect(
-        config_dir="Wallet_database1",
-        user="backend",
-        password="Password123@",
-        dsn="database1_low",
-        wallet_location="Wallet_database1",
-        wallet_password="Password1"
-    )
-
+def getLeaderTables(connection: oracledb.Connection):
     cursor = connection.cursor()
 
     data_in = []
@@ -60,10 +50,7 @@ def getLeaderTables():
         {"order": "asc","table": "Sectors","id":"name"},
         {"order": "desc","table": "Sectors","id":"name"}
     ]):
-        cursor.execute(query_string
-            .replace(":1", table['order'])
-            .replace(":2", table['table'])
-            .replace(":3", table['id']))
+        cursor.execute(query_string, (table['order'], table['table'], table['id'],))
         
         data_in.append(cursor.fetchall())
 
