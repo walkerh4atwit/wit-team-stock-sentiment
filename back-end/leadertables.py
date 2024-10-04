@@ -56,7 +56,7 @@ def getLeaderTables(connection: oracledb.Connection):
         query_string = query_string.replace(":ORDER", table['order'])
         query_string = query_string.replace(":FIELD", table['field'])
 
-        cursor.execute(query_string, (table['order'], table['table'], table['id'],))
+        cursor.execute(query_string)
         
         data_in.append(cursor.fetchall())
 
