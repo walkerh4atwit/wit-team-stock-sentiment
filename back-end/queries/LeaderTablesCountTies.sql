@@ -1,6 +1,6 @@
 SELECT
     COUNT(*)
 FROM
-    :1
+    :TABLE
 WHERE
     SENTIMENT_SCORE = :2

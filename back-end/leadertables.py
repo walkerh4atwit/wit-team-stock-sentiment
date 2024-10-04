@@ -10,7 +10,9 @@ def countTies(data: list[any], cursor: Cursor):
 
             query_string = query_file.read()
 
-            cursor.execute(query_string, ("ADMIN.TICKERS", data[4][1],))
+            query_string = query_string.replace(":TABLE", "ADMIN.TICKERS")
+
+            cursor.execute(query_string, (data[4][1],))
 
             return cursor.fetchone()[0]
         else: 
@@ -45,11 +47,15 @@ def getLeaderTables(connection: oracledb.Connection):
     query_string = query_file.read()
 
     for i, table in enumerate([
-        {"order": "asc","table": "Tickers","id":"ticker"},
-        {"order": "desc","table": "Tickers","id":"ticker"},
-        {"order": "asc","table": "Sectors","id":"name"},
-        {"order": "desc","table": "Sectors","id":"name"}
+        {"order": "asc","table": "Tickers","field":"ticker"},
+        {"order": "desc","table": "Tickers","field":"ticker"},
+        {"order": "asc","table": "Sectors","field":"name"},
+        {"order": "desc","table": "Sectors","field":"name"}
     ]):
+        query_string = query_string.replace(":TABLE", table['table'])
+        query_string = query_string.replace(":ORDER", table['order'])
+        query_string = query_string.replace(":FIELD", table['field'])
+
         cursor.execute(query_string, (table['order'], table['table'], table['id'],))
         
         data_in.append(cursor.fetchall())
