@@ -3,3 +3,5 @@
 /.vscode
 /notebook
 /config/build-config.json
+/*.ipynb
+/config/secret
