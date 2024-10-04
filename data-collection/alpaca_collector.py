@@ -1,12 +1,13 @@
 from alpaca.data.requests import NewsRequest
 from alpaca.data.historical.news import NewsClient
+
 import pandas as pd
 import model_loader
 import database_push
 from datetime import datetime
-from transformers import logging
+from transformers import logging as trf_logging
 
-logging.set_verbosity_error()
+trf_logging.set_verbosity_error()
 
 # gets the most recent 50 articles
 def alpaca_to_df():
@@ -21,6 +22,9 @@ def push_article(headline, url, summary, date_published):
 
 def pass_to_model(text, symbols, url):
     model_loader.model_function(text, symbols, url)
+
+async def socket_handler(data):
+    df = pd.DataFrame(data['news'])
 
 # call api and results on model
 dataf = alpaca_to_df()

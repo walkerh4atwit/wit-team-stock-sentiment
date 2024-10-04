@@ -2,9 +2,7 @@ from transformers import BertForSequenceClassification, BertTokenizer
 import torch
 import database_push
 
-
 def model_function(text, symbols, url):
-
     num_to_label = {2: 'positive', 1: 'neutral', 0: 'negative'}
 
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')

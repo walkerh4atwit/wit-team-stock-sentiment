@@ -1,24 +1,54 @@
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
-import torch
+import os
 import pandas as pd
 import oracledb
 from datetime import datetime
 
 
-def connect_to_db():
-    connection = oracledb.connect(
-        config_dir="Wallet_database1",
-        user="admin",
-        password="Database1Pass",
-        dsn="database1_low",
-        wallet_location="Wallet_database1",
-        wallet_password="Password1"
+def db_connect():
+    # pulling env variables
+    wallet_path = os.environ.get('DB_WALLET_PATH')
+    wallet_pass = os.environ.get('DB_WALLET_PASS')
+    db_user = os.environ.get('DB_USER')
+    db_pass = os.environ.get('DB_USER_PASS')
+    db_dsn_string = os.environ.get('DSN_STRING')
+
+    # some error reporting
+    if not wallet_path:
+        raise KeyError('Error: Could not find environment variable DB_WALLET_PATH')
+    
+    if not wallet_pass:
+        raise KeyError('Error: Could not find environment variable DB_WALLET_PASS')
+    
+    if not db_user:
+        raise KeyError('Error: Could not find environment variable DB_USER')
+    
+    if not db_pass:
+        raise KeyError('Error: Could not find environment variable DB_USER_PASS')
+    
+    if not db_dsn_string:
+        raise KeyError('Error: Could not find environment variable DSN_STRING')
+
+    connection=oracledb.connect(
+        # wallet location for mTLS
+        wallet_location=wallet_path,
+        # wallet password
+        wallet_password=wallet_pass,
+        # duplicate below of the path
+        config_dir=wallet_path,
+        # database username in oci
+        user=db_user,
+        # the password for that user
+        password=db_pass,
+        # the dsn string for the database
+        dsn=db_dsn_string
     )
+
     return connection
 
 
 def push_article(headline, url, summary, date_published):
-    connection = connect_to_db()
+    connection = db_connect()
     if not connection:
         return
 
@@ -44,7 +74,7 @@ def push_article(headline, url, summary, date_published):
 
 
 def push_article_ticker(url, symbols, score):
-    connection = connect_to_db()
+    connection = db_connect()
     if not connection:
         return
 
@@ -90,7 +120,7 @@ def push_article_ticker(url, symbols, score):
 
 
 def delete_old_articles():
-    connection = connect_to_db()
+    connection = db_connect()
     if not connection:
         return
 

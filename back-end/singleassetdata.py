@@ -1,15 +1,6 @@
 import oracledb
 
-def getAssetData(asset_type: str, id: int):
-    connection=oracledb.connect(
-        config_dir="Wallet_database1",
-        user="backend",
-        password="Password123@",
-        dsn="database1_low",
-        wallet_location="Wallet_database1",
-        wallet_password="Password1"
-    )
-
+def getAssetData(connection: oracledb.Connection, asset_type: str, id: int):
     cursor = connection.cursor()
     result = {}
 
@@ -20,7 +11,7 @@ def getAssetData(asset_type: str, id: int):
     else:
         return "Invalid asset type"
 
-    cursor.execute(query_string.replace(':1', id))
+    cursor.execute(query_string, (id,))
 
     data_in = cursor.fetchone()
 
