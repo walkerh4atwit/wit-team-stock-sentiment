@@ -52,11 +52,14 @@ def getLeaderTables(connection: oracledb.Connection):
         {"order": "asc","table": "Sectors","field":"name"},
         {"order": "desc","table": "Sectors","field":"name"}
     ]):
-        query_string = query_string.replace(":TABLE", table['table'])
-        query_string = query_string.replace(":ORDER", table['order'])
-        query_string = query_string.replace(":FIELD", table['field'])
+        
+        param_query_string = query_string
 
-        cursor.execute(query_string)
+        param_query_string = param_query_string.replace(":TABLE", table['table'])
+        param_query_string = param_query_string.replace(":ORDER", table['order'])
+        param_query_string = param_query_string.replace(":FIELD", table['field'])
+
+        cursor.execute(param_query_string)
         
         data_in.append(cursor.fetchall())
 
