@@ -12,4 +12,4 @@ fi
 
 VIRTUAL_PYTHON_PATH="./venv/bin/python"
 
-$VIRTUAL_PYTHON_PATH -m pip install -r requirements.txt
+$VIRTUAL_PYTHON_PATH -m pip install -r requirements-unix.txt
