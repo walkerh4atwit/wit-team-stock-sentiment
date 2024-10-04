@@ -45,6 +45,7 @@ def getLeaderTables(connection: oracledb.Connection):
     # TICKER, SCORE
     query_file = open("queries/LeaderTables.sql", "r")
     query_string = query_file.read()
+    query_file.close()
 
     for i, table in enumerate([
         {"order": "asc","table": "Tickers","field":"ticker"},
