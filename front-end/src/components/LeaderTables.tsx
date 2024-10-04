@@ -1,15 +1,16 @@
 import { ReactElement, useEffect, useState } from "react";
 import { Col, Row, Container } from "react-bootstrap";
 import ipInfo from "../resources/ipInfo.json"
+import build_config from '../resources/build-config.json'
 import "../styles/LeaderTables.css"
 
 export interface LeaderTablesProps {
 
 }
 
-interface ILeaderDataPoint {
-
-}
+// interface ILeaderDataPoint {
+//
+// }
 
 // this represents how the data
 // will come in from the backend
@@ -57,8 +58,8 @@ const LeaderTables = (props: LeaderTablesProps) => {
     const backEndHost =
         process.env.NODE_ENV ==
             'development' ?
-            ipInfo.devHost
-            : ipInfo.prodHost;
+            ipInfo.devHost : 
+            build_config.api_endpoint;
 
     // pulls data from the backend
     const pullData = async () => {

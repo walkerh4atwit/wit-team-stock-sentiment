@@ -1,5 +1,6 @@
 import logo from "../images/logo-cropped.svg";
 import ipInfo from "../resources/ipInfo.json"
+import build_config from '../resources/build-config.json'
 import "../styles/App.css";
 import "../styles/bg-gradient.css";
 import { useEffect, useState } from "react";
@@ -34,7 +35,7 @@ const Data = () => {
         process.env.NODE_ENV ==
             'development' ?
             ipInfo.devHost :
-            ipInfo.prodHost
+            build_config.api_endpoint
 
     const pullData = async (qry: IDataQuery) => {
         try {

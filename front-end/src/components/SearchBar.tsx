@@ -1,6 +1,7 @@
 import Form from "react-bootstrap/Form"
 import { useState, useEffect, useRef } from "react"
 import ipInfo from "../resources/ipInfo.json"
+import build_config from '../resources/build-config.json'
 import "../styles/bg-gradient.css"
 import "../styles/Dropdown.css"
 
@@ -27,7 +28,7 @@ const SearchBar = (props: {
         process.env.NODE_ENV ==
             'development' ?
             ipInfo.devHost :
-            ipInfo.prodHost
+            build_config.api_endpoint
 
     // states
     const [isOpen, setIsOpen] = useState(false)
