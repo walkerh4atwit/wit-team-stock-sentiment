@@ -7,7 +7,9 @@ def getAssetData(connection: oracledb.Connection, asset_type: str, id: int):
     if asset_type == 'sector':
         query_string = "SELECT * FROM ADMIN.SECTORS WHERE ID = :1"
     elif asset_type == 'stock':
-        query_string = open("queries/SingleStockData.sql", "r").read()
+        query_file = open("queries/SingleStockData.sql", "r")
+        query_string = query_file.read()
+        query_file.close()
     else:
         return "Invalid asset type"
 
