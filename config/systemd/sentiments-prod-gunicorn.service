@@ -1,0 +1,12 @@
+[Unit]
+Description=Backend Gunicorn Process to post to socket file (prod).
+
+[Service]
+User=jenkins
+Group=jenkins
+
+WorkingDirectory=/var/lib/jenkins/workspace/Sentiments-Prod
+ExecStart=./venv/bin/gunicorn --workers 3 --bind unix:/run/sentiments-prod-gunicorn.sock wsgi:app
+
+[Install]
+WantedBy=multi-user.target
