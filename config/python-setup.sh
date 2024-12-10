@@ -1,3 +1,5 @@
+# not in use
+
 BASE_PYTHON_PATH="/bin/python3.11"
 
 if [ ! -d "venv" ]; then 
