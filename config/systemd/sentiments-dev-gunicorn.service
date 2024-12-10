@@ -5,8 +5,10 @@ Description=Backend Gunicorn Process to post to socket file (dev).
 User=jenkins
 Group=jenkins
 
-WorkingDirectory=/var/lib/jenkins/workspace/Sentiments-Dev
-ExecStart=./venv/bin/gunicorn --workers 3 --bind unix:/run/sentiments/sentiments-dev-gunicorn.sock wsgi:app
+WorkingDirectory=/var/lib/jenkins/workspace/Sentiments-Dev/back-end
+
+EnvironmentFile=./
+ExecStart=../venv/bin/gunicorn --workers 3 --bind unix:/run/sentiments/sentiments-dev-gunicorn.sock wsgi:app
 
 [Install]
 WantedBy=multi-user.target

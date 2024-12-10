@@ -6,6 +6,8 @@ User=jenkins
 Group=jenkins
 
 WorkingDirectory=/var/lib/jenkins/workspace/Sentiments-Prod
+
+EnvironmentFile=./
 ExecStart=./venv/bin/gunicorn --workers 3 --bind unix:/run/sentiments/sentiments-prod-gunicorn.sock wsgi:app
 
 [Install]
