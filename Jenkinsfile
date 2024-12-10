@@ -1,24 +1,26 @@
+// http://150.136.64.29:8080/pipeline-model-converter/validate
+
 pipeline {
     agent any
 
-    environment{
+    environment {
         BASE_PYTHON_PATH = "/bin/python3.11"
 
-        NGINX_SRC = "./config/nginx/sentiments-" + param.BUILD_ENV + ".conf"
-        NGINX_DEST = "/etc/nginx/conf.d/sentiments-" + param.BUILD_ENV + ".conf"
+        NGINX_SRC = "./config/nginx/sentiments-" + "${param.BUILD_ENV}" + ".conf"
+        NGINX_DEST = "/etc/nginx/conf.d/sentiments-" + "${param.BUILD_ENV}" + ".conf"
 
-        BACKEND_SERVICE = "sentiments-" + param.BUILD_ENV + "-gunicorn.service"
+        BACKEND_SERVICE = "sentiments-" + "${param.BUILD_ENV}" + "-gunicorn.service"
 
-        SYSTEMD_SRC = "./config/systemd" + BACKEND_SERVICE
-        SYSTEMD_DEST = "/etc/systemd/system/" + BACKEND_SERVICE
+        SYSTEMD_SRC = "./config/systemd" + "${BACKEND_SERVICE}"
+        SYSTEMD_DEST = "/etc/systemd/system/" + "${BACKEND_SERVICE}"
 
-        DB_CRED_ID = "wallet-cred-" + param.BUILD_ENV
+        DB_CRED_ID = "${param.BUILD_ENV}" + "-wallet.env"
     }
     
-    stages{
+    stages {
         stage('Server-setup') {
-            withCredentials([file(credentialsId: env.DB_CRED_ID, variable: 'WALLET_CRED_ENV')]) {
-                steps {
+            steps {
+                withCredentials([file(credentialsId: env.DB_CRED_ID, variable: 'WALLET_CRED_ENV')]) {
                     sh """
                     sudo mkdir -p /run/sentiments
                     sudo chown jenkins:jenkins /run/sentiments
@@ -39,7 +41,7 @@ pipeline {
         }
 
         stage('Server-instantiate') {
-            steps{
+            steps {
                 sh """
                 sudo systemctl daemon-reload
 
@@ -50,19 +52,27 @@ pipeline {
         }
 
         stage('Server-cleanup') {
-
+            steps {
+                sh ""
+            }
         }
 
         stage('Client-setup') {
-            
+            steps {
+                sh ""
+            }
         }
 
         stage('Client-build') {
-            
+            steps { 
+                sh ""
+            }
         }
 
         stage('Client-instantiate') {
-            
+            steps {
+                sh ""
+            }
         }
     }
 }
