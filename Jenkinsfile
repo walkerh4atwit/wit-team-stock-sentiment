@@ -14,20 +14,21 @@ pipeline {
         SYSTEMD_SRC = "./config/systemd" + "${BACKEND_SERVICE}"
         SYSTEMD_DEST = "/etc/systemd/system/" + "${BACKEND_SERVICE}"
 
-        DB_CRED_ID = "${param.BUILD_ENV}" + "-wallet.env"
+        WALLET_CRED_ENV = "${param.BUILD_ENV}" + "_WALLET"
+        WALLET_CRED_FILENAME = "${param.BUILD_ENV}" + "-wallet.env"
     }
     
     stages {
         stage('Server-setup') {
             steps {
-                withCredentials([file(credentialsId: env.DB_CRED_ID, variable: 'WALLET_CRED_ENV')]) {
+                withCredentials([file(credentialsId: env.WALLET_CRED_ENV, variable: 'WALLET_CRED')]) {
                     sh """
                     sudo mkdir -p /run/sentiments
                     sudo chown jenkins:jenkins /run/sentiments
 
                     sudo cp -f $SYSTEMD_SRC $SYSTEMD_DEST
                     sudo cp -f $NGINX_SRC $NGINX_DEST
-                    sudo cp -f $WALLET_CRED_ENV ./back-end
+                    cp -f $WALLET_CRED ./back-end
 
                     rm -rf venv
 
@@ -53,7 +54,9 @@ pipeline {
 
         stage('Server-cleanup') {
             steps {
-                sh ""
+                sh """
+                rm ./back-end/$WALLET_CRED_FILENAME
+                """
             }
         }
 
