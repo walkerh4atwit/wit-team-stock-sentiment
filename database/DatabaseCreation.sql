@@ -1,9 +1,21 @@
 CREATE SEQUENCE articles_seq START WITH 1 INCREMENT BY 1;
+/
+
 CREATE SEQUENCE queue_seq START WITH 1 INCREMENT BY 1;
+/
+
 CREATE SEQUENCE sectors_seq START WITH 1 INCREMENT BY 1;
+/
+
 CREATE SEQUENCE tickers_seq START WITH 1 INCREMENT BY 1;
+/
+
 CREATE SEQUENCE articletickers_seq START WITH 1 INCREMENT BY 1;
+/
+
 CREATE SEQUENCE marketsentiment_seq START WITH 1 INCREMENT BY 1;
+/
+
 
 
 CREATE TABLE Articles (
@@ -13,12 +25,14 @@ CREATE TABLE Articles (
     summary CLOB,
     date_published TIMESTAMP
 );
+/
 
 CREATE TABLE Sectors (
     id NUMBER PRIMARY KEY,
     name VARCHAR2(255) NOT NULL,
     sentiment_score FLOAT
 );
+/
 
 CREATE TABLE Tickers (
     id NUMBER PRIMARY KEY,
@@ -28,6 +42,7 @@ CREATE TABLE Tickers (
     sentiment_score FLOAT,
     FOREIGN KEY (sector_id) REFERENCES Sectors(id)
 );
+/
 
 CREATE TABLE ArticleTickers (
     id NUMBER PRIMARY KEY,
@@ -37,7 +52,7 @@ CREATE TABLE ArticleTickers (
     FOREIGN KEY (article_id) REFERENCES Articles(id),
     FOREIGN KEY (ticker_id) REFERENCES Tickers(id)
 );
-
+/
 
 
 
