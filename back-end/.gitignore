@@ -1,3 +1,4 @@
 /Wallet*
 /__pycache__
 .DS_Store
+*.ipynb
