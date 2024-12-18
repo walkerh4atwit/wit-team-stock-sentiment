@@ -6,16 +6,26 @@ pipeline {
     environment {
         BASE_PYTHON_PATH = "/bin/python3.11"
 
-        NGINX_SRC = "./config/nginx/sentiments-" + "${param.BUILD_ENV}" + ".conf"
-        NGINX_DEST = "/etc/nginx/conf.d/sentiments-" + "${param.BUILD_ENV}" + ".conf"
+        NGINX_SRC = "config/nginx/sentiments-${param.BUILD_ENV}.conf"
+        NGINX_DEST = "/etc/nginx/conf.d/sentiments-${param.BUILD_ENV}.conf"
 
-        BACKEND_SERVICE = "sentiments-" + "${param.BUILD_ENV}" + "-gunicorn.service"
+        BACKEND_SERVICE = "sentiments-${param.BUILD_ENV}-gunicorn.service"
 
-        SYSTEMD_SRC = "./config/systemd" + "${BACKEND_SERVICE}"
-        SYSTEMD_DEST = "/etc/systemd/system/" + "${BACKEND_SERVICE}"
+        BACKEND_SYSTEMD_SRC = "config/systemd/${BACKEND_SERVICE}"
+        BACKEND_SYSTEMD_DEST = "/etc/systemd/system/${BACKEND_SERVICE}"
 
-        WALLET_CRED_ENV = "${param.BUILD_ENV}" + "_WALLET"
-        WALLET_CRED_FILENAME = "${param.BUILD_ENV}" + "-wallet.env"
+        WALLET_CRED_ENV = "${param.BUILD_ENV}_wallet_params"
+        WALLET_CRED_FILENAME = "${param.BUILD_ENV}-wallet.env"
+
+        REACT_SETUP_LOCATION = "config/react/react-${param.BUILD_ENV}.env"
+
+        API_SERVICE = "sentiments-${param.BUILD_ENV}-alpaca.service"
+
+        API_SYSTEMD_SRC = "config/systemd/${API_SERVICE}"
+        API_SYSTEMD_DEST = "/etc/systemd/system/${API_SERVICE}"
+
+        ALPACA_KEYS_ENV = "alpaca_api_keys"
+        ALPACA_KEYS_FILENAME = "alpaca-keys.env"
     }
     
     stages {
@@ -26,16 +36,16 @@ pipeline {
                     sudo mkdir -p /run/sentiments
                     sudo chown jenkins:jenkins /run/sentiments
 
-                    sudo cp -f $SYSTEMD_SRC $SYSTEMD_DEST
+                    sudo cp -f $BACKEND_SYSTEMD_SRC $BACKEND_SYSTEMD_DEST
                     sudo cp -f $NGINX_SRC $NGINX_DEST
-                    cp -f $WALLET_CRED ./back-end
+                    cp -f $WALLET_CRED back-end
 
                     rm -rf venv
 
                     $BASE_PYTHON_PATH -m pip install virtualenv
                     $BASE_PYTHON_PATH -m venv venv
 
-                    ./venv/bin/python3 -m pip install -r requirements-unix.txt
+                    venv/bin/python3 -m pip install -r requirements-unix.txt
                     """
                 }
             }
@@ -46,35 +56,58 @@ pipeline {
                 sh """
                 sudo systemctl daemon-reload
 
-                sudo systemctl restart nginx
                 sudo systemctl restart $BACKEND_SERVICE
+                sudo systemctl restart nginx
                 """
             }
         }
 
         stage('Server-cleanup') {
             steps {
-                sh """
-                rm ./back-end/$WALLET_CRED_FILENAME
-                """
+                sh "rm back-end/$WALLET_CRED_FILENAME"
             }
         }
 
         stage('Client-setup') {
             steps {
-                sh ""
+                sh """
+                cp $REACT_SETUP_LOCATION front-end/react-setup.env
+                cd front-end
+                npm ci
+                """
             }
         }
 
         stage('Client-build') {
             steps { 
-                sh ""
+                sh "npm build"
             }
         }
 
-        stage('Client-instantiate') {
+        stage('API-setup') {
             steps {
-                sh ""
+                withCredentials([file(credentialsId: env.ALPACA_KEYS_ENV, variable: 'ALPACA_KEYS')]) {
+                    sh """
+                    cp -f $ALPACA_KEYS data-collection
+                    sudo cp -f $ALPACA_SYSTEMD_SRC $ALPACA_SYSTEMD_DEST
+                    """
+                }
+            }
+        }
+
+        stage('API-instantiate') {
+            steps {
+                sh """
+                sudo systemctl daemon-reload
+
+                sudo systemctl restart $API_SERVICE
+                """
+            }
+        }
+
+        stage('API-cleanup') {
+            steps {
+                sh "rm data-collection/${ALPACA_KEYS_FILENAME}"
             }
         }
     }

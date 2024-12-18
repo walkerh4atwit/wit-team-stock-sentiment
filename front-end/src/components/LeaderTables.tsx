@@ -56,10 +56,7 @@ const LeaderTables = (props: LeaderTablesProps) => {
 
     // this differentiates the server between dev and prod
     const backEndHost =
-        process.env.NODE_ENV ==
-            'development' ?
-            ipInfo.devHost : 
-            build_config.api_endpoint;
+        process.env.REACT_APP_API_URL
 
     // pulls data from the backend
     const pullData = async () => {

@@ -31,11 +31,8 @@ const Data = () => {
     console.log(`Type: ${type}, ID: ${id}`);
 
     // this differentiates the server between dev and prod
-    const backEndHost: string =
-        process.env.NODE_ENV ==
-            'development' ?
-            ipInfo.devHost :
-            build_config.api_endpoint
+    const backEndHost =
+        process.env.REACT_APP_API_URL
 
     const pullData = async (qry: IDataQuery) => {
         try {

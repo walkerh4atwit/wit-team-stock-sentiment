@@ -24,11 +24,8 @@ const SearchBar = (props: {
 }) => {
 
     // this differentiates the server between dev and prod
-    const backEndHost: string =
-        process.env.NODE_ENV ==
-            'development' ?
-            ipInfo.devHost :
-            build_config.api_endpoint
+    const backEndHost =
+        process.env.REACT_APP_API_URL
 
     // states
     const [isOpen, setIsOpen] = useState(false)

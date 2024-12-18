@@ -7,7 +7,7 @@ Group=jenkins
 
 WorkingDirectory=/var/lib/jenkins/workspace/Sentiments-Dev/back-end
 
-EnvironmentFile=./
+EnvironmentFile=./dev-wallet.env
 ExecStart=../venv/bin/gunicorn --workers 3 --bind unix:/run/sentiments/sentiments-dev-gunicorn.sock wsgi:app
 
 [Install]

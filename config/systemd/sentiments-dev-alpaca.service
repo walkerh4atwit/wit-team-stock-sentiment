@@ -1,0 +1,14 @@
+[Unit]
+Description=Backend python process to read articles and process them (dev).
+
+[Service]
+User=jenkins
+Group=jenkins
+
+WorkingDirectory=/var/lib/jenkins/workspace/Sentiments-Dev/data-collection
+
+EnvironmentFile=./dev-wallet.env
+ExecStart=../venv/bin/python3 alpaca_collector.py
+
+[Install]
+WantedBy=multi-user.target
