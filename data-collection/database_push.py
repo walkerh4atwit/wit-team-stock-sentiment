@@ -48,6 +48,9 @@ def db_connect():
 
 
 def push_article(headline, url, summary, date_published):
+    
+
+    return
     connection = db_connect()
     if not connection:
         return
