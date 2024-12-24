@@ -93,7 +93,7 @@ pipeline {
                     sh """
                     cp -f "$ALPACA_KEYS" data-collection
                     cp -f "$WALLET_CRED" data-collection
-                    sudo cp -f "$ALPACA_SYSTEMD_SRC" "$ALPACA_SYSTEMD_DEST"
+                    sudo cp -f "$API_SYSTEMD_SRC" "$API_SYSTEMD_DEST"
                     """
                 }
             }
