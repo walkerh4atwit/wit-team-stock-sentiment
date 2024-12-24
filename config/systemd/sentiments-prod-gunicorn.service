@@ -13,9 +13,6 @@ EnvironmentFile=/var/lib/jenkins/workspace/Sentiments-Pipeline-Prod/back-end/pro
 ExecStart=/var/lib/jenkins/workspace/Sentiments-Pipeline-Prod/venv/bin/gunicorn --workers 3 \
     --bind unix:/run/sentiments/sentiments-prod-gunicorn.sock wsgi:app
 
-RuntimeDirectory=sentiments
-RuntimeDirectoryMode=0755
-
 StandardOutput=journal
 StandardError=journal
 
