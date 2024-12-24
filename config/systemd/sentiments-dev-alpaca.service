@@ -9,7 +9,7 @@ Group=jenkins
 WorkingDirectory=/var/lib/jenkins/workspace/Sentiments-Pipeline-Dev/data-collection
 
 EnvironmentFile=/var/lib/jenkins/workspace/Sentiments-Pipeline-Dev/data-collection/alpaca-keys.env
-EnvironmentFile=/var/lib/jenkins/workspace/Sentiments-Pipeline-Dev/back-end/dev-wallet.env
+EnvironmentFile=/var/lib/jenkins/workspace/Sentiments-Pipeline-Dev/data-collection/dev-wallet.env
 
 ExecStart=/var/lib/jenkins/workspace/Sentiments-Pipeline-Dev/venv/bin/python3 \
     /var/lib/jenkins/workspace/Sentiments-Pipeline-Dev/data-collection/alpaca_collector.py
