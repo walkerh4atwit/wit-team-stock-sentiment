@@ -43,8 +43,6 @@ pipeline {
                     sudo cp -f "$NGINX_SRC" "$NGINX_DEST"
                     cp -f "$WALLET_CRED" back-end
 
-                    rm -rf venv
-
                     "$BASE_PYTHON_PATH" -m pip install virtualenv
                     "$BASE_PYTHON_PATH" -m venv venv
 
