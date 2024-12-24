@@ -10,7 +10,7 @@ WorkingDirectory=/var/lib/jenkins/workspace/Sentiments-Pipeline-Prod
 
 EnvironmentFile=/var/lib/jenkins/workspace/Sentiments-Pipeline-Prod/back-end/prod-wallet.env
 
-ExecStart=/var/lib/jenkins/workspace/Sentiments-Pipeline-Prod/venv/bin/gunicorn --workers 3 --bind unix:/run/sentiments/sentiments-prod-gunicorn.sock wsgi:app
+ExecStart=/var/lib/jenkins/workspace/Sentiments-Pipeline-Prod/venv/bin/gunicorn --workers=3 --bind unix:/run/sentiments/sentiments-prod-gunicorn.sock wsgi:app
 
 StandardOutput=journal
 StandardError=journal
