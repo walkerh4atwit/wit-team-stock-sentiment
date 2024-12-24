@@ -73,19 +73,14 @@ pipeline {
             }
         }
 
-        stage('Client-setup') {
+        stage('Client-build') {
             steps {
                 sh """
                 cp "$REACT_SETUP_LOCATION" front-end/react-setup.env
                 cd front-end
                 npm ci
+                npm run build
                 """
-            }
-        }
-
-        stage('Client-build') {
-            steps { 
-                sh "npm run build"
             }
         }
 
