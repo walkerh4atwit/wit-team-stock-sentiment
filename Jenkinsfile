@@ -86,9 +86,13 @@ pipeline {
 
         stage('API-setup') {
             steps {
-                withCredentials([file(credentialsId: env.ALPACA_KEYS_ENV, variable: 'ALPACA_KEYS')]) {
+                withCredentials([
+                    file(credentialsId: env.ALPACA_KEYS_ENV, variable: 'ALPACA_KEYS'),
+                    file(credentialsId: env.WALLET_CRED_ENV, variable: 'WALLET_CRED')
+                ]) {
                     sh """
                     cp -f $ALPACA_KEYS data-collection
+                    cp -f $WALLET_CRED data-collection
                     sudo cp -f $ALPACA_SYSTEMD_SRC $ALPACA_SYSTEMD_DEST
                     """
                 }
@@ -107,7 +111,12 @@ pipeline {
 
         stage('API-cleanup') {
             steps {
-                sh "rm data-collection/${ALPACA_KEYS_FILENAME}"
+                sh """
+                rm data-collection/$ALPACA_KEYS_FILENAME
+                
+                rm data-collection/$WALLET_CRED_FILENAME
+                """
+
             }
         }
     }

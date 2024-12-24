@@ -7,7 +7,8 @@ Group=jenkins
 
 WorkingDirectory=/var/lib/jenkins/workspace/Sentiments-Prod/data-collection
 
-EnvironmentFile=./prod-wallet.env
+EnvironmentFile=alpaca-keys.env
+EnvironmentFile=prod-wallet.env
 ExecStart=../venv/bin/python3 alpaca_collector.py
 
 [Install]
