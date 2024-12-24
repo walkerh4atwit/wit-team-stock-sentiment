@@ -3,6 +3,10 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs 'Node'
+    }
+
     environment {
         BASE_PYTHON_PATH = "/bin/python3.11"
 
