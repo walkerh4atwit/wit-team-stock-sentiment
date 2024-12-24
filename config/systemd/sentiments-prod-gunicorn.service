@@ -6,11 +6,11 @@ After=network.target
 User=jenkins
 Group=jenkins
 
-WorkingDirectory=/var/lib/jenkins/workspace/Sentiments-Prod
+WorkingDirectory=/var/lib/jenkins/workspace/Sentiments-Pipeline-Prod
 
-EnvironmentFile=/var/lib/jenkins/workspace/Sentiments-Prod/back-end/prod-wallet.env
+EnvironmentFile=/var/lib/jenkins/workspace/Sentiments-Pipeline-Prod/back-end/prod-wallet.env
 
-ExecStart=/var/lib/jenkins/workspace/Sentiments-Prod/venv/bin/gunicorn --workers 3 \
+ExecStart=/var/lib/jenkins/workspace/Sentiments-Pipeline-Prod/venv/bin/gunicorn --workers 3 \
     --bind unix:/run/sentiments/sentiments-prod-gunicorn.sock wsgi:app
 
 RuntimeDirectory=sentiments

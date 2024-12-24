@@ -6,13 +6,13 @@ After=network.target
 User=jenkins
 Group=jenkins
 
-WorkingDirectory=/var/lib/jenkins/workspace/Sentiments-Prod/data-collection
+WorkingDirectory=/var/lib/jenkins/workspace/Sentiments-Pipeline-Prod/data-collection
 
-EnvironmentFile=/var/lib/jenkins/workspace/Sentiments-Prod/data-collection/alpaca-keys.env
-EnvironmentFile=/var/lib/jenkins/workspace/Sentiments-Prod/back-end/prod-wallet.env
+EnvironmentFile=/var/lib/jenkins/workspace/Sentiments-Pipeline-Prod/data-collection/alpaca-keys.env
+EnvironmentFile=/var/lib/jenkins/workspace/Sentiments-Pipeline-Prod/back-end/prod-wallet.env
 
-ExecStart=/var/lib/jenkins/workspace/Sentiments-Prod/venv/bin/python3 \
-    /var/lib/jenkins/workspace/Sentiments-Prod/data-collection/alpaca_collector.py
+ExecStart=/var/lib/jenkins/workspace/Sentiments-Pipeline-Prod/venv/bin/python3 \
+    /var/lib/jenkins/workspace/Sentiments-Pipeline-Prod/data-collection/alpaca_collector.py
 
 StandardOutput=journal
 StandardError=journal
