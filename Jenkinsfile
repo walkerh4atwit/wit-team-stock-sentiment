@@ -44,6 +44,7 @@ pipeline {
                 withCredentials([file(credentialsId: "${env.WALLET_CRED_ENV}", variable: "WALLET_CRED")]) {
                     sh """
                     sudo mkdir -p /run/sentiments
+                    sudo chown jenkins:jenkins /run/sentiments 
 
                     sudo cp -f "$BACKEND_SYSTEMD_SRC" "$BACKEND_SYSTEMD_DEST"
                     sudo cp -f "$NGINX_SRC" "$NGINX_DEST"
