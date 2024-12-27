@@ -32,20 +32,24 @@ def db_connect():
     if not db_dsn_string:
         raise KeyError('Error: Could not find environment variable DSN_STRING')
 
-    connection=oracledb.connect(
-        # wallet location for mTLS
-        wallet_location=wallet_path,
-        # wallet password
-        wallet_password=wallet_pass,
-        # duplicate below of the path
-        config_dir=wallet_path,
-        # database username in oci
-        user=db_user,
-        # the password for that user
-        password=db_pass,
-        # the dsn string for the database
-        dsn=db_dsn_string
-    )
+    try:
+        connection=oracledb.connect(
+            # wallet location for mTLS
+            wallet_location=wallet_path,
+            # wallet password
+            wallet_password=wallet_pass,
+            # duplicate below of the path
+            config_dir=wallet_path,
+            # database username in oci
+            user=db_user,
+            # the password for that user
+            password=db_pass,
+            # the dsn string for the database
+            dsn=db_dsn_string
+        )
+    except oracledb.exceptions.DatabaseError as e:
+        print(e)
+        print(e.with_traceback)
 
     return connection
 
