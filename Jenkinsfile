@@ -79,7 +79,7 @@ pipeline {
         stage('Client-build') {
             steps {
                 sh """
-                cp "$REACT_SETUP_LOCATION" front-end/react-setup.env
+                cp "$REACT_SETUP_LOCATION" front-end/.env
                 cd front-end
                 npm ci
                 npm run build
