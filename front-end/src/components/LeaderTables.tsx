@@ -1,8 +1,6 @@
 import { ReactElement, useEffect, useState } from "react";
 import { Col, Row, Container } from "react-bootstrap";
-import ipInfo from "../resources/ipInfo.json"
-import build_config from '../resources/build-config.json'
-import "../styles/LeaderTables.css"
+import "../styles/LeaderTables.css";
 
 export interface LeaderTablesProps {
 

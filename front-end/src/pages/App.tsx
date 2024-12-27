@@ -6,11 +6,13 @@ import logo from "../images/logo-cropped.svg";
 import "../styles/App.css";
 import "../styles/bg-gradient.css";
 
-// this differentiates the server between dev and prod
-export const backEndHost =
-	process.env.REACT_APP_API_URL
-
 const App = () => {
+	// this differentiates the server between dev and prod
+	const backEndHost =
+		process.env.REACT_APP_API_URL
+
+	console.log(process.env)
+
 	const topLinks: TopLinksProps = {
 		links: resTopLinks.links
 	}
