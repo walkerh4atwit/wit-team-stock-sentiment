@@ -47,9 +47,9 @@ def db_connect():
             # the dsn string for the database
             dsn=db_dsn_string
         )
-    except oracledb.exceptions.DatabaseError as e:
+    except oracledb.DatabaseError as e:
         print(e)
-        print(e.with_traceback)
+        print(e.with_traceback())
 
     return connection
 
