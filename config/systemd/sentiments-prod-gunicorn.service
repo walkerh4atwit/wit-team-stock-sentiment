@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=jenkins
 Group=jenkins
-SELinuxContext=system_u:system_r:httpd_t:s0
+SELinuxContext=system_u:system_r:httpd_var_lib_t:s0
 
 WorkingDirectory=/var/lib/jenkins/workspace/Sentiments-Pipeline-Prod
 
