@@ -96,20 +96,25 @@ async def socket_handler(data: News):
     csr.execute(articles_nextval_query)
     article_id = csr.fetchone()[0]
 
+    # 
     if data.symbols:
         # pushes the article info to the db on oci
         csr.execute(post_article_query, (article_id, data.headline, data.url, data.summary, data.created_at))
+    else:
+        print("Article has no symbols... printing data")
+        print("All data:", data)
+        print("The prospective score:", score)
 
     try:
         for symbol in data.symbols:
             # grabs the ticker id for the ticker
             csr.execute(get_ticker_id_query, (symbol,))
-            ticker_id = csr.fetchone()[0]
+            ticker_id = csr.fetchone()
 
             #
             if ticker_id is None:
                 csr.execute(tickers_nextval_query)
-                ticker_id = csr.fetchone()[0]
+                ticker_id = csr.fetchone()
 
                 csr.execute(post_ticker_query, (ticker_id, symbol))
 
@@ -120,13 +125,13 @@ async def socket_handler(data: News):
             csr.execute(update_ticker_score_query, (ticker_id,))
 
             csr.execute(get_sector_id_of_ticker_query, (ticker_id,))
-            sector_id = csr.fetchone()[0]
+            sector_id = csr.fetchone()
 
             if sector_id is not None:
                 csr.execute(update_sector_score_query, (sector_id,))
 
     except OracleProgrammingError as e:
-        print("Data symbols:",data.symbols)
+        # print("Data symbols:",data.symbols)
         print("Data:",data)
         print(e)
         traceback.print_exc()
