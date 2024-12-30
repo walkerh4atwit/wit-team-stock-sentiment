@@ -1,7 +1,9 @@
 from alpaca.data.live import NewsDataStream
 from alpaca.data.models.news import News
 from transformers import BertForSequenceClassification, BertTokenizer
+from oracledb.exceptions import ProgrammingError as OracleProgrammingError
 
+import traceback
 import os, torch
 import model_loader
 import database_push
@@ -97,31 +99,38 @@ async def socket_handler(data: News):
     # pushes the article info to the db on oci
     csr.execute(post_article_query, (article_id, data.headline, data.url, data.summary, data.created_at))
 
-    for symbol in data.symbols:
-        # grabs the ticker id for the ticker
-        csr.execute(get_ticker_id_query, symbol)
-        ticker_id = csr.fetchone()[0]
-
-        #
-        if ticker_id is None:
-            csr.execute(tickers_nextval_query)
+    try:
+        for symbol in data.symbols:
+            # grabs the ticker id for the ticker
+            csr.execute(get_ticker_id_query, symbol)
             ticker_id = csr.fetchone()[0]
 
-            csr.execute(post_ticker_query, (ticker_id, symbol))
+            #
+            if ticker_id is None:
+                csr.execute(tickers_nextval_query)
+                ticker_id = csr.fetchone()[0]
 
-        if ticker_id is None:
-            raise Exception("Ticker ID not generated! Aborting worker thread.")
+                csr.execute(post_ticker_query, (ticker_id, symbol))
 
-        csr.execute(post_articleticker_query, (article_id, ticker_id, score))
-        csr.execute(update_ticker_score_query, ticker_id)
+            if ticker_id is None:
+                raise Exception("Ticker ID not generated! Aborting worker thread.")
 
-        csr.execute(get_sector_id_of_ticker_query, ticker_id)
-        sector_id = csr.fetchone()[0]
+            csr.execute(post_articleticker_query, (article_id, ticker_id, score))
+            csr.execute(update_ticker_score_query, ticker_id)
 
-        if sector_id is not None:
-            csr.execute(update_sector_score_query, sector_id)
+            csr.execute(get_sector_id_of_ticker_query, ticker_id)
+            sector_id = csr.fetchone()[0]
+
+            if sector_id is not None:
+                csr.execute(update_sector_score_query, sector_id)
+
+    except OracleProgrammingError as e:
+        print("Data symbols:",data.symbols)
+        print("Data:",data)
+        print(e)
+        traceback.print_exc()
         
-        cnx.commit()
+    cnx.commit()
 
 
 
