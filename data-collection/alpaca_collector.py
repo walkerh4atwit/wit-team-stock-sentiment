@@ -30,7 +30,7 @@ tickers_nextval_query = """
 
 post_article_query = """
     INSERT INTO Articles (id, title, url, summary, date_published)
-    VALUES (:1, :2, :3, :4, TO_TIMESTAMP(:5, 'YYYY-MM-DD HH24:MI:SS'))
+    VALUES (:1, :2, :3, :4, TO_TIMESTAMP(:5, 'YYYY-MM-DD"T"HH24:MI:SS"Z"'))
     """
 
 post_ticker_query = """
