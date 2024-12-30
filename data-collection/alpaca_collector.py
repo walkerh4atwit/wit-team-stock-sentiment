@@ -96,8 +96,9 @@ async def socket_handler(data: News):
     csr.execute(articles_nextval_query)
     article_id = csr.fetchone()[0]
 
-    # pushes the article info to the db on oci
-    csr.execute(post_article_query, (article_id, data.headline, data.url, data.summary, data.created_at))
+    if data.symbols:
+        # pushes the article info to the db on oci
+        csr.execute(post_article_query, (article_id, data.headline, data.url, data.summary, data.created_at))
 
     try:
         for symbol in data.symbols:
