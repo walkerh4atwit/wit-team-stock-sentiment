@@ -102,7 +102,7 @@ async def socket_handler(data: News):
     try:
         for symbol in data.symbols:
             # grabs the ticker id for the ticker
-            csr.execute(get_ticker_id_query, (symbol))
+            csr.execute(get_ticker_id_query, (symbol,))
             ticker_id = csr.fetchone()[0]
 
             #
@@ -116,13 +116,13 @@ async def socket_handler(data: News):
                 raise Exception("Ticker ID not generated! Aborting worker thread.")
 
             csr.execute(post_articleticker_query, (article_id, ticker_id, score))
-            csr.execute(update_ticker_score_query, (ticker_id))
+            csr.execute(update_ticker_score_query, (ticker_id,))
 
-            csr.execute(get_sector_id_of_ticker_query, (ticker_id))
+            csr.execute(get_sector_id_of_ticker_query, (ticker_id,))
             sector_id = csr.fetchone()[0]
 
             if sector_id is not None:
-                csr.execute(update_sector_score_query, (sector_id))
+                csr.execute(update_sector_score_query, (sector_id,))
 
     except OracleProgrammingError as e:
         print("Data symbols:",data.symbols)
