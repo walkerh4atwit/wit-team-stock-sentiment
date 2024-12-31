@@ -30,7 +30,7 @@ tickers_nextval_query = """
 
 post_article_query = """
     INSERT INTO Articles (id, title, url, summary, date_published)
-    VALUES (:1, :2, :3, :4, TO_TIMESTAMP(:5, 'YYYY-MM-DD"T"HH24:MI:SS"Z"'))
+    VALUES (:1, :2, :3, :4, TO_TIMESTAMP_TZ(:5, 'YYYY-MM-DD HH24:MI:SS TZH:TZM'))
     """
 
 post_ticker_query = """
@@ -99,7 +99,7 @@ async def socket_handler(data: News):
     # 
     if data.symbols:
         # pushes the article info to the db on oci
-        csr.execute(post_article_query, (article_id, data.headline, data.url, data.summary, data.created_at.strftime("%Y-%m-%d %H:%M:%S")))
+        csr.execute(post_article_query, (article_id, data.headline, data.url, data.summary, data.created_at.strftime("%Y-%m-%d %H:%M:%S%z")))
     else:
         print("Article has no symbols... printing data")
         print("All data:", data)
@@ -107,11 +107,14 @@ async def socket_handler(data: News):
 
     try:
         for symbol in data.symbols:
+            # resetting the id
+            ticker_id = None
+
             # grabs the ticker id for the ticker
             csr.execute(get_ticker_id_query, (symbol,))
             ticker_id = csr.fetchone()
 
-            #
+            # adding a ticker to the db
             if ticker_id is None:
                 csr.execute(tickers_nextval_query)
                 ticker_id = csr.fetchone()
