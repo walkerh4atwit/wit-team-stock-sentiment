@@ -12,14 +12,6 @@ from transformers import logging as trf_logging
 
 trf_logging.set_verbosity_error()
 
-# gets the most recent 50 articles
-# def alpaca_to_df():
-#     news_client = NewsClient("key", "secret_key")
-#     news_request = NewsRequest(limit=50)
-#     data = news_client.get_news(news_request).dict()
-
-#     return pd.DataFrame(data['news'])
-
 articles_nextval_query = """
     SELECT articles_seq.NEXTVAL FROM dual
     """
@@ -83,7 +75,9 @@ def push_article(headline, url, summary, date_published):
 def pass_to_model(text, symbols, url):
     model_loader.model_function(text, symbols, url)
 
+
 async def socket_handler(data: News):
+    # passing data through the ml model
     tokens = ml_tokenizer.encode(data.headline, return_tensors='pt')
     result = ml_model(tokens)
     score = torch.argmax(result.logits).item()
@@ -94,7 +88,13 @@ async def socket_handler(data: News):
 
     # gets next number from sequence
     csr.execute(articles_nextval_query)
-    article_id = csr.fetchone()[0]
+    article_id_result = csr.fetchone()[0]
+
+    # if there is some issue with the sequence...
+    if article_id_result is None:
+        raise Exception("Article ID not generated or found! Aborting worker thread.")
+
+    article_id = article_id_result[0]
 
     # 
     if data.symbols:
@@ -105,65 +105,69 @@ async def socket_handler(data: News):
         print("All data:", data)
         print("The prospective score:", score)
 
+    # try-catch to debug some stuff
     try:
+        # loop through symbols mentioned in article
         for symbol in data.symbols:
-            # resetting the id
-            ticker_id = None
 
             # grabs the ticker id for the ticker
             csr.execute(get_ticker_id_query, (symbol,))
-            ticker_id = csr.fetchone()
+            existing_ticker_id_result = csr.fetchone()
 
             # adding a ticker to the db
-            if ticker_id is None:
+            if existing_ticker_id_result is None:
+                # find the next greatest value in the sequence
                 csr.execute(tickers_nextval_query)
-                ticker_id = csr.fetchone()
+                new_ticker_id_result = csr.fetchone()
 
-                csr.execute(post_ticker_query, (ticker_id, symbol))
+                if new_ticker_id_result is None:
+                    raise Exception("Ticker ID not generated or found! Aborting worker thread.")
 
-            if ticker_id is None:
-                raise Exception("Ticker ID not generated! Aborting worker thread.")
+                csr.execute(post_ticker_query, (new_ticker_id_result[0], symbol))
 
+                existing_ticker_id_result = new_ticker_id_result
+            
+            # takes the id from the existing match for the symbol
+            # whether or not I just created it
+            ticker_id = existing_ticker_id_result[0]
+
+            # finally posting the articleticker row
             csr.execute(post_articleticker_query, (article_id, ticker_id, score))
+            # update the running average
             csr.execute(update_ticker_score_query, (ticker_id,))
 
+            # finding the sector id of the symbol
             csr.execute(get_sector_id_of_ticker_query, (ticker_id,))
-            sector_id = csr.fetchone()
+            sector_id_result = csr.fetchone()
 
-            if sector_id is not None:
-                csr.execute(update_sector_score_query, (sector_id,))
+            # sector id running average calculation
+            if sector_id_result is not None:
+                csr.execute(update_sector_score_query, (sector_id_result,))
 
     except OracleProgrammingError as e:
-        # print("Data symbols:",data.symbols)
+        # printing some data
         print("Data:",data)
+        print("Calculated score:", score)
         print(e)
         traceback.print_exc()
-        
+
+        # the reraise
+        raise
+    
+    # committing insertions + updates
     cnx.commit()
 
-
-
-# call api and results on model
-# dataf = alpaca_to_df()
-# i = 0
-
-# while i < 50:
-#     row = dataf.iloc[i]
-
-#     push_article(dataf.loc[i, "headline"], dataf.loc[i, "url"], dataf.loc[i, "summary"], dataf.loc[i, 'created_at'])
-#     pass_to_model((dataf.loc[i, "headline"]), dataf.loc[i, 'symbols'], dataf.loc[i, 'url'])
-#     i += 1
-
-# if datetime.now().hour == 0 and datetime.now().minute == 0:
-#     database_push.delete_old_articles()
-
+# grabbing the api keys
 api_key, api_secret_key = find_api_keys()
 
+# initializing some variables
 ml_tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 ml_model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=3)
 ml_model.load_state_dict(torch.load('/var/lib/sentiments/ml_model.pth', map_location=torch.device('cpu')))
 
+# subbing to the websocket api
 data_stream = NewsDataStream(api_key=api_key, secret_key=api_secret_key)
 data_stream.subscribe_news(socket_handler, "*")
 
+# run
 data_stream.run()
