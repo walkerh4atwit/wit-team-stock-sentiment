@@ -134,7 +134,7 @@ async def socket_handler(data: News):
             # finally posting the articleticker row
             csr.execute(post_articleticker_query, (article_id, ticker_id, score))
             # update the running average
-            csr.execute(update_ticker_score_query, (ticker_id,))
+            csr.execute(update_ticker_score_query, (ticker_id, ticker_id))
 
             # finding the sector id of the symbol
             csr.execute(get_sector_id_of_ticker_query, (ticker_id,))
@@ -142,7 +142,9 @@ async def socket_handler(data: News):
 
             # sector id running average calculation
             if sector_id_result is not None:
-                csr.execute(update_sector_score_query, (sector_id_result,))
+                sector_id = sector_id_result[0]
+
+                csr.execute(update_sector_score_query, (sector_id, sector_id))
 
     except OracleProgrammingError as e:
         # printing some data
