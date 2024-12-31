@@ -88,7 +88,7 @@ async def socket_handler(data: News):
 
     # gets next number from sequence
     csr.execute(articles_nextval_query)
-    article_id_result = csr.fetchone()[0]
+    article_id_result = csr.fetchone()
 
     # if there is some issue with the sequence...
     if article_id_result is None:
