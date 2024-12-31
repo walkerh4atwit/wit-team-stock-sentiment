@@ -133,6 +133,10 @@ async def socket_handler(data: News):
 
             # finally posting the articleticker row
             csr.execute(post_articleticker_query, (article_id, ticker_id, score))
+
+            # committing the changes
+            cnx.commit()
+
             # update the running average
             csr.execute(update_ticker_score_query, (ticker_id, ticker_id))
 
