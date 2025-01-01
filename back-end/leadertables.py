@@ -1,7 +1,7 @@
 import oracledb
 from oracledb.cursor import Cursor
 
-def countTies(data: list[any], cursor: Cursor):
+def countTies(data: list[any], cursor: Cursor, type_table: str):
     # if there needs to be a tie handling
     if len(data) < 6:
         return 0
@@ -10,7 +10,7 @@ def countTies(data: list[any], cursor: Cursor):
 
         query_string = query_file.read()
 
-        query_string = query_string.replace(":TABLE", "TICKERS")
+        query_string = query_string.replace(":TABLE", type_table)
 
         cursor.execute(query_string, (data[4][1],))
 
@@ -64,7 +64,7 @@ def getLeaderTables(connection: oracledb.Connection):
         
         data_in.append(cursor.fetchall())
 
-        count = countTies(data_in[i], cursor)
+        count = countTies(data_in[i], cursor, type_table = table['table'])
         data_out[table["order"] + table["table"]] = handleTies(data_in[i], count)[:5]
 
     return data_out
