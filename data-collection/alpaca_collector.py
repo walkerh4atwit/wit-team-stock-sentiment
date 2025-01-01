@@ -48,7 +48,7 @@ update_ticker_score_query = """
     SET sentiment_score = 
         (SELECT AVG(sentiment_score) 
         FROM Articletickers
-        WHERE id = :1)
+        WHERE ticker_id = :1)
     WHERE id = :1
     """
 
