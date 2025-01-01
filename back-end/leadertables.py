@@ -2,21 +2,21 @@ import oracledb
 from oracledb.cursor import Cursor
 
 def countTies(data: list[any], cursor: Cursor):
-        # if there needs to be a tie handling
-        if len(data) < 6:
-            return 0
-        if data[4][1] == data[5][1]:
-            query_file = open("queries/LeaderTablesCountTies.sql", "r")
+    # if there needs to be a tie handling
+    if len(data) < 6:
+        return 0
+    if data[4][1] == data[5][1]:
+        query_file = open("queries/LeaderTablesCountTies.sql", "r")
 
-            query_string = query_file.read()
+        query_string = query_file.read()
 
-            query_string = query_string.replace(":TABLE", "ADMIN.TICKERS")
+        query_string = query_string.replace(":TABLE", "TICKERS")
 
-            cursor.execute(query_string, (data[4][1],))
+        cursor.execute(query_string, (data[4][1],))
 
-            return cursor.fetchone()[0]
-        else: 
-            return 0
+        return cursor.fetchone()[0]
+    else: 
+        return 0
         
 def handleTies(data: list[any], count: int):
     rank = 0
