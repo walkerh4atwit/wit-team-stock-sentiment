@@ -1,24 +1,15 @@
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
-import torch
+import os
 import pandas as pd
 import oracledb
 from datetime import datetime
-
-
-def connect_to_db():
-    connection = oracledb.connect(
-        config_dir="Wallet_database1",
-        user="admin",
-        password="Database1Pass",
-        dsn="database1_low",
-        wallet_location="Wallet_database1",
-        wallet_password="Password1"
-    )
-    return connection
-
+from db_connect import db_connect
 
 def push_article(headline, url, summary, date_published):
-    connection = connect_to_db()
+    
+
+    return
+    connection = db_connect()
     if not connection:
         return
 
@@ -27,6 +18,7 @@ def push_article(headline, url, summary, date_published):
     check_article_query = """
     SELECT COUNT(*) FROM Articles WHERE url = :1
     """
+    
     insert_article_query = """
     INSERT INTO Articles (title, url, summary, date_published)
     VALUES (:1, :2, :3, TO_TIMESTAMP(:4, 'YYYY-MM-DD HH24:MI:SS'))
@@ -44,7 +36,7 @@ def push_article(headline, url, summary, date_published):
 
 
 def push_article_ticker(url, symbols, score):
-    connection = connect_to_db()
+    connection = db_connect()
     if not connection:
         return
 
@@ -90,7 +82,7 @@ def push_article_ticker(url, symbols, score):
 
 
 def delete_old_articles():
-    connection = connect_to_db()
+    connection = db_connect()
     if not connection:
         return
 

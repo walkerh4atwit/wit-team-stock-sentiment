@@ -9,7 +9,9 @@
 /coverage
 
 # production
+/src/resources/build-config.json
 /build
+/react-setup.env
 
 # misc
 .DS_Store

@@ -1,5 +1,4 @@
 import logo from "../images/logo-cropped.svg";
-import ipInfo from "../resources/ipInfo.json"
 import "../styles/App.css";
 import "../styles/bg-gradient.css";
 import { useEffect, useState } from "react";
@@ -30,11 +29,8 @@ const Data = () => {
     console.log(`Type: ${type}, ID: ${id}`);
 
     // this differentiates the server between dev and prod
-    const backEndHost: string =
-        process.env.NODE_ENV ==
-            'development' ?
-            ipInfo.devHost :
-            ipInfo.prodHost
+    const backEndHost =
+        process.env.REACT_APP_API_URL
 
     const pullData = async (qry: IDataQuery) => {
         try {

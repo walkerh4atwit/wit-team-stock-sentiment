@@ -1,0 +1,20 @@
+[Unit]
+Description=Backend Gunicorn Process to post to socket file (prod).
+After=network.target
+
+[Service]
+User=jenkins
+Group=jenkins
+SELinuxContext=system_u:system_r:httpd_t:s0
+
+WorkingDirectory=/var/lib/jenkins/workspace/Sentiments-Pipeline-Prod
+
+EnvironmentFile=/var/lib/jenkins/workspace/Sentiments-Pipeline-Prod/back-end/prod-wallet.env
+
+ExecStart=/var/lib/jenkins/workspace/Sentiments-Pipeline-Prod/venv/bin/gunicorn --workers=3 --bind unix:/run/sentiments/sentiments-prod-gunicorn.sock wsgi:app
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -1,21 +1,22 @@
 import oracledb
 from oracledb.cursor import Cursor
 
-def countTies(data: list[any], cursor: Cursor):
-        # if there needs to be a tie handling
-        if len(data) < 6:
-            return 0
-        if data[4][1] == data[5][1]:
-            query_file = open("queries/LeaderTablesCountTies.sql", "r")
+def countTies(data: list[any], cursor: Cursor, type_table: str):
+    # if there needs to be a tie handling
+    if len(data) < 6:
+        return 0
+    if data[4][1] == data[5][1]:
+        query_file = open("queries/LeaderTablesCountTies.sql", "r")
 
-            query_string = query_file.read()
-            query_string = query_string.replace(":1", "ADMIN.TICKERS")
+        query_string = query_file.read()
 
-            cursor.execute(query_string, (data[4][1],))
+        query_string = query_string.replace(":TABLE", type_table)
 
-            return cursor.fetchone()[0]
-        else: 
-            return 0
+        cursor.execute(query_string, (data[4][1],))
+
+        return cursor.fetchone()[0]
+    else: 
+        return 0
         
 def handleTies(data: list[any], count: int):
     rank = 0
@@ -34,16 +35,7 @@ def handleTies(data: list[any], count: int):
 
     return data_push
 
-def getLeaderTables():
-    connection=oracledb.connect(
-        config_dir="Wallet_database1",
-        user="backend",
-        password="Password123@",
-        dsn="database1_low",
-        wallet_location="Wallet_database1",
-        wallet_password="Password1"
-    )
-
+def getLeaderTables(connection: oracledb.Connection):
     cursor = connection.cursor()
 
     data_in = []
@@ -53,21 +45,26 @@ def getLeaderTables():
     # TICKER, SCORE
     query_file = open("queries/LeaderTables.sql", "r")
     query_string = query_file.read()
+    query_file.close()
 
     for i, table in enumerate([
-        {"order": "asc","table": "Tickers","id":"ticker"},
-        {"order": "desc","table": "Tickers","id":"ticker"},
-        {"order": "asc","table": "Sectors","id":"name"},
-        {"order": "desc","table": "Sectors","id":"name"}
+        {"order": "asc","table": "Tickers","field":"ticker"},
+        {"order": "desc","table": "Tickers","field":"ticker"},
+        {"order": "asc","table": "Sectors","field":"name"},
+        {"order": "desc","table": "Sectors","field":"name"}
     ]):
-        cursor.execute(query_string
-            .replace(":1", table['order'])
-            .replace(":2", table['table'])
-            .replace(":3", table['id']))
+        
+        param_query_string = query_string
+
+        param_query_string = param_query_string.replace(":TABLE", table['table'])
+        param_query_string = param_query_string.replace(":ORDER", table['order'])
+        param_query_string = param_query_string.replace(":FIELD", table['field'])
+
+        cursor.execute(param_query_string)
         
         data_in.append(cursor.fetchall())
 
-        count = countTies(data_in[i], cursor)
+        count = countTies(data_in[i], cursor, type_table = table['table'])
         data_out[table["order"] + table["table"]] = handleTies(data_in[i], count)[:5]
 
     return data_out

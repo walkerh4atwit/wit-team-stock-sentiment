@@ -3,7 +3,6 @@ import TopLinks, { TopLinksProps } from "../components/TopLinks"
 import resTopLinks from "../resources/topLinks.json"
 import "../styles/Docs.css"
 import evanHeadShot from "../images/evanheadshot.jpeg"
-import { Link } from "react-router-dom"
 
 const Documentation = () => {
     const topLinks: TopLinksProps = {

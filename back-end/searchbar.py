@@ -1,15 +1,6 @@
 import oracledb
 
-def getSearchOptions():
-    connection=oracledb.connect(
-        config_dir="Wallet_database1",
-        user="backend",
-        password="Password123@",
-        dsn="database1_low",
-        wallet_location="Wallet_database1",
-        wallet_password="Password1"
-    )
-
+def getSearchOptions(connection: oracledb.Connection):
     cursor = connection.cursor()
     result = {}
 

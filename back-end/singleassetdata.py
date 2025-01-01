@@ -1,26 +1,19 @@
 import oracledb
 
-def getAssetData(asset_type: str, id: int):
-    connection=oracledb.connect(
-        config_dir="Wallet_database1",
-        user="backend",
-        password="Password123@",
-        dsn="database1_low",
-        wallet_location="Wallet_database1",
-        wallet_password="Password1"
-    )
-
+def getAssetData(connection: oracledb.Connection, asset_type: str, id: int):
     cursor = connection.cursor()
     result = {}
 
     if asset_type == 'sector':
         query_string = "SELECT * FROM ADMIN.SECTORS WHERE ID = :1"
     elif asset_type == 'stock':
-        query_string = open("queries/SingleStockData.sql", "r").read()
+        query_file = open("queries/SingleStockData.sql", "r")
+        query_string = query_file.read()
+        query_file.close()
     else:
         return "Invalid asset type"
 
-    cursor.execute(query_string.replace(':1', id))
+    cursor.execute(query_string, (id,))
 
     data_in = cursor.fetchone()
 

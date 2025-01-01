@@ -8,9 +8,9 @@ fi
 
 # If BUILD_ENV is set, continue with the rest of the script
 if [ "$BUILD_ENV" == "dev" ]; then
-  echo '{"environment": "dev", "api_endpoint": "instance-12.subnet06021123.vcn06021123.oraclevcn.com:3000"}' > ./config/build-config.json
+  echo '{"environment": "dev", "api_endpoint": "150.136.169.207:3000"}' > ./front-end/src/resources/build-config.json
 elif [ "$BUILD_ENV" == "prod" ]; then
-  echo '{"environment": "prod", "api_endpoint": "instance-12.subnet06021123.vcn06021123.oraclevcn.com:80"}' > ./config/build-config.json
+  echo '{"environment": "prod", "api_endpoint": "150.136.169.207:80"}' > ./front-end/src/resources/build-config.json
 else
   echo "Error: Invalid BUILD_ENV value. Expected 'dev' or 'prod'."
   exit 1
