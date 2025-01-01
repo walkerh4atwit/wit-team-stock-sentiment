@@ -1,0 +1,21 @@
+[Unit]
+Description=Backend python process to read articles and process them (prod).
+After=network.target
+
+[Service]
+User=jenkins
+Group=jenkins
+
+WorkingDirectory=/var/lib/jenkins/workspace/Sentiments-Pipeline-Prod/data-collection
+
+EnvironmentFile=/var/lib/jenkins/workspace/Sentiments-Pipeline-Prod/data-collection/alpaca-keys.env
+EnvironmentFile=/var/lib/jenkins/workspace/Sentiments-Pipeline-Prod/back-end/prod-wallet.env
+
+ExecStart=/var/lib/jenkins/workspace/Sentiments-Pipeline-Prod/venv/bin/python3 \
+    /var/lib/jenkins/workspace/Sentiments-Pipeline-Prod/data-collection/alpaca_collector.py
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

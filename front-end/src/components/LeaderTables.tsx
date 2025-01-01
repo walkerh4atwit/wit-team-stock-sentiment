@@ -1,8 +1,6 @@
 import { ReactElement, useEffect, useState } from "react";
 import { Col, Row, Container } from "react-bootstrap";
-import ipInfo from "../resources/ipInfo.json"
-import build_config from '../resources/build-config.json'
-import "../styles/LeaderTables.css"
+import "../styles/LeaderTables.css";
 
 export interface LeaderTablesProps {
 
@@ -56,10 +54,7 @@ const LeaderTables = (props: LeaderTablesProps) => {
 
     // this differentiates the server between dev and prod
     const backEndHost =
-        process.env.NODE_ENV ==
-            'development' ?
-            ipInfo.devHost : 
-            build_config.api_endpoint;
+        process.env.REACT_APP_API_URL
 
     // pulls data from the backend
     const pullData = async () => {

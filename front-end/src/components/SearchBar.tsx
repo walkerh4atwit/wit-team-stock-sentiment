@@ -1,9 +1,7 @@
-import Form from "react-bootstrap/Form"
-import { useState, useEffect, useRef } from "react"
-import ipInfo from "../resources/ipInfo.json"
-import build_config from '../resources/build-config.json'
-import "../styles/bg-gradient.css"
-import "../styles/Dropdown.css"
+import Form from "react-bootstrap/Form";
+import { useState, useEffect, useRef } from "react";
+import "../styles/bg-gradient.css";
+import "../styles/Dropdown.css";
 
 // shape of the incoming data
 interface IDataResponse {
@@ -24,11 +22,8 @@ const SearchBar = (props: {
 }) => {
 
     // this differentiates the server between dev and prod
-    const backEndHost: string =
-        process.env.NODE_ENV ==
-            'development' ?
-            ipInfo.devHost :
-            build_config.api_endpoint
+    const backEndHost =
+        process.env.REACT_APP_API_URL
 
     // states
     const [isOpen, setIsOpen] = useState(false)

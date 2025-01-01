@@ -4,17 +4,15 @@ import resTopLinks from "../resources/topLinks.json";
 import { IDataQuery as IDataQuery } from "./Data";
 import logo from "../images/logo-cropped.svg";
 import "../styles/App.css";
-import ipInfo from "../resources/ipInfo.json"
 import "../styles/bg-gradient.css";
 
-// this differentiates the server between dev and prod
-export const backEndHost: string =
-	process.env.NODE_ENV ==
-		'development' ?
-		ipInfo.devHost :
-		ipInfo.prodHost
-
 const App = () => {
+	// this differentiates the server between dev and prod
+	const backEndHost =
+		process.env.REACT_APP_API_URL
+
+	console.log(process.env)
+
 	const topLinks: TopLinksProps = {
 		links: resTopLinks.links
 	}
