@@ -1,11 +1,11 @@
 [
     {
         "question": "What is the stock sentiment analyst?",
-        "answer": "It uses a machine-learning model to interpret financial news articles and quantify the positive or negative sentiments expressed. This information can prove vital to traders and add ease of use to their work."
+        "answer": "It uses a machine learning model to interpret financial news articles and quantify the positive or negative sentiments expressed. This information can prove vital to traders and add ease of use to their work."
     },
     {
         "question": "How are articles classified into positive or negative on this app?",
-        "answer": "Articles are scored a 0 if they contain negative information, 1 if they contain neurtal information, and 2 if they contain negative information. These scores are then averaged to get each stock's sentiment score."
+        "answer": "Articles are scored a 0 if they contain negative information, 1 if they contain neutral information, and 2 if they contain positive information. These scores are then averaged to get each stock's sentiment score."
     },
     {
         "question": "How soon after the business news comes out will new sentiment ratings be generated? Is there a delay?",
@@ -17,7 +17,7 @@
     },
     {
         "question": "What are the types of sentiment that the app works with?",
-        "answer": "Any newsworthy information is fair play for the app to analyze!"
+        "answer": "Any newsworthy information is fair play for the app to analyze."
     },
     {
         "question": "What happens if a company reports good earnings but the article also says something negative at the same time?",
