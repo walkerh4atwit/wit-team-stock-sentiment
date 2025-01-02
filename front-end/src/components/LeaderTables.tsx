@@ -60,7 +60,7 @@ const LeaderTables = (props: LeaderTablesProps) => {
     const pullData = async () => {
         try {
             const response = await 
-                fetch('http://' + backEndHost + "/leadertables");
+                fetch('https://' + backEndHost + "/leadertables");
             const data = await response.json()
             setData(data)
         }

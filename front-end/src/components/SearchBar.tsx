@@ -70,7 +70,7 @@ const SearchBar = (props: {
     const pullTickers = async () => {
         try {
             const response = await
-                fetch('http://' + backEndHost + '/searchoptions');
+                fetch('https://' + backEndHost + '/searchoptions');
             const responseData = await response.json()
             props.setBackEndStatus("Online")
             setData(responseData)
