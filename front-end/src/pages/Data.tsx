@@ -34,7 +34,7 @@ const Data = () => {
 
     const pullData = async (qry: IDataQuery) => {
         try {
-            const response = await fetch("http://" + backEndHost + "/sentiment/" + qry.type + "/" + qry.id)
+            const response = await fetch("https://" + backEndHost + "/sentiment/" + qry.type + "/" + qry.id)
             const responseData = await response.json()
 
             setData({
