@@ -59,8 +59,8 @@ update_sector_score_query = """
         FROM 
             (SELECT id AS ticker_id, sector_id
             FROM Tickers WHERE sector_id = :1) T_subquery
-        INNER JOIN Articletickers 
-        ON T_subquery.ticker_id = Articletickers.ticker_id)
+            INNER JOIN Articletickers 
+            ON T_subquery.ticker_id = Articletickers.ticker_id)
     WHERE id = :1
     """
 
