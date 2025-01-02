@@ -76,7 +76,7 @@ const Data = () => {
                         <ProgressBar
                             now={data.score > 0.1 ? data.score / 2.0 * 100 : 10}
                             label={data.score.toFixed(2)}
-                            variant={data.score > 1 ? 'success' : 'danger'}>
+                            variant={data.score > 1.2 ? 'success' : data.score > 0.8 ? "warning" : 'danger'}>
                         </ProgressBar>
                     </div>
                 </div>
