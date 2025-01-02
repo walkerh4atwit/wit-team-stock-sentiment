@@ -18,7 +18,7 @@ const App = () => {
 	}
 
 	const preLoadData = async ( id: number, type: string ) => {
-		const response = await fetch("http://" + backEndHost + "/sentiment/" + type + "/" + id)
+		const response = await fetch("https://" + backEndHost + "/sentiment/" + type + "/" + id)
 		const responseData = await response.json()
 		return responseData ? true : false
 	}
