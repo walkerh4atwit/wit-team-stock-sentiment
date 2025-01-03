@@ -63,11 +63,12 @@ def getLeaderTables(connection: oracledb.Connection):
     for order in ['asc', 'desc']:
         
         # setting up queries for getting top/worst scorers
-        tickers_query_string = tickers_query_string.replace(":ORDER", order)
-        sectors_query_string = sectors_query_string.replace(":ORDER", order)
+        prmtrz_tickers_query_string = tickers_query_string.replace(":ORDER", order)
+        prmtrz_sectors_query_string = sectors_query_string.replace(":ORDER", order)
 
         # for the sectors
-        cursor.execute(sectors_query_string)
+        cursor.execute(prmtrz_sectors_query_string)
+        print(prmtrz_sectors_query_string)
         result = cursor.fetchall()
         data_in.append(result)
         tie_count = 0
@@ -75,7 +76,7 @@ def getLeaderTables(connection: oracledb.Connection):
         # this happens only if there's enough data
         if len(result) == 6:
             ties_query_string = ties_query_string.replace(":TABLE", "Sectors")
-            cursor.execute(ties_query_string, (result[4][1]))
+            cursor.execute(ties_query_string, (result[4][1],))
             tie_count_result = cursor.fetchone()
 
             # probably won't happen
@@ -89,7 +90,8 @@ def getLeaderTables(connection: oracledb.Connection):
         # calling handleties to pretty up the results
         data_out[order + "Sectors"] = handleTies(result, tie_count)
 
-        cursor.execute(tickers_query_string)
+        cursor.execute(prmtrz_tickers_query_string)
+        print(prmtrz_tickers_query_string)
         result = cursor.fetchall()
         data_in.append(result)
         tie_count = 0
@@ -97,7 +99,7 @@ def getLeaderTables(connection: oracledb.Connection):
         # this happens only if there's enough data
         if len(result) == 6:
             ties_query_string = ties_query_string.replace(":TABLE", "Tickers")
-            cursor.execute(ties_query_string, (result[4][1]))
+            cursor.execute(ties_query_string, (result[4][1],))
             tie_count_result = cursor.fetchone()
 
             # probably won't happen
