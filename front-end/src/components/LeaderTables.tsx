@@ -85,7 +85,7 @@ const LeaderTables = (props: LeaderTablesProps) => {
                         <Col className="my-Table-Column" style={{ minWidth: "70%", marginRight: "0.5rem" }}>
                             {data[0]}
                         </Col>
-                        <Col className="my-Table-Column">
+                        <Col className="my-Table-Column" id="sentiment_score">
                             {data[1].toFixed(2)}
                         </Col>
                     </Row>
