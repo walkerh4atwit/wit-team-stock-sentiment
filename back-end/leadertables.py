@@ -19,19 +19,20 @@ def countTies(data: list[any], cursor: Cursor, type_table: str):
         return 0
         
 def handleTies(data: list[any], count: int):
-    rank = 0
     data_push = []
 
     for i, row in enumerate(data):
-        rankstring = str(rank + 1)
-        if row[1] == data[i - 1][1] and i:
+        name = row[0]
+        score = row[1]
+        rankstring = row[2]
+
+        if i and score == data[i-1][1]:
             rankstring = ""
-        else:
-            rank += 1
+
         if i==4 and count:
-            data_push.append([str(count) + " TIED", row[1], rankstring])
-            continue
-        data_push.append([*list(row), rankstring])
+            name = str(count) + " TIED"
+
+        data_push.append([name, score, rankstring])
 
     return data_push
 
@@ -42,30 +43,72 @@ def getLeaderTables(connection: oracledb.Connection):
     data_out = {}
 
     # first query
-    # TICKER, SCORE
-    query_file = open("queries/LeaderTables.sql", "r")
-    query_string = query_file.read()
-    query_file.close()
+    # TICKER, SENTIMENT_SCORE
+    tickers_query_file = open("queries/LeaderTablesTickers.sql", "r")
+    tickers_query_string = tickers_query_file.read()
+    tickers_query_file.close()
 
-    for i, table in enumerate([
-        {"order": "asc","table": "Tickers","field":"ticker"},
-        {"order": "desc","table": "Tickers","field":"ticker"},
-        {"order": "asc","table": "Sectors","field":"name"},
-        {"order": "desc","table": "Sectors","field":"name"}
-    ]):
+    # second query
+    # NAME, SENTIMENT_SCORE
+    sectors_query_file = open("queries/LeaderTablesSectors.sql", 'r')
+    sectors_query_string = sectors_query_file.read()
+    sectors_query_file.close()
+
+    # third query
+    # a number
+    ties_query_file = open("queries/LeaderTablesCountTies.sql", 'r')
+    ties_query_string = ties_query_file.read()
+    ties_query_file.close()
+
+    for order in ['asc', 'desc']:
         
-        param_query_string = query_string
+        # setting up queries for getting top/worst scorers
+        tickers_query_string = tickers_query_string.replace(":ORDER", order)
+        sectors_query_string = sectors_query_string.replace(":ORDER", order)
 
-        param_query_string = param_query_string.replace(":TABLE", table['table'])
-        param_query_string = param_query_string.replace(":ORDER", table['order'])
-        param_query_string = param_query_string.replace(":FIELD", table['field'])
+        # for the sectors
+        cursor.execute(sectors_query_string)
+        result = cursor.fetchall()
+        data_in.append(result)
+        tie_count = 0
 
-        cursor.execute(param_query_string)
-        
-        data_in.append(cursor.fetchall())
+        # this happens only if there's enough data
+        if len(result) == 6:
+            ties_query_string = ties_query_string.replace(":TABLE", "Sectors")
+            cursor.execute(ties_query_string, (result[4][1]))
+            tie_count_result = cursor.fetchone()
 
-        count = countTies(data_in[i], cursor, type_table = table['table'])
-        data_out[table["order"] + table["table"]] = handleTies(data_in[i], count)[:5]
+            # probably won't happen
+            if tie_count_result is None:
+                word = "lowest" if order == "asc" else "highest"
+                raise Exception("Error grabbing the sentiment score of the\
+                                fifth-" + word + " sector.")
+            
+            tie_count = tie_count_result[0]
+
+        # calling handleties to pretty up the results
+        data_out[order + "Sectors"] = handleTies(result, tie_count)
+
+        cursor.execute(tickers_query_string)
+        result = cursor.fetchall()
+        data_in.append(result)
+        tie_count = 0
+
+        # this happens only if there's enough data
+        if len(result) == 6:
+            ties_query_string = ties_query_string.replace(":TABLE", "Tickers")
+            cursor.execute(ties_query_string, (result[4][1]))
+            tie_count_result = cursor.fetchone()
+
+            # probably won't happen
+            if tie_count_result is None:
+                word = "lowest" if order == "asc" else "highest"
+                raise Exception("Error grabbing the sentiment score of the\
+                                fifth-" + word + " ticker.")
+            
+            tie_count = tie_count_result[0]
+
+        data_out[order + "Tickers"] = handleTies(result, tie_count)
 
     return data_out
 
