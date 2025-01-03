@@ -29,12 +29,12 @@ def handleTies(data: list[any], count: int):
         if i and score == data[i-1][1]:
             rankstring = ""
 
-        if i==4 and count:
+        if i==4 and count > 1:
             name = str(count) + " TIED"
 
         data_push.append([name, score, rankstring])
 
-    return data_push
+    return data_push[:-1]
 
 def getLeaderTables(connection: oracledb.Connection):
     cursor = connection.cursor()
@@ -68,7 +68,7 @@ def getLeaderTables(connection: oracledb.Connection):
 
         # for the sectors
         cursor.execute(prmtrz_sectors_query_string)
-        print(prmtrz_sectors_query_string)
+        # print(prmtrz_sectors_query_string)
         result = cursor.fetchall()
         data_in.append(result)
         tie_count = 0
@@ -91,7 +91,7 @@ def getLeaderTables(connection: oracledb.Connection):
         data_out[order + "Sectors"] = handleTies(result, tie_count)
 
         cursor.execute(prmtrz_tickers_query_string)
-        print(prmtrz_tickers_query_string)
+        # print(prmtrz_tickers_query_string)
         result = cursor.fetchall()
         data_in.append(result)
         tie_count = 0

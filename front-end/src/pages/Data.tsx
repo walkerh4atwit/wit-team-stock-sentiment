@@ -31,10 +31,12 @@ const Data = () => {
     // this differentiates the server between dev and prod
     const backEndHost =
         process.env.REACT_APP_API_URL
+    const APIProtocol: string =
+        process.env.NODE_ENV == "development" ? "http://" : "https://"
 
     const pullData = async (qry: IDataQuery) => {
         try {
-            const response = await fetch("https://" + backEndHost + "/sentiment/" + qry.type + "/" + qry.id)
+            const response = await fetch(APIProtocol + backEndHost + "/sentiment/" + qry.type + "/" + qry.id)
             const responseData = await response.json()
 
             setData({

@@ -10,6 +10,8 @@ const App = () => {
 	// this differentiates the server between dev and prod
 	const backEndHost =
 		process.env.REACT_APP_API_URL
+	const APIProtocol: string =
+        process.env.NODE_ENV == "development" ? "http://" : "https://"
 
 	console.log(process.env)
 
@@ -18,7 +20,7 @@ const App = () => {
 	}
 
 	const preLoadData = async ( id: number, type: string ) => {
-		const response = await fetch("https://" + backEndHost + "/sentiment/" + type + "/" + id)
+		const response = await fetch(APIProtocol + backEndHost + "/sentiment/" + type + "/" + id)
 		const responseData = await response.json()
 		return responseData ? true : false
 	}

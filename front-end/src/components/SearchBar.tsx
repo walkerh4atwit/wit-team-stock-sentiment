@@ -24,6 +24,8 @@ const SearchBar = (props: {
     // this differentiates the server between dev and prod
     const backEndHost =
         process.env.REACT_APP_API_URL
+    const APIProtocol: string =
+        process.env.NODE_ENV == "development" ? "http://" : "https://"
 
     // states
     const [isOpen, setIsOpen] = useState(false)
@@ -70,7 +72,7 @@ const SearchBar = (props: {
     const pullTickers = async () => {
         try {
             const response = await
-                fetch('https://' + backEndHost + '/searchoptions');
+                fetch(APIProtocol + backEndHost + '/searchoptions');
             const responseData = await response.json()
             props.setBackEndStatus("Online")
             setData(responseData)
