@@ -19,6 +19,14 @@
     white-space: nowrap;
 }
 
+#sentiment_score {
+    overflow: visible;
+}
+
+.my-Table-Column::-webkit-scrollbar {
+    display: none;
+}
+
 .my-Table-Row {
     margin: 0;
     padding: 0.5rem;

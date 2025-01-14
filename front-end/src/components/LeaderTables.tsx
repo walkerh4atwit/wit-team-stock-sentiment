@@ -55,12 +55,14 @@ const LeaderTables = (props: LeaderTablesProps) => {
     // this differentiates the server between dev and prod
     const backEndHost =
         process.env.REACT_APP_API_URL
+    const APIProtocol: string =
+        process.env.NODE_ENV == "development" ? "http://" : "https://"
 
     // pulls data from the backend
     const pullData = async () => {
         try {
             const response = await 
-                fetch('http://' + backEndHost + "/leadertables");
+                fetch(APIProtocol + backEndHost + "/leadertables");
             const data = await response.json()
             setData(data)
         }
@@ -83,7 +85,7 @@ const LeaderTables = (props: LeaderTablesProps) => {
                         <Col className="my-Table-Column" style={{ minWidth: "70%", marginRight: "0.5rem" }}>
                             {data[0]}
                         </Col>
-                        <Col className="my-Table-Column">
+                        <Col className="my-Table-Column" id="sentiment_score">
                             {data[1].toFixed(2)}
                         </Col>
                     </Row>

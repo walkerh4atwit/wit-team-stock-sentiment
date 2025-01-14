@@ -5,6 +5,7 @@
     }
 
     .App-body {
+        position: relative;
         font-family: sans-serif;
         min-height: 80vh;
     }
