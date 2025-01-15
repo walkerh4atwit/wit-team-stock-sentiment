@@ -1,0 +1,44 @@
+name: Deploy to OCIR action
+description: This action deploys a container on this app
+inputs:
+  build-environment:
+    description: This is which environment is being deployed
+    required: true
+  directory:
+    description: This is the directory that is updated
+    required: true
+
+runs: 
+  using: composite
+  
+  steps:
+    - name: Login to OCIR
+      uses: oracle-actions/login-ocir@v1.3.0
+      id: login-ocir
+      env:
+        OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
+        OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
+        OCI_CLI_FINGERPRINT: ${{ secrets.OCI_CLI_FINGERPRINT }}
+        OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
+        OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
+      with: 
+        auth_token: ${{ secrets.OCI_CLI_AUTH_T }}
+    
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v6
+      id: build-push-image      
+      with: 
+        context: ${{ inputs.directory }}
+        push: true
+        tags: ${{ inputs.directory }}-${{ inputs.build-environment }}:first-deploy
+
+    - name: Trigger deploy to Kubernetes
+      uses: oracle-actions/configure-kubectl-oke@v1.5.0
+      env:
+        OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
+        OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
+        OCI_CLI_FINGERPRINT: ${{ secrets.OCI_CLI_FINGERPRINT }}
+        OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
+        OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
+      working-directory: ${{ github.workspace }}
+      run: kubectl apply -f k8s/*.yaml

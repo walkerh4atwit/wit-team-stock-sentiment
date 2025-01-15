@@ -1,0 +1,46 @@
+name: Build the Front End
+
+on:
+  push:
+    paths:
+      - front-end/**
+
+jobs:
+  front-end-dev:
+    if: ${{ github.ref == refs/heads/develop }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Images
+        run: |
+          echo "Building the Docker images (dev)"
+
+
+      - name: Push Images
+        run: |
+          echo "Pushing the Docker images to ocir (dev)"
+
+
+      - name: Deploy
+        run: |
+          echo "Deploying to k8s (dev)"
+
+  front-end-prod:
+    if: ${{ github.ref == refs/heads/main }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Images
+        run: |
+          echo "Building the Docker images"
+
+
+      - name: Push Images
+        run: |
+          echo "Pushing the Docker images to ocir"
+
+
+      - name: Deploy
+        run: |
+          echo "Deploying to k8s"
+
