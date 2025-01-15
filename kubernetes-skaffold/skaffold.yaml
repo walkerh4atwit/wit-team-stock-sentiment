@@ -1,0 +1,48 @@
+apiVersion: skaffold/v4beta11
+kind: Config
+profiles:
+- name: profile-prod
+  activation:
+  - {}
+  build:
+    artifacts:
+
+    - image: ???
+      context: ../back-end
+      docker:
+        dockerfile: Dockerfile
+        buildArgs: 
+          BUILD_ENV: prod
+
+    - image: ???
+      context: ../front-end
+      docker:
+        dockerfile: Dockerfile
+        buildArgs: 
+          BUILD_ENV: prod
+  deploy:
+    kubectl: {}
+
+- name: profile-dev
+  activation:
+  - {}
+  build:
+    artifacts:
+
+    - image: ???
+      context: ../back-end
+      docker:
+        dockerfile: Dockerfile
+        buildArgs: 
+          BUILD_ENV: dev
+
+    - image: ???
+      context: ../front-end
+      docker:
+        dockerfile: Dockerfile
+        buildArgs: 
+          BUILD_ENV: dev
+deploy:
+  kubectl: {}
+
+      
