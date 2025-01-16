@@ -35,6 +35,9 @@ spec:
 
       - name: back-end
         image: iad.ocir.io/${OCI_NAMESPACE}/back-end-${BUILD_ENV}:latest
+        env:
+          - name: BUILD_ENV
+            value: ${BUILD_ENV}
         envFrom:
           - secretRef:
               name: ${DB_CREDS_KEY}
