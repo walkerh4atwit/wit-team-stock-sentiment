@@ -3,15 +3,15 @@ import oracledb
 
 def db_connect():
     # pulling env variables
-    wallet_path = os.environ.get('DB_WALLET_PATH')
+    # wallet_path = os.environ.get('DB_WALLET_PATH')
     wallet_pass = os.environ.get('DB_WALLET_PASS')
     db_user = os.environ.get('DB_USER')
     db_pass = os.environ.get('DB_USER_PASS')
     db_dsn_string = os.environ.get('DSN_STRING')
 
     # some error reporting
-    if not wallet_path:
-        raise KeyError('Error: Could not find environment variable DB_WALLET_PATH')
+    # if not wallet_path:
+    #     raise KeyError('Error: Could not find environment variable DB_WALLET_PATH')
     
     if not wallet_pass:
         raise KeyError('Error: Could not find environment variable DB_WALLET_PASS')
@@ -27,11 +27,11 @@ def db_connect():
 
     connection=oracledb.connect(
         # wallet location for mTLS
-        wallet_location=wallet_path,
+        wallet_location='Database-Wallet',
         # wallet password
         wallet_password=wallet_pass,
         # duplicate below of the path
-        config_dir=wallet_path,
+        config_dir='Database-Wallet',
         # database username in oci
         user=db_user,
         # the password for that user
