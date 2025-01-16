@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: my-deployment-cache-collector
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: my-deployment-cache-collector
