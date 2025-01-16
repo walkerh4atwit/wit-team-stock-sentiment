@@ -19,6 +19,7 @@ env:
   OCI_CLI_FINGERPRINT: ${{ secrets.OCI_CLI_FINGERPRINT }}
   OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
   OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
+  OCI_CLI_AUTH_T: ${{ secrets.OCI_CLI_AUTH_T }}
 
 jobs:
   build-push:
@@ -84,6 +85,7 @@ jobs:
           OCI_CLI_FINGERPRINT: ${{ env.OCI_CLI_FINGERPRINT }}
           OCI_CLI_KEY_CONTENT: ${{ env.OCI_CLI_KEY_CONTENT }}
           OCI_CLI_REGION: ${{ env.OCI_CLI_REGION }}
+          OCI_CLI_AUTH_T: ${{ env.OCI_CLI_AUTH_T }}
 
       - name: Trigger deploy to Kubernetes
         env:
