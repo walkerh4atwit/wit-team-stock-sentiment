@@ -87,6 +87,13 @@ jobs:
           OCI_CLI_REGION: ${{ env.OCI_CLI_REGION }}
           OCI_CLI_AUTH_T: ${{ env.OCI_CLI_AUTH_T }}
 
+      - name: K8s inject secrets about Alpaca API
+        uses: azure/k8s-create-secret@v5
+        with:
+          secret-name: ALPACA_KEYS
+          API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+
       - name: Trigger deploy to Kubernetes
         env:
           BUILD_ENV: ${{ env.ENVIRONMENT_TAG }}

@@ -20,6 +20,8 @@ spec:
             value: ${BUILD_ENV}
         envFrom:
           - secretRef:
+              name: ALPACA_KEYS
+          - secretRef:
               name: ${DB_CREDS_KEY}
           - secretRef:
               name: OCI_CREDS
