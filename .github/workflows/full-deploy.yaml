@@ -1,0 +1,89 @@
+name: Build the Backend Server
+
+on:
+  push:
+    branches: 
+      - develop
+      - main
+    paths:
+      - back-end/**
+      - front-end/**
+      - data-collection/**
+
+env: 
+  ENVIRONMENT_TAG: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: dorny/paths-filter@v3
+        name: Evaluate changes to dirs
+        id: dorny-paths-filter
+        with:
+          filters: |
+            backend: 
+              back-end/**
+            frontend: 
+              back-end/**
+            collection-cache:
+              data-collection/**
+
+      - name: Backend build-push
+        uses: ./.github/actions/docker-kubectl
+        if: steps.dorny-paths-filter.backend == 'true'
+        with: 
+          build-environment: ${{ env.ENVIRONMENT_TAG }}
+          directory: back-end
+      
+      - name: Frontend build-push
+        uses: ./.github/actions/docker-kubectl
+        if: steps.dorny-paths-filter.frontend == 'true'
+        with: 
+          build-environment: ${{ env.ENVIRONMENT_TAG }}
+          directory: front-end
+
+      - name: Collection-cache build-push
+        uses: ./.github/actions/docker-kubectl
+        if: steps.dorny-paths-filter.collection-cache == 'true'
+        with: 
+          build-environment: ${{ env.ENVIRONMENT_TAG }}
+          directory: data-collection
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sign into Oracle Kubernetes Engine
+        uses: oracle-actions/configure-kubectl-oke@v1.5.0
+        env:
+          OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
+          OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
+          OCI_CLI_FINGERPRINT: ${{ secrets.OCI_CLI_FINGERPRINT }}
+          OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
+          OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
+
+      - name: Inject secrets into Kubernetes environment
+        uses: azure/k8s-create-secret@v5
+        with:
+          secret-name: DB-creds-OKE-${{ env.ENVIRONMENT_TAG }}
+          DB_WALLET_PATH: Wallet-${{ env.ENVIRONMENT_TAG }}
+          DB_WALLET_PASS: ${{ env.ENVIRONMENT_TAG == 'dev' && secrets.DB_WALLET_PASS_DEV || secrets.DBN_WALLET_PASS_PROD }}
+          DB_USER: BACKEND
+          DB_USER_PASS: ${{ env.ENVIRONMENT_TAG == 'dev' && secrets.DB_USER_PASS_DEV || secrets.DB_USER_PASS_PROD }}
+          DSN_STRING: ${{ env.ENVIRONMENT_TAG == 'dev' && secrets.DB_DSN_DEV || secrets.DBN_DSN_PROD }}
+
+      - name: Trigger deploy to Kubernetes
+        env:
+          BUILD_ENV: ${{ env.ENVIRONMENT_TAG }}
+          DB_CREDS_KEY: DB-creds-OKE-${{ env.ENVIRONMENT_TAG }}
+          OCI_NAMESPACE: ${{ secrets.OCI_CLI_NAMESPACE }}
+          FRONT_END_HOST: ${{ env.ENVIRONMENT_TAG == 'dev' && 'dev.' || '' }}sentiments.henrywalker.tech
+        working-directory: ${{ github.workspace }}/k8s
+        run: |
+          kubectl apply -f frontend-service.yaml
+
+          envsubst <               ingress.yaml | kubectl apply -f 
+          envsubst < front-back-deployment.yaml | kubectl apply -f 
+          envsubst < collection-deployment.yaml | kubectl apply -f 
