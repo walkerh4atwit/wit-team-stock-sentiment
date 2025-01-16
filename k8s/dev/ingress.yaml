@@ -5,8 +5,13 @@ metadata:
   labels:
     name: my-ingress
 spec:
+  tls:
+    - hosts: 
+        - ${FRONT_END_HOST}
+      secretName: my-app-tls
+
   rules:
-  - host: dev.sentiments.henrywalker.tech
+  - host: ${FRONT_END_HOST}
     http:
       paths:
       - pathType: Prefix
@@ -24,3 +29,4 @@ spec:
             name: front-end-service
             port: 
               number: 80
+
