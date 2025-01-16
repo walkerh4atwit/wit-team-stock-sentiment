@@ -1,0 +1,24 @@
+name: Build the Backend Cache/Collector
+
+on:
+  push:
+    branches: 
+      - develop
+      - main
+    paths:
+      - data-collection/**
+
+env: 
+  ENVIRONMENT_TAG: ${{ github.ref == 'refs/heads/develop' && 'dev' || 'prod' }}
+
+jobs:
+  front-end:
+    
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy
+        uses: ./.github/actions/docker-kubectl
+        with: 
+          build-environment: ${{ env.ENVIRONMENT_TAG }}
+          directory: data-collection
