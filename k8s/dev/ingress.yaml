@@ -6,13 +6,21 @@ metadata:
     name: my-ingress
 spec:
   rules:
-  - host: sentiments.henrywalker.tech
+  - host: dev.sentiments.henrywalker.tech
     http:
       paths:
       - pathType: Prefix
         path: "/"
         backend:
           service:
-            name: <Service>
+            name: front-end-service
             port: 
-              number: <Port>
+              number: 80
+
+      - pathType: Prefix
+        path: "/api"
+        backend:
+          service: 
+            name: front-end-service
+            port: 
+              number: 80
