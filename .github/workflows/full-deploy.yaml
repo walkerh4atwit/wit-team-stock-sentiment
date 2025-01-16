@@ -1,4 +1,4 @@
-name: Build the Backend Server
+name: Deploys the Stock Sentiment Analyst app
 
 on:
   push:
