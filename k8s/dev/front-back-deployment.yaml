@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: my-deployment-servers
   labels:
-    app: sentiments-frontend
+    app: my-deployment-frontend-backend
 
 spec:
   replicas: 3
@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: front-end
-        image: front-end-dev:latest
+        image: iad.ocir.io/${OCI_NAMESPACE}/front-end-${BUILD_ENV}:latest
         ports:
           - containerPort: 80
         resources:
@@ -31,7 +31,10 @@ spec:
             cpu: 20m
 
       - name: back-end
-        image: back-end-dev:latest
+        image: iad.ocir.io/${OCI_NAMESPACE}/back-end-${BUILD_ENV}:latest
+        envFrom:
+          - secretKeyRef:
+              name: ${DB_CREDS_KEY}
         ports:
           - containerPort: 8000
         resources:
