@@ -3,7 +3,11 @@ from searchbar import getSearchOptions
 from leadertables import getLeaderTables
 from singleassetdata import getAssetData
 from db_connect import db_connect
+from oci_connect import oci_util
 import sys
+
+# that's all's we need here
+oci_util()
 
 app = Flask(__name__)
 
