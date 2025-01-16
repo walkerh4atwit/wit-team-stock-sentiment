@@ -1,8 +1,8 @@
-name: Deploy to OCIR action
-description: This action deploys a container on this app
+name: Push to OCIR action
+description: This action pushes containers to OCIR
 inputs:
   build-environment:
-    description: This is which environment is being deployed
+    description: This is which environment is being deployed later
     required: true
   directory:
     description: This is the directory that is updated
@@ -29,29 +29,7 @@ runs:
       id: build-push-image      
       with: 
         context: ${{ inputs.directory }}
+        build-args:
+          - BUILD_ENV: ${{ inputs.build-environment }}
         push: true
         tags: ${{ inputs.directory }}-${{ inputs.build-environment }}:latest
-
-    - name: Sign into Oracle Kubernetes Engine
-      uses: oracle-actions/configure-kubectl-oke@v1.5.0
-      env:
-        OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
-        OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
-        OCI_CLI_FINGERPRINT: ${{ secrets.OCI_CLI_FINGERPRINT }}
-        OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
-        OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
-      
-    - name: Inject secrets into Kubernetes environment
-      uses: azure/k8s-create-secret@v5
-      with:
-        secret-name: DB-creds-OKE
-        DB_WALLET_PATH: Wallet-${{ inputs.build-environment }}
-        DB_WALLET_PASS: ${{ inputs.build-environment == 'dev' && secrets.DB_WALLET_PASS_DEV || secrets.DBN_WALLET_PASS_PROD }}
-        DB_USER: BACKEND
-        DB_USER_PASS: ${{ secrets.DB_USER_PASS }}
-        DSN_STRING: ${{ inputs.build-environment == 'dev' && secrets.DB_DSN_DEV || secrets.DBN_DSN_PROD }}
-
-    - name: Trigger deploy to Kubernetes
-      shell: bash
-      working-directory: ${{ github.workspace }}
-      run: kubectl apply -f k8s/${{ inputs.build-environment }}/*.yaml 
