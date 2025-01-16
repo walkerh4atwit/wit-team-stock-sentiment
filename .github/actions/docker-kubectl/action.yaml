@@ -43,17 +43,15 @@ runs:
       
     - name: Inject secrets into Kubernetes environment
       uses: azure/k8s-create-secret@v5
-      env: 
-        DB_USER_PASS_KEY: DB_USER_PASS_${{ inputs.build-environment }}
-        DB_WALLET_PASS_KEY: DB_WALLET_PASS_${{ inputs.build-environment }}
       with:
         secret-name: DB-creds-OKE
         DB_WALLET_PATH: Wallet-${{ inputs.build-environment }}
         DB_WALLET_PASS: ${{ inputs.build-environment == 'dev' && secrets.DB_WALLET_PASS_DEV || secrets.DBN_WALLET_PASS_PROD }}
         DB_USER: BACKEND
-        DB_USER_PASS: ${{ secrets.env.DB_USER_PASS_KEY }}
+        DB_USER_PASS: ${{ secrets.DB_USER_PASS }}
         DSN_STRING: ${{ inputs.build-environment == 'dev' && secrets.DB_DSN_DEV || secrets.DBN_DSN_PROD }}
 
     - name: Trigger deploy to Kubernetes
+      shell: bash
       working-directory: ${{ github.workspace }}
-      run: kubectl apply -f k8s/*.yaml
+      run: kubectl apply -f k8s/${{ inputs.build-environment }}/*.yaml 
