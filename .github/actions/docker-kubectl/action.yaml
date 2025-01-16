@@ -30,7 +30,7 @@ runs:
       with: 
         context: ${{ inputs.directory }}
         push: true
-        tags: ${{ inputs.directory }}-${{ inputs.build-environment }}:c${{ github.sha }}
+        tags: ${{ inputs.directory }}-${{ inputs.build-environment }}:latest
 
     - name: Sign into Oracle Kubernetes Engine
       uses: oracle-actions/configure-kubectl-oke@v1.5.0
