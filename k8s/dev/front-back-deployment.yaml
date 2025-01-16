@@ -3,25 +3,25 @@ kind: Deployment
 metadata:
   name: my-deployment-servers
   labels:
-    app: my-servers
+    app: sentiments-frontend
 
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: my-servers
+      app: sentiments-frontend
 
   template:
     metadata:
       labels:
-        app: my-template
+        app: sentiments-frontend
 
     spec:
       containers:
       - name: front-end
-        image: ??? 
+        image: front-end-dev:latest
         ports:
-        - containerPort: 80
+          - containerPort: 80
         resources:
           limits:
             memory: 200Mi
@@ -31,9 +31,9 @@ spec:
             cpu: 20m
 
       - name: back-end
-        image: ???
-        ports: 
-        - containerPort: 8080
+        image: back-end-dev:latest
+        ports:
+          - containerPort: 8000
         resources:
           limits:
             memory: 400Mi
