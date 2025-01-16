@@ -1,14 +1,14 @@
 name: Deploys the Stock Sentiment Analyst app
 
 on:
+  pull_request:
+    branches: 
+      - develop
+      - main
   push:
     branches: 
       - develop
       - main
-    paths:
-      - back-end/**
-      - front-end/**
-      - data-collection/**
 
 env: 
   ENVIRONMENT_TAG: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
