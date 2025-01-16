@@ -15,14 +15,8 @@ runs:
     - name: Login to OCIR
       uses: oracle-actions/login-ocir@v1.3.0
       id: login-ocir
-      env:
-        OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
-        OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
-        OCI_CLI_FINGERPRINT: ${{ secrets.OCI_CLI_FINGERPRINT }}
-        OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
-        OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
       with: 
-        auth_token: ${{ secrets.OCI_CLI_AUTH_T }}
+        auth_token: ${{ env.OCI_CLI_AUTH_T }}
     
     - name: Build and push Docker image
       uses: docker/build-push-action@v6
