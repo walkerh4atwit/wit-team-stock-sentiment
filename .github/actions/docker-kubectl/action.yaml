@@ -28,4 +28,4 @@ runs:
         build-args: |
           BUILD_ENV=${{ inputs.build-environment }}
         push: true
-        tags: ${{ inputs.directory }}-${{ inputs.build-environment }}:latest
+        tags: ${{ env.OCI_CLI_REGION }}.ocir.io/${{ env.OCI_CLI_NAMESPACE }}/${{ inputs.directory }}-${{ inputs.build-environment }}:latest
