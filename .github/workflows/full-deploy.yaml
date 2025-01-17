@@ -125,6 +125,6 @@ jobs:
         run: |
           kubectl apply -f frontend-service.yaml
 
-          envsubst < ingress.yaml | kubectl apply -f
-          envsubst < front-back-deployment.yaml | kubectl apply -f
-          envsubst < collection-deployment.yaml | kubectl apply -f 
+          envsubst <               ingress.yaml | kubectl apply -f -
+          envsubst < front-back-deployment.yaml | kubectl apply -f -
+          envsubst < collection-deployment.yaml | kubectl apply -f -
