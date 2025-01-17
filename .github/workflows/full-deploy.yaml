@@ -123,8 +123,8 @@ jobs:
           FRONT_END_HOST: ${{ env.ENVIRONMENT_TAG == 'dev' && 'dev.' || '' }}sentiments.henrywalker.tech
         working-directory: k8s
         run: |
-          kubectl apply -f frontend-service.yaml
+          kubectl apply -f frontend-service.yaml &&
 
-          envsubst <               ingress.yaml | kubectl apply -f 
-          envsubst < front-back-deployment.yaml | kubectl apply -f 
+          envsubst <               ingress.yaml | kubectl apply -f &&
+          envsubst < front-back-deployment.yaml | kubectl apply -f &&
           envsubst < collection-deployment.yaml | kubectl apply -f 
