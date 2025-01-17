@@ -70,16 +70,23 @@ jobs:
         with: 
           cluster: ${{ secrets.OCI_CLUSTER_ID }}
 
+      - name: K8s get cluster context
+        uses: azure/k8s-set-context@v4
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.OKE_KUBECONFIG }}
+          context: ${{ vars.OKE_CONTEXT }}
+
       - name: K8s inject secrets about DB
         uses: azure/k8s-create-secret@v5
         with:
           secret-name: DB-creds-OKE-${{ env.ENVIRONMENT_TAG }}
           string-data: |
             {"DB_WALLET_PATH": "Wallet-${{ env.ENVIRONMENT_TAG }}",
-            "DB_WALLET_PASS": "${{ env.ENVIRONMENT_TAG == 'dev' && secrets.DB_WALLET_PASS_DEV || secrets.DBN_WALLET_PASS_PROD }}",
+            "DB_WALLET_PASS": "${{ env.ENVIRONMENT_TAG == 'dev' && secrets.DB_WALLET_PASS_DEV || secrets.DB_WALLET_PASS_PROD }}",
             "DB_USER": "BACKEND",
             "DB_USER_PASS": "${{ env.ENVIRONMENT_TAG == 'dev' && secrets.DB_USER_PASS_DEV || secrets.DB_USER_PASS_PROD }}",
-            "DSN_STRING": "${{ env.ENVIRONMENT_TAG == 'dev' && secrets.DB_DSN_DEV || secrets.DBN_DSN_PROD }}"}
+            "DSN_STRING": "${{ env.ENVIRONMENT_TAG == 'dev' && secrets.DB_DSN_DEV || secrets.DB_DSN_PROD }}"}
 
       - name: K8s inject secrets about OCI CLI
         uses: azure/k8s-create-secret@v5
