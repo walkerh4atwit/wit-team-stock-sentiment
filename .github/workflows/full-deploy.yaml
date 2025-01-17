@@ -119,7 +119,7 @@ jobs:
           DB_CREDS_KEY: DB-creds-OKE-${{ env.ENVIRONMENT_TAG }}
           OCI_NAMESPACE: ${{ secrets.OCI_CLI_NAMESPACE }}
           FRONT_END_HOST: ${{ env.ENVIRONMENT_TAG == 'dev' && 'dev.' || '' }}sentiments.henrywalker.tech
-        working-directory: ${{ github.workspace }}/k8s
+        working-directory: k8s
         run: |
           kubectl apply -f frontend-service.yaml
 
