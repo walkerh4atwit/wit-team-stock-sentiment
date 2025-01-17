@@ -17,6 +17,8 @@ spec:
         app: my-deployment-frontend-backend-${BUILD_ENV}
 
     spec:
+      imagePullSecrets:
+      - name: ocir-ipull-secret
       containers:
       - name: front-end
         image: iad.ocir.io/${OCI_NAMESPACE}/front-end-${BUILD_ENV}:latest

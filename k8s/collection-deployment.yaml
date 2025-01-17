@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: my-deployment-cache-collector-${BUILD_ENV}
 spec:
+  imagePullSecrets:
+  - name: ocir-ipull-secret 
   replicas: 1
   selector:
     matchLabels:
