@@ -3,18 +3,18 @@ kind: Deployment
 metadata:
   name: my-deployment-servers
   labels:
-    app: my-deployment-frontend-backend
+    app: my-deployment-frontend-backend-${BUILD_ENV}
 
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: sentiments-frontend
+      app: my-deployment-frontend-backend-${BUILD_ENV}
 
   template:
     metadata:
       labels:
-        app: sentiments-frontend
+        app: my-deployment-frontend-backend-template-${BUILD_ENV}
 
     spec:
       containers:
