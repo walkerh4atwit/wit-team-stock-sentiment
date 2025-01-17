@@ -39,21 +39,21 @@ jobs:
 
     - name: Backend build-push
       uses: ./.github/actions/docker-kubectl
-      if: contains(steps.dorny-paths-filter.outputs.changes, 'backend')
+      # if: contains(steps.dorny-paths-filter.outputs.changes, 'backend')
       with: 
         build-environment: ${{ env.ENVIRONMENT_TAG }}
         directory: back-end
     
     - name: Frontend build-push
       uses: ./.github/actions/docker-kubectl
-      if: contains(steps.dorny-paths-filter.outputs.changes,'frontend')
+      # if: contains(steps.dorny-paths-filter.outputs.changes,'frontend')
       with: 
         build-environment: ${{ env.ENVIRONMENT_TAG }}
         directory: front-end
 
     - name: Collection-cache build-push
       uses: ./.github/actions/docker-kubectl
-      if: contains(steps.dorny-paths-filter.outputs.changes,'data-collection')
+      # if: contains(steps.dorny-paths-filter.outputs.changes,'collection-cache')
       with: 
         build-environment: ${{ env.ENVIRONMENT_TAG }}
         directory: data-collection
