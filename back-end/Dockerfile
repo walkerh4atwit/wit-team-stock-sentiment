@@ -4,7 +4,7 @@ ADD src/* .
 ADD queries queries
 ADD requirements-unix.txt .
 
-RUN pip3 install --upgrade pip
+RUN pip3 install --upgrade -v pip
 
 ENTRYPOINT pip3 install -r requirements-unix.txt && \
     gunicorn -b :8000 --workers=3 wsgi:app
