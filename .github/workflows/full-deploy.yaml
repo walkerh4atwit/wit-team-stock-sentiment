@@ -13,7 +13,7 @@ on:
       - main
 
 env: 
-  ENVIRONMENT_TAG: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}-$
+  ENVIRONMENT_TAG: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
   OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
   OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
   OCI_CLI_FINGERPRINT: ${{ secrets.OCI_CLI_FINGERPRINT }}
@@ -65,34 +65,39 @@ jobs:
     steps:
       - name: Sign into Oracle Kubernetes Engine
         uses: oracle-actions/configure-kubectl-oke@v1.5.0
+        with: 
+          cluster: ${{ secrets.OCI_CLUSTER_ID }}
 
       - name: K8s inject secrets about DB
         uses: azure/k8s-create-secret@v5
         with:
           secret-name: DB-creds-OKE-${{ env.ENVIRONMENT_TAG }}
-          DB_WALLET_PATH: Wallet-${{ env.ENVIRONMENT_TAG }}
-          DB_WALLET_PASS: ${{ env.ENVIRONMENT_TAG == 'dev' && secrets.DB_WALLET_PASS_DEV || secrets.DBN_WALLET_PASS_PROD }}
-          DB_USER: BACKEND
-          DB_USER_PASS: ${{ env.ENVIRONMENT_TAG == 'dev' && secrets.DB_USER_PASS_DEV || secrets.DB_USER_PASS_PROD }}
-          DSN_STRING: ${{ env.ENVIRONMENT_TAG == 'dev' && secrets.DB_DSN_DEV || secrets.DBN_DSN_PROD }}
+          string-data: |
+            {"DB_WALLET_PATH": "Wallet-${{ env.ENVIRONMENT_TAG }}",
+            "DB_WALLET_PASS": "${{ env.ENVIRONMENT_TAG == 'dev' && secrets.DB_WALLET_PASS_DEV || secrets.DBN_WALLET_PASS_PROD }}",
+            "DB_USER": "BACKEND",
+            "DB_USER_PASS": "${{ env.ENVIRONMENT_TAG == 'dev' && secrets.DB_USER_PASS_DEV || secrets.DB_USER_PASS_PROD }}",
+            "DSN_STRING": "${{ env.ENVIRONMENT_TAG == 'dev' && secrets.DB_DSN_DEV || secrets.DBN_DSN_PROD }}"}
 
       - name: K8s inject secrets about OCI CLI
         uses: azure/k8s-create-secret@v5
         with:
           secret-name: OCI_CREDS
-          OCI_CLI_USER: ${{ env.OCI_CLI_USER }}
-          OCI_CLI_TENANCY: ${{ env.OCI_CLI_TENANCY }}
-          OCI_CLI_FINGERPRINT: ${{ env.OCI_CLI_FINGERPRINT }}
-          OCI_CLI_KEY_CONTENT: ${{ env.OCI_CLI_KEY_CONTENT }}
-          OCI_CLI_REGION: ${{ env.OCI_CLI_REGION }}
-          OCI_CLI_AUTH_T: ${{ env.OCI_CLI_AUTH_T }}
+          string-data: |
+            {"OCI_CLI_USER": "${{ env.OCI_CLI_USER }}",
+            "OCI_CLI_TENANCY": "${{ env.OCI_CLI_TENANCY }}",
+            "OCI_CLI_FINGERPRINT": "${{ env.OCI_CLI_FINGERPRINT }}",
+            "OCI_CLI_KEY_CONTENT": "${{ env.OCI_CLI_KEY_CONTENT }}",
+            "OCI_CLI_REGION": "${{ env.OCI_CLI_REGION }}",
+            "OCI_CLI_AUTH_T": "${{ env.OCI_CLI_AUTH_T }}"}
 
       - name: K8s inject secrets about Alpaca API
         uses: azure/k8s-create-secret@v5
         with:
           secret-name: ALPACA_KEYS
-          API_KEY: ${{ secrets.ALPACA_API_KEY }}
-          API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          string-data: |
+            {"API_KEY": "${{ secrets.ALPACA_API_KEY }}",
+            "API_SECRET_KEY": "${{ secrets.ALPACA_API_SECRET_KEY }}"}
 
       - name: Trigger deploy to Kubernetes
         env:
