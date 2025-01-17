@@ -1,0 +1,29 @@
+name: Push to OCIR action
+description: This action pushes containers to OCIR
+inputs:
+  build-environment:
+    description: This is which environment is being deployed later
+    required: true
+  directory:
+    description: This is the directory that is updated
+    required: true
+
+runs: 
+  using: composite
+  
+  steps:
+    - name: Login to OCIR
+      uses: oracle-actions/login-ocir@v1.3.0
+      id: login-ocir
+      with: 
+        auth_token: ${{ env.OCI_CLI_AUTH_T }}
+    
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v6
+      id: build-push-image      
+      with: 
+        context: ${{ inputs.directory }}
+        build-args:
+          - BUILD_ENV: ${{ inputs.build-environment }}
+        push: true
+        tags: ${{ inputs.directory }}-${{ inputs.build-environment }}:latest

@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment-servers
+  labels:
+    app: my-deployment-frontend-backend
+
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: sentiments-frontend
+
+  template:
+    metadata:
+      labels:
+        app: sentiments-frontend
+
+    spec:
+      containers:
+      - name: front-end
+        image: iad.ocir.io/${OCI_NAMESPACE}/front-end-${BUILD_ENV}:latest
+        ports:
+          - containerPort: 80
+        env:
+          - name: REACT_APP_API_URL 
+            value: ${FRONT_END_HOST}/api
+        resources:
+          limits:
+            memory: 200Mi
+            cpu: 40m
+          requests:
+            memory: 100Mi
+            cpu: 20m
+
+      - name: back-end
+        image: iad.ocir.io/${OCI_NAMESPACE}/back-end-${BUILD_ENV}:latest
+        env:
+          - name: BUILD_ENV
+            value: ${BUILD_ENV}
+        envFrom:
+          - secretRef:
+              name: ${DB_CREDS_KEY}
+          - secretRef:
+              name: OCI_CREDS
+        ports:
+          - containerPort: 8000
+        resources:
+          limits:
+            memory: 400Mi
+            cpu: 80m
+          requests:
+            memory: 200Mi
+            cpu: 40m
