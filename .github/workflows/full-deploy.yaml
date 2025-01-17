@@ -12,7 +12,7 @@ env:
   OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
   OCI_CLI_FINGERPRINT: ${{ secrets.OCI_CLI_FINGERPRINT }}
   OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
-  OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
+  OCI_CLI_REGION: ${{ vars.OCI_CLI_REGION }}
   OCI_CLI_AUTH_T: ${{ secrets.OCI_CLI_AUTH_T }}
   OCI_CLI_NAMESPACE: ${{ secrets.OCI_CLI_NAMESPACE }}
 
@@ -64,6 +64,8 @@ jobs:
     steps:
       - name: Sign into Oracle Kubernetes Engine
         uses: oracle-actions/configure-kubectl-oke@v1.5.0
+        env:
+          OCI_CLI_REGION: ${{ vars.OCI_CLI_REGION_NAME }}
         with: 
           cluster: ${{ secrets.OCI_CLUSTER_ID }}
 
