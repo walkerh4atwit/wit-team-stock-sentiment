@@ -42,7 +42,7 @@ spec:
           - secretRef:
               name: ${DB_CREDS_KEY}
           - secretRef:
-              name: OCI_CREDS
+              name: oci-creds
         ports:
           - containerPort: 8000
         resources:

@@ -80,7 +80,7 @@ jobs:
       - name: K8s inject secrets about DB
         uses: azure/k8s-create-secret@v5
         with:
-          secret-name: DB-creds-OKE-${{ env.ENVIRONMENT_TAG }}
+          secret-name: db-creds-oke-${{ env.ENVIRONMENT_TAG }}
           string-data: |
             {"DB_WALLET_PATH": "Wallet-${{ env.ENVIRONMENT_TAG }}",
             "DB_WALLET_PASS": "${{ env.ENVIRONMENT_TAG == 'dev' && secrets.DB_WALLET_PASS_DEV || secrets.DB_WALLET_PASS_PROD }}",
@@ -91,7 +91,7 @@ jobs:
       - name: K8s inject secrets about OCI CLI
         uses: azure/k8s-create-secret@v5
         with:
-          secret-name: OCI_CREDS
+          secret-name: oci-creds
           string-data: |
             {"OCI_CLI_USER": "${{ env.OCI_CLI_USER }}",
             "OCI_CLI_TENANCY": "${{ env.OCI_CLI_TENANCY }}",
@@ -103,7 +103,7 @@ jobs:
       - name: K8s inject secrets about Alpaca API
         uses: azure/k8s-create-secret@v5
         with:
-          secret-name: ALPACA_KEYS
+          secret-name: alpaca-keys
           string-data: |
             {"API_KEY": "${{ secrets.ALPACA_API_KEY }}",
             "API_SECRET_KEY": "${{ secrets.ALPACA_API_SECRET_KEY }}"}
