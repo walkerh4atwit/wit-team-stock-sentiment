@@ -1,4 +1,4 @@
-FROM python:alpine
+FROM python:3.11.11-slim
 
 ADD src/* .
 ADD requirements-unix.txt .
