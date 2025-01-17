@@ -1,12 +1,6 @@
 name: Deploys the Stock Sentiment Analyst app
 
 on:
-  pull_request_target:
-    types:
-      - closed
-    branches: 
-      - develop
-      - main
   push:
     branches: 
       - develop
@@ -41,21 +35,21 @@ jobs:
 
       - name: Backend build-push
         uses: ./.github/actions/docker-kubectl
-        if: contains('backend', steps.dorny-paths-filter.outputs)
+        if: contains(steps.dorny-paths-filter.outputs,'frontend')
         with: 
           build-environment: ${{ env.ENVIRONMENT_TAG }}
           directory: back-end
       
       - name: Frontend build-push
         uses: ./.github/actions/docker-kubectl
-        if: contains('frontend', steps.dorny-paths-filter.outputs)
+        if: contains(steps.dorny-paths-filter.outputs,'backend')
         with: 
           build-environment: ${{ env.ENVIRONMENT_TAG }}
           directory: front-end
 
       - name: Collection-cache build-push
         uses: ./.github/actions/docker-kubectl
-        if: contains('data-collection', steps.dorny-paths-filter.outputs)
+        if: contains(steps.dorny-paths-filter.outputs,'data-collection')
         with: 
           build-environment: ${{ env.ENVIRONMENT_TAG }}
           directory: data-collection
