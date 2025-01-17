@@ -113,7 +113,7 @@ jobs:
             {"API_KEY": "${{ secrets.ALPACA_API_KEY }}",
             "API_SECRET_KEY": "${{ secrets.ALPACA_API_SECRET_KEY }}"}
 
-      - run: pwd
+      - run: ls -la
 
       - name: Trigger deploy to Kubernetes
         env:
