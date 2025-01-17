@@ -90,7 +90,7 @@ async def socket_handler(data: News):
 
     article_id = article_id_result[0]
 
-    # 
+    # only if there are symbols in this article
     if data.symbols:
         # pushes the article info to the db on oci
         csr.execute(post_article_query, (article_id, data.headline, data.url, data.summary, data.created_at.strftime("%Y-%m-%d %H:%M:%S%z")))

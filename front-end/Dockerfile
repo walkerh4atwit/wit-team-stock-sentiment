@@ -21,6 +21,7 @@ COPY --from=0 /front-end/build /usr/share/nginx/html
 COPY dockerized-nginx-${BUILD_ENV}.conf \
     /etc/nginx/conf.d/default.conf
 
+# exposed port
 EXPOSE 80
 
 RUN nginx -t
