@@ -23,7 +23,7 @@ runs:
       id: build-push-image      
       with: 
         context: ${{ inputs.directory }}
-        build-args:
-          - BUILD_ENV: ${{ inputs.build-environment }}
+        build-args: |
+          BUILD_ENV=${{ inputs.build-environment }}
         push: true
         tags: ${{ inputs.directory }}-${{ inputs.build-environment }}:latest
