@@ -17,7 +17,7 @@ runs:
       id: login-ocir
       with: 
         registry: ${{ env.OCI_CLI_REGION }}.ocir.io
-        username: ${{ env.OCI_CLI_TENANCY }}/hwalker145@gmail.com
+        username: ${{ env.OCI_CLI_NAMESPACE }}/hwalker145@gmail.com
         password: ${{ env.OCI_CLI_AUTH_T }}
     
     - name: Build and push Docker image
