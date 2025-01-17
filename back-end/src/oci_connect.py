@@ -1,6 +1,7 @@
 from oci.response import Response
 import oci
 import os
+import base64
 from zipfile import ZipFile
 
 # this function signs into oci and copies in the db wallet
@@ -9,7 +10,7 @@ def oci_util():
         {
             "name": os.environ.get("OCI_CLI_USER"),
             "fingerprint": os.environ.get("OCI_CLI_FINGERPRINT"),
-            "key_content": os.environ.get("OCI_CLI_KEY_CONTENT"),
+            "key_content": base64.decode(os.environ.get("OCI_CLI_KEY_CONTENT")),
             "tenancy": os.environ.get("OCI_CLI_TENANCY"),
             "region": os.environ.get("OCI_CLI_REGION")
         }
