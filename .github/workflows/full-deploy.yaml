@@ -29,7 +29,7 @@ jobs:
             backend: 
               back-end/**
             frontend: 
-              back-end/**
+              front-end/**
             collection-cache:
               data-collection/**
           base: ${{ github.ref }}
