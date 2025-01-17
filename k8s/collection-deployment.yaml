@@ -10,7 +10,7 @@ spec:
   template:
     metadata:
       labels:
-        app: my-deployment-cache-collector-template-${BUILD_ENV}
+        app: my-deployment-cache-collector-${BUILD_ENV}
     spec:
       containers:
       - name: cache-collector

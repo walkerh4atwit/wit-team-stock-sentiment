@@ -14,7 +14,7 @@ spec:
   template:
     metadata:
       labels:
-        app: my-deployment-frontend-backend-template-${BUILD_ENV}
+        app: my-deployment-frontend-backend-${BUILD_ENV}
 
     spec:
       containers:
