@@ -81,6 +81,7 @@ jobs:
         uses: azure/k8s-create-secret@v5
         with:
           secret-name: db-creds-oke-${{ env.ENVIRONMENT_TAG }}
+          secret-type: generic
           string-data: |
             {"DB_WALLET_PATH": "Wallet-${{ env.ENVIRONMENT_TAG }}",
             "DB_WALLET_PASS": "${{ env.ENVIRONMENT_TAG == 'dev' && secrets.DB_WALLET_PASS_DEV || secrets.DB_WALLET_PASS_PROD }}",
@@ -92,6 +93,7 @@ jobs:
         uses: azure/k8s-create-secret@v5
         with:
           secret-name: oci-creds
+          secret-type: generic
           string-data: |
             {"OCI_CLI_USER": "${{ env.OCI_CLI_USER }}",
             "OCI_CLI_TENANCY": "${{ env.OCI_CLI_TENANCY }}",
@@ -104,6 +106,7 @@ jobs:
         uses: azure/k8s-create-secret@v5
         with:
           secret-name: alpaca-keys
+          secret-type: generic
           string-data: |
             {"API_KEY": "${{ secrets.ALPACA_API_KEY }}",
             "API_SECRET_KEY": "${{ secrets.ALPACA_API_SECRET_KEY }}"}
