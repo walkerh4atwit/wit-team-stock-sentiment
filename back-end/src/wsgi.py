@@ -76,6 +76,6 @@ def leaderTables():
     response.status_code = 200
     return response
 
-# development environment
+# for the development environment
 if len(sys.argv) == 1:
     app.run(port=3131, host='0.0.0.0')
