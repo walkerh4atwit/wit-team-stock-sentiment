@@ -113,6 +113,8 @@ jobs:
             {"API_KEY": "${{ secrets.ALPACA_API_KEY }}",
             "API_SECRET_KEY": "${{ secrets.ALPACA_API_SECRET_KEY }}"}
 
+      - run: ls -la ..
+
       - name: Trigger deploy to Kubernetes
         env:
           BUILD_ENV: ${{ env.ENVIRONMENT_TAG }}
@@ -122,6 +124,7 @@ jobs:
         working-directory: ../k8s
         run: |
           kubectl apply -f frontend-service.yaml
+
           envsubst <               ingress.yaml | kubectl apply -f 
           envsubst < front-back-deployment.yaml | kubectl apply -f 
           envsubst < collection-deployment.yaml | kubectl apply -f 
