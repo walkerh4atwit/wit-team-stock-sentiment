@@ -18,6 +18,7 @@ env:
 jobs:
   build-push:
     runs-on: ubuntu-latest
+    environment: 'Sentiments-Env'
     steps:
       - uses: actions/checkout@v4
       
@@ -58,6 +59,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    environment: 'Sentiments-Env'
     steps:
       - name: Sign into Oracle Kubernetes Engine
         uses: oracle-actions/configure-kubectl-oke@v1.5.0
