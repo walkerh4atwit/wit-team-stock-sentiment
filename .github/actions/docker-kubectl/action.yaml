@@ -13,10 +13,12 @@ runs:
   
   steps:
     - name: Login to OCIR
-      uses: oracle-actions/login-ocir@v1.3.0
+      uses: docker/login-action@v3
       id: login-ocir
       with: 
-        auth_token: ${{ env.OCI_CLI_AUTH_T }}
+        registry: ${{ env.OCI_CLI_REGION }}.ocir.io
+        username: ${{ env.OCI_CLI_TENANCY }}/hwalker145@gmail.com
+        password: ${{ env.OCI_CLI_AUTH_T }}
     
     - name: Build and push Docker image
       uses: docker/build-push-action@v6
