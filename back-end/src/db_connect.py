@@ -40,4 +40,5 @@ def db_connect():
         dsn=db_dsn_string
     )
 
+    # return value
     return connection
