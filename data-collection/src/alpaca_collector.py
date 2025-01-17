@@ -163,7 +163,7 @@ api_key, api_secret_key = find_api_keys()
 # initializing some variables
 ml_tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 ml_model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=3)
-ml_model.load_state_dict(torch.load('/var/lib/sentiments/ml_model.pth', map_location=torch.device('cpu')))
+ml_model.load_state_dict(torch.load('sentiments-llm.pth', map_location=torch.device('cpu')))
 
 # subbing to the websocket api
 data_stream = NewsDataStream(api_key=api_key, secret_key=api_secret_key)
