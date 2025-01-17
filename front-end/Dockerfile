@@ -24,5 +24,4 @@ COPY dockerized-nginx-${BUILD_ENV}.conf \
 # exposed port
 EXPOSE 80
 
-RUN nginx -t
-RUN nginx
+ENTRYPOINT [ "sh", "nginx -t && nginx" ]
