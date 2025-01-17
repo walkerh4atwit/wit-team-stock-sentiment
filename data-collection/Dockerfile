@@ -5,5 +5,5 @@ ADD requirements-unix.txt .
 
 RUN pip install --upgrade pip
 
-ENTRYPOINT pip install -r requirements-unix.txt && \
-    python alpaca_collector.py
+ENTRYPOINT pip3 install -r requirements-unix.txt && \
+    python3 alpaca_collector.py

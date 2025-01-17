@@ -6,5 +6,5 @@ ADD requirements-unix.txt .
 
 RUN pip install --upgrade pip
 
-ENTRYPOINT pip install -r requirements-unix.txt && \
+ENTRYPOINT pip3 install -r requirements-unix.txt && \
     gunicorn -b :8000 --workers=3 wsgi:app
