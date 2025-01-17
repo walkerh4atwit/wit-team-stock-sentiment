@@ -1,6 +1,7 @@
 from oci.response import Response
 import oci
 import os
+from zipfile import ZipFile
 
 # this function signs into oci and copies in the db wallet
 def oci_util():
@@ -25,3 +26,6 @@ def oci_util():
 
     with open('Database-Wallet', 'wb') as file:
         file.write(response.data)
+
+    wallet = ZipFile(object_name, 'r')
+    wallet.extractall()

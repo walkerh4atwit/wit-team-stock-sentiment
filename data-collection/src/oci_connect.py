@@ -1,6 +1,7 @@
 from oci.response import Response
 import oci
 import os
+from zipfile import ZipFile
 
 # this function signs into oci and copies in the db wallet
 def oci_util():
@@ -17,7 +18,7 @@ def oci_util():
     response: Response = client.get_namespace()
     namespace = response.data
     bucket_name = 'sentiments-llm-bucket'
-    object_name = 'Wallet-' + os.environ.get("BUILD_ENV")
+    object_name = 'Wallet-' + os.environ.get("BUILD_ENV") + '.zip'
 
     response = client.get_object(
         namespace,bucket_name,object_name        
@@ -25,6 +26,9 @@ def oci_util():
 
     with open('Database-Wallet', 'wb') as file:
         file.write(response.data)
+
+    wallet = ZipFile(object_name, 'r')
+    wallet.extractall()
 
     object_name = 'sentiments-llm.pth'
 
