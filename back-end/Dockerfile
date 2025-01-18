@@ -6,7 +6,6 @@ ADD requirements-unix.txt .
 
 # RUN which python | ls -la
 # RUN ["/bin/sh", "ls", "-la"]
-RUN ["pip", "install", "--upgrade", "-v", "pip"]
+RUN ["sh", "-c", "pip install --upgrade -v pip"]
 
-ENTRYPOINT ["pip", "install", "-r", "requirements-unix.txt", "&&", \
-    "gunicorn", "-b", ":8000", "--workers=3", "wsgi:app"]
+ENTRYPOINT ["sh", "-c", "pip install -r requirements-unix.txt && gunicorn -b :8000 --workers=3 wsgi:app"]
