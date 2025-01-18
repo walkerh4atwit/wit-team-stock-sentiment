@@ -8,8 +8,8 @@ COPY src /front-end/src
 COPY *.json /front-end/
 
 # make the build
-RUN npm ci
-RUN npm run build
+RUN ["/bin/sh", "npm", "ci"]
+RUN ["/bin/sh", "npm", "run", "build"]
 
 # next docker stage
 FROM nginx:alpine
@@ -24,4 +24,4 @@ COPY dockerized-nginx-${BUILD_ENV}.conf \
 # exposed port
 EXPOSE 80
 
-ENTRYPOINT nginx -t && nginx
+ENTRYPOINT ["/bin/sh", "nginx", "-t", "&&", "nginx"]

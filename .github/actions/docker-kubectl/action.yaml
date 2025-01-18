@@ -24,8 +24,7 @@ runs:
       uses: docker/build-push-action@v6
       id: build-push-image      
       with: 
-        platforms: 
-        - linux/arm64
+        platforms: linux/arm64/v8
         context: ${{ inputs.directory }}
         build-args: |
           BUILD_ENV=${{ inputs.build-environment }}
