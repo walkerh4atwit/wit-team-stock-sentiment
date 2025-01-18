@@ -4,7 +4,9 @@ ADD src/* .
 ADD queries queries
 ADD requirements-unix.txt .
 
-RUN ["/bin/sh", "pip3", "install", "--upgrade", "-v", "pip"]
+# RUN which python | ls -la
+# RUN ["/bin/sh", "ls", "-la"]
+RUN ["pip", "install", "--upgrade", "-v", "pip"]
 
-ENTRYPOINT ["/bin/sh", "pip3", "install", "-r", "requirements-unix.txt", "&&", \
+ENTRYPOINT ["pip", "install", "-r", "requirements-unix.txt", "&&", \
     "gunicorn", "-b", ":8000", "--workers=3", "wsgi:app"]
