@@ -94,8 +94,7 @@ jobs:
     - name: Encoding the private key
       run: |
         echo "ENCODED_KEY_CONTENT=$(printf '%s' '${{ env.OCI_CLI_KEY_CONTENT }}' | base64)"
-        echo $ENCODED_KEY_CONTENT
-        $ENCODED_KEY_CONTENT >> GITHUB_ENV
+        $ENCODED_KEY_CONTENT >> $GITHUB_ENV
 
     - name: K8s inject secrets about OCI CLI
       uses: azure/k8s-create-secret@v5
