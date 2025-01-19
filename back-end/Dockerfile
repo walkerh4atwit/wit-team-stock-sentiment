@@ -4,6 +4,8 @@ ADD src/* .
 ADD queries queries
 ADD requirements-unix.txt .
 
+ENV PYTHONUNBUFFERED=1
+
 # RUN which python | ls -la
 # RUN ["/bin/sh", "ls", "-la"]
 RUN ["sh", "-c", "pip install --upgrade -v pip"]
