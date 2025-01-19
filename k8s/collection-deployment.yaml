@@ -20,6 +20,7 @@ spec:
       - name: ocir-ipull-secret 
       containers:
       - name: cache-collector
+        restartPolicy: Never
         image: iad.ocir.io/${OCI_NAMESPACE}/data-collection-${BUILD_ENV}:latest
         env:
           - name: BUILD_ENV

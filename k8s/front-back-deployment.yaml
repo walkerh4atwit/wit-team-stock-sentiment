@@ -20,6 +20,7 @@ spec:
       - name: ocir-ipull-secret
       containers:
       - name: front-end
+        restartPolicy: Never
         image: iad.ocir.io/${OCI_NAMESPACE}/front-end-${BUILD_ENV}:latest
         ports:
           - containerPort: 80
@@ -35,6 +36,7 @@ spec:
             cpu: 20m
 
       - name: back-end
+        restartPolicy: Never
         image: iad.ocir.io/${OCI_NAMESPACE}/back-end-${BUILD_ENV}:latest
         env:
           - name: BUILD_ENV
