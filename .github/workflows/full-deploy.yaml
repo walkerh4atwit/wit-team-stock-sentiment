@@ -92,7 +92,7 @@ jobs:
           "DSN_STRING": "${{ env.ENVIRONMENT_TAG == 'dev' && secrets.DB_DSN_DEV || secrets.DB_DSN_PROD }}"}
 
     - name: Encoding the private key
-      run: echo "ENCODED_KEY_CONTENT=$(echo ${{ env.OCI_CLI_KEY_CONTENT }} | base64)" >> GITHUB_ENV
+      run: echo "ENCODED_KEY_CONTENT=$(echo '${{ env.OCI_CLI_KEY_CONTENT }}' | base64)" >> GITHUB_ENV
 
     - name: K8s inject secrets about OCI CLI
       uses: azure/k8s-create-secret@v5
