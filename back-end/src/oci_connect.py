@@ -4,10 +4,13 @@ import os
 import base64
 from zipfile import ZipFile
 
+def stream_file(fname: str, http_response: Response):
+    with open(fname, 'wb') as file:
+        for chunk in http_response.data.raw.stream(1024 * 1024, decode_content=False):
+            file.write(chunk)
+
 # this function signs into oci and copies in the db wallet
 def oci_util():
-    print(os.environ.get("OCI_CLI_KEY_CONTENT"))
-
     key_bytes: bytes = base64.b64decode(os.environ.get("OCI_CLI_KEY_CONTENT"))
     key_content = key_bytes.decode()
 
@@ -18,8 +21,6 @@ def oci_util():
         "tenancy": os.environ.get("OCI_CLI_TENANCY"),
         "region": os.environ.get("OCI_CLI_REGION")
     }
-
-    print(config)
 
     client = oci.object_storage.ObjectStorageClient(config)
 
@@ -32,8 +33,7 @@ def oci_util():
         namespace,bucket_name,object_name        
     )
 
-    with open('Database-Wallet', 'wb') as file:
-        file.write(response.data)
+    stream_file(response, object_name)
 
     wallet = ZipFile(object_name, 'r')
     wallet.extractall()
