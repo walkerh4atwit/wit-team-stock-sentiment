@@ -11,7 +11,7 @@ def oci_util():
 
     client = oci.object_storage.ObjectStorageClient(
         {
-            "name": os.environ.get("OCI_CLI_USER"),
+            "user": os.environ.get("OCI_CLI_USER"),
             "fingerprint": os.environ.get("OCI_CLI_FINGERPRINT"),
             "key_content": key_content,
             "tenancy": os.environ.get("OCI_CLI_TENANCY"),
