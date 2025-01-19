@@ -26,7 +26,7 @@ def oci_util():
     response: Response = client.get_namespace()
     namespace = response.data
     bucket_name = 'sentiments-llm-bucket'
-    object_name = 'Wallet-' + os.environ.get("BUILD_ENV")
+    object_name = 'Wallet-' + os.environ.get("BUILD_ENV") + '.zip'
 
     response = client.get_object(
         namespace,bucket_name,object_name        

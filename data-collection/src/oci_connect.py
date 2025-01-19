@@ -29,7 +29,7 @@ def oci_util():
     object_name = 'Wallet-' + os.environ.get("BUILD_ENV") + '.zip'
 
     response = client.get_object(
-        namespace,bucket_name,object_name        
+        namespace,bucket_name,object_name     
     )
 
     with open('Database-Wallet', 'wb') as file:
