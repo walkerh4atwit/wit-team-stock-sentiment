@@ -6,8 +6,6 @@ from zipfile import ZipFile
 
 # this function signs into oci and copies in the db wallet
 def oci_util():
-    print(os.environ.get("OCI_CLI_KEY_CONTENT"))
-
     key_bytes: bytes = base64.b64decode(os.environ.get("OCI_CLI_KEY_CONTENT"))
     key_content = key_bytes.decode()
 
@@ -19,8 +17,6 @@ def oci_util():
         "region": os.environ.get("OCI_CLI_REGION")
     }
 
-    print(config)
-
     client = oci.object_storage.ObjectStorageClient(config)
 
     response: Response = client.get_namespace()
@@ -31,6 +27,13 @@ def oci_util():
     response = client.get_object(
         namespace,bucket_name,object_name     
     )
+
+    print("Response-data type:")
+    print(type(response.data))
+    print("Response-data raw type")
+    print(type(response.data.raw))
+    print("Response-data stream type")
+    print(type(response.data.raw.stream))
 
     with open('Database-Wallet', 'wb') as file:
         file.write(response.data)
