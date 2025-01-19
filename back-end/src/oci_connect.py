@@ -9,15 +9,17 @@ def oci_util():
     key_bytes: bytes = base64.b64decode(os.environ.get("OCI_CLI_KEY_CONTENT"))
     key_content = key_bytes.decode()
 
-    client = oci.object_storage.ObjectStorageClient(
-        {
-            "user": os.environ.get("OCI_CLI_USER"),
-            "fingerprint": os.environ.get("OCI_CLI_FINGERPRINT"),
-            "key_content": key_content,
-            "tenancy": os.environ.get("OCI_CLI_TENANCY"),
-            "region": os.environ.get("OCI_CLI_REGION")
-        }
-    )
+    config = {
+        "user": os.environ.get("OCI_CLI_USER"),
+        "fingerprint": os.environ.get("OCI_CLI_FINGERPRINT"),
+        "key_content": key_content,
+        "tenancy": os.environ.get("OCI_CLI_TENANCY"),
+        "region": os.environ.get("OCI_CLI_REGION")
+    }
+
+    print(config)
+
+    client = oci.object_storage.ObjectStorageClient(config)
 
     response: Response = client.get_namespace()
     namespace = response.data
