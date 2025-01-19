@@ -6,8 +6,8 @@ from zipfile import ZipFile
 
 # this function signs into oci and copies in the db wallet
 def oci_util():
-    key_content: str
-    base64.decode(os.environ.get("OCI_CLI_KEY_CONTENT"), key_content)
+    key_bytes: bytes = base64.b64decode(os.environ.get("OCI_CLI_KEY_CONTENT"))
+    key_content = key_bytes.decode()
 
     client = oci.object_storage.ObjectStorageClient(
         {
