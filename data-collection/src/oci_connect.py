@@ -44,5 +44,12 @@ def oci_util():
         namespace,bucket_name,object_name        
     )
 
+    print("Response-data type:")
+    print(type(response.data))
+    print("Response-data raw type")
+    print(type(response.data.raw))
+    print("Response-data stream type")
+    print(type(response.data.raw.stream))
+
     with open(object_name, 'wb') as file:
         file.write(response.data)
