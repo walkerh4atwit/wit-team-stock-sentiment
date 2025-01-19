@@ -16,7 +16,6 @@ spec:
         app: my-deployment-frontend-backend-${BUILD_ENV}
 
     spec:
-      restartPolicy: Never
       imagePullSecrets:
       - name: ocir-ipull-secret
       containers:
