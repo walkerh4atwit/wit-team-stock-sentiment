@@ -6,13 +6,14 @@ from zipfile import ZipFile
 
 # this function signs into oci and copies in the db wallet
 def oci_util():
-
+    key_content: str
+    base64.decode(os.environ.get("OCI_CLI_KEY_CONTENT"), key_content)
 
     client = oci.object_storage.ObjectStorageClient(
         {
             "name": os.environ.get("OCI_CLI_USER"),
             "fingerprint": os.environ.get("OCI_CLI_FINGERPRINT"),
-            "key_content": base64.decode(os.environ.get("OCI_CLI_KEY_CONTENT")),
+            "key_content": key_content,
             "tenancy": os.environ.get("OCI_CLI_TENANCY"),
             "region": os.environ.get("OCI_CLI_REGION")
         }
