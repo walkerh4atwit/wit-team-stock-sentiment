@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-deployment-servers
+  name: my-deployment-servers-${BUILD_ENV}
   labels:
     app: my-deployment-frontend-backend-${BUILD_ENV}
 spec:
@@ -48,8 +48,8 @@ spec:
           - containerPort: 8000
         resources:
           limits:
-            memory: 400Mi
-            cpu: 80m
+            memory: 800Mi
+            cpu: 160m
           requests:
-            memory: 200Mi
-            cpu: 40m
+            memory: 500Mi
+            cpu: 80m
