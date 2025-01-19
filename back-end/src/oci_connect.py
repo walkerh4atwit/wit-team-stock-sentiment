@@ -33,7 +33,7 @@ def oci_util():
         namespace,bucket_name,object_name        
     )
 
-    stream_file(response, object_name)
+    stream_file(object_name, response)
 
     wallet = ZipFile(object_name, 'r')
     wallet.extractall()
