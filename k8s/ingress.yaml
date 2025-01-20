@@ -10,6 +10,12 @@ spec:
         - ${FRONT_END_HOST}
       secretName: my-app-tls
 
+  defaultBackend:
+    service:
+      name: front-end-service
+      port:
+        number: 80
+
   rules:
   - host: ${FRONT_END_HOST}
     http:
