@@ -5,7 +5,7 @@ metadata:
   labels:
     name: my-ingress
 spec:
-  ingressClass: nginx
+  ingressClassName: nginx
   tls:
     - hosts: 
         - ${FRONT_END_HOST}
