@@ -46,7 +46,7 @@ jobs:
     
     - name: Frontend build-push
       uses: ./.github/actions/docker-kubectl
-      if: contains(steps.dorny-paths-filter.outputs.changes,'frontend')
+      # if: contains(steps.dorny-paths-filter.outputs.changes,'frontend')
       with: 
         build-environment: ${{ env.ENVIRONMENT_TAG }}
         directory: front-end
