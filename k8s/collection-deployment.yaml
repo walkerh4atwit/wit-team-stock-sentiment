@@ -18,8 +18,21 @@ spec:
     spec:
       imagePullSecrets:
       - name: ocir-ipull-secret 
+
       containers:
-      - name: cache-collector
+      - name: redis-cache
+        image: redis:latest
+        resources:
+          limits:
+            memory: 1Gi
+            cpu: 200m
+          requests:
+            memory: 100Mi
+            cpu: 20m
+        ports:
+        - containerPort: 6379
+        
+      - name: collector
         image: iad.ocir.io/${OCI_NAMESPACE}/data-collection-${BUILD_ENV}:latest
         imagePullPolicy: Always
         env:
