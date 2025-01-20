@@ -55,14 +55,12 @@ const LeaderTables = (props: LeaderTablesProps) => {
     // this differentiates the server between dev and prod
     const backEndHost =
         process.env.REACT_APP_API_URL
-    const APIProtocol: string =
-        process.env.NODE_ENV == "development" ? "http://" : "https://"
 
     // pulls data from the backend
     const pullData = async () => {
         try {
             const response = await 
-                fetch(APIProtocol + backEndHost + "/leadertables");
+                fetch("https://" + backEndHost + "/leadertables");
             const data = await response.json()
             setData(data)
         }
