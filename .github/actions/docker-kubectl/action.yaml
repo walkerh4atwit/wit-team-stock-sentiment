@@ -28,6 +28,6 @@ runs:
         context: ${{ inputs.directory }}
         build-args: |
           BUILD_ENV=${{ inputs.build-environment }}
-          REACT_APP_API_URL=${{ inputs.build-environment == 'prod' && '' || dev.}}sentiments.henrywalker.tech/api
+          REACT_APP_API_URL="${{ inputs.build-environment == 'prod' && '' || dev.}}sentiments.henrywalker.tech/api"
         push: true
         tags: ${{ env.OCI_CLI_REGION }}.ocir.io/${{ env.OCI_CLI_NAMESPACE }}/${{ inputs.directory }}-${{ inputs.build-environment }}:latest
