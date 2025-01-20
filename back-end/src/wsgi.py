@@ -69,7 +69,7 @@ def get_tickers():
 
     if data is None:
         db_conn = db_connect()
-        data = leaderTables(db_conn)
+        data = getSearchOptions(db_conn)
         redis_client.setex("searchoptions", 800, data)
 
     response = make_response(
@@ -87,7 +87,7 @@ def leaderTables():
 
     if data is None:
         db_conn = db_connect()
-        data = leaderTables(db_conn)
+        data = getLeaderTables(db_conn)
         redis_client.setex("leadertables", 800, data)
 
     response = make_response(
