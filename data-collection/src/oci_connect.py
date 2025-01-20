@@ -36,7 +36,7 @@ def oci_util():
     stream_file(object_name, response)
 
     wallet = ZipFile(object_name, 'r')
-    wallet.extractall()
+    wallet.extractall(path="Database-Wallet")
 
     object_name = 'sentiments-llm.pth'
 
