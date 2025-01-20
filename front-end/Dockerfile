@@ -7,7 +7,7 @@ COPY public /front-end/public
 COPY src /front-end/src
 COPY *.json /front-end/
 
-# make the build with the correct parameters
+# make the build with the correct parameters!
 RUN ["sh", "-c", "echo 'REACT_APP_API_URL=${REACT_APP_API_URL}' >> .env"]
 RUN ["npm", "ci"]
 RUN ["npm", "run", "build"]
