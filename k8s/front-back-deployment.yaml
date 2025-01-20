@@ -37,6 +37,7 @@ spec:
 
       - name: back-end
         image: iad.ocir.io/${OCI_NAMESPACE}/back-end-${BUILD_ENV}:latest
+        imagePullPolicy: Always
         env:
           - name: BUILD_ENV
             value: ${BUILD_ENV}
@@ -50,7 +51,7 @@ spec:
         resources:
           limits:
             memory: 800Mi
-            cpu: 160m
+            cpu: 80m
           requests:
             memory: 500Mi
-            cpu: 80m
+            cpu: 60m
