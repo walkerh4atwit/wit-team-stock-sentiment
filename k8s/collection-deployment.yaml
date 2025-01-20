@@ -21,6 +21,7 @@ spec:
       containers:
       - name: cache-collector
         image: iad.ocir.io/${OCI_NAMESPACE}/data-collection-${BUILD_ENV}:latest
+        imagePullPolicy: Always
         env:
           - name: BUILD_ENV
             value: ${BUILD_ENV}
