@@ -65,12 +65,14 @@ def do_action(id):
 # character that is provided in the request
 @app.route("/api/searchoptions")
 def get_tickers():
-    data = json.loads(redis_client.get("searchoptions"))
+    data = redis_client.get("searchoptions")
 
     if data is None:
         db_conn = db_connect()
         data = getSearchOptions(db_conn)
         redis_client.setex("searchoptions", 800, str(data))
+    else:
+        data = json.loads(data)
 
     response = make_response(
         jsonify(data)
@@ -83,12 +85,14 @@ def get_tickers():
 # for the leader tables
 @app.route("/api/leadertables")
 def leaderTables():
-    data = json.loads(redis_client.get("leadertables"))
+    data = redis_client.get("leadertables")
 
     if data is None:
         db_conn = db_connect()
         data = getLeaderTables(db_conn)
         redis_client.setex("leadertables", 800, str(data))
+    else:
+        data = json.loads(data)
 
     response = make_response(
         jsonify(data)
