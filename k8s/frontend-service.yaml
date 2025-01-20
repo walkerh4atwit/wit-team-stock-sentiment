@@ -4,7 +4,7 @@ metadata:
   name: front-end-service
 spec:
   selector:
-    app.kubernetes.io/name: my-deployment-servers-${BUILD_ENV}
+    app: my-deployment-frontend-backend-${BUILD_ENV}
   ports:
   
   - name: frontend
