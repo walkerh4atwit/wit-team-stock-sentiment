@@ -4,9 +4,7 @@ from leadertables import getLeaderTables
 from singleassetdata import getAssetData
 from db_connect import db_connect
 from oci_connect import oci_util
-import ipaddress
-import redis
-import sys, json
+import ipaddress, redis, sys, json
 
 # that's all's we need here
 oci_util()
@@ -65,17 +63,18 @@ def do_action(id):
 # character that is provided in the request
 @app.route("/api/searchoptions")
 def get_tickers():
-    data = redis_client.get("searchoptions")
+    data_string = redis_client.get("searchoptions")
+    data_dict = {}
 
-    if data is None:
+    if data_string is None:
         db_conn = db_connect()
-        data = getSearchOptions(db_conn)
-        redis_client.setex("searchoptions", 800, str(data))
+        data_dict = getSearchOptions(db_conn)
+        redis_client.setex("searchoptions", 800, json.dumps(data_dict))
     else:
-        data = json.loads(data)
+        data_dict = json.loads(data_string)
 
     response = make_response(
-        jsonify(data)
+        jsonify(data_dict)
     )
     response.headers.add("Access-Control-Allow-Origin", "*")
     response.status_code = 200
@@ -85,41 +84,42 @@ def get_tickers():
 # for the leader tables
 @app.route("/api/leadertables")
 def leaderTables():
-    data = redis_client.get("leadertables")
+    data_string = redis_client.get("leadertables")
+    data_dict = {}
 
-    if data is None:
+    if data_string is None:
         db_conn = db_connect()
-        data = getLeaderTables(db_conn)
-        redis_client.setex("leadertables", 800, str(data))
+        data_dict = getLeaderTables(db_conn)
+        redis_client.setex("leadertables", 800, json.dumps(data_dict))
     else:
-        data = json.loads(data)
+        data_dict = json.loads(data_string)
 
     response = make_response(
-        jsonify(data)
+        jsonify(data_dict)
     )
     response.headers.add("Access-Control-Allow-Origin", "*")
     response.status_code = 200
     return response
 
 @app.route("/api/cache/<data>", methods=['POST'])
-def cache_data(data):
-    if data not in ["leadertables", "searchoptions"]:
-        return(make_response("Invalid datatype passed to API: " + data))
+def cache_data(data_type):
+    if data_type not in ["leadertables", "searchoptions"]:
+        return(make_response("Invalid datatype passed to API: " + data_type + "\n"))
 
     cachee: str
 
     if request.remote_addr not in allowed_subnet:
-        return(make_response("Forbidden!"))
+        return(make_response("Forbidden!\n"))
     
     db_conn = db_connect()
 
-    if data == "leadertables":
+    if data_type == "leadertables":
         cachee = getLeaderTables(db_conn)
     
-    if data == "searchoptions":
+    if data_type == "searchoptions":
         cachee = getSearchOptions(db_conn)
 
-    redis_client.setex(data, 800, str(cachee))
+    redis_client.setex(data_type, 800, json.dumps(cachee))
 
 # development environment
 if len(sys.argv) == 1:
