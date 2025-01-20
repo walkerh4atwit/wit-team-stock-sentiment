@@ -1,4 +1,4 @@
-from flask import Flask, make_response, jsonify
+from flask import Flask, make_response, jsonify, request
 from searchbar import getSearchOptions
 from leadertables import getLeaderTables
 from singleassetdata import getAssetData
@@ -11,10 +11,15 @@ oci_util()
 
 app = Flask(__name__)
 
+@app.errorhandler(404)
+def page_not_found(e):
+    print(f"404 Error: Path '{request.path}' not found. Method: {request.method}")
+    return jsonify(error="This route does not exist on sentiments."), 404
+
 # Routed to the root URL of this server
 # This route will not do anything and has
 # no reroute
-@app.route("/")
+@app.route("/api")
 def root_request():
     response = make_response(
         "Bad request to root\n"
@@ -25,7 +30,7 @@ def root_request():
 
 # This route attemps to build a sentiment
 # report for a certain stock ticker
-@app.route("/sentiment/<type_asset>/<id>")
+@app.route("/api/sentiment/<type_asset>/<id>")
 def sentiment_request(type_asset, id):
     db_conn = db_connect()
 
@@ -40,7 +45,7 @@ def sentiment_request(type_asset, id):
 # to call for an action. Hopefully I can
 # figure out how to make this auth'd to
 # only certain sources
-@app.route("/action/<id>")
+@app.route("/api/action/<id>")
 def do_action(id):
     response = make_response(
         "Do action " + id + "\n"
@@ -52,7 +57,7 @@ def do_action(id):
 # This route helps the front-end show
 # the ticker values according to a first
 # character that is provided in the request
-@app.route("/searchoptions")
+@app.route("/api/searchoptions")
 def get_tickers():
     db_conn = db_connect()
 
@@ -65,7 +70,7 @@ def get_tickers():
 
 # This route provides the data
 # for the leader tables
-@app.route("/leadertables")
+@app.route("/api/leadertables")
 def leaderTables():
     db_conn = db_connect()
 
