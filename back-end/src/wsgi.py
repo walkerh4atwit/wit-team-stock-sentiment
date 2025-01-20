@@ -70,7 +70,7 @@ def get_tickers():
     if data is None:
         db_conn = db_connect()
         data = getSearchOptions(db_conn)
-        redis_client.setex("searchoptions", 800, data)
+        redis_client.setex("searchoptions", 800, str(data))
 
     response = make_response(
         jsonify(data)
@@ -88,7 +88,7 @@ def leaderTables():
     if data is None:
         db_conn = db_connect()
         data = getLeaderTables(db_conn)
-        redis_client.setex("leadertables", 800, data)
+        redis_client.setex("leadertables", 800, str(data))
 
     response = make_response(
         jsonify(data)
@@ -115,7 +115,7 @@ def cache_data(data):
     if data == "searchoptions":
         cachee = getSearchOptions(db_conn)
 
-    redis_client.setex(data, 800, cachee)
+    redis_client.setex(data, 800, str(cachee))
 
 # development environment
 if len(sys.argv) == 1:
