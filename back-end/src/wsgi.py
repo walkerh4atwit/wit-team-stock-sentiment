@@ -14,8 +14,6 @@ oci_util()
 # for the caching
 redis_client = redis.StrictRedis(host="redis-cache", port="6379", decode_responses=True)
 allowed_subnet = ipaddress.ip_network('10.0.10.0/24')
-redis_client.setex('searchoptions', 8000)
-redis_client.setex('leadertables', 8000)
 
 app = Flask(__name__)
 
@@ -72,7 +70,7 @@ def get_tickers():
     if data is None:
         db_conn = db_connect()
         data = leaderTables(db_conn)
-        redis_client.set("searchoptions", data)
+        redis_client.setex("searchoptions", 800, data)
 
     response = make_response(
         jsonify(data)
@@ -90,7 +88,7 @@ def leaderTables():
     if data is None:
         db_conn = db_connect()
         data = leaderTables(db_conn)
-        redis_client.set("leadertables", data)
+        redis_client.setex("leadertables", 800, data)
 
     response = make_response(
         jsonify(data)
@@ -117,7 +115,7 @@ def cache_data(data):
     if data == "searchoptions":
         cachee = getSearchOptions(db_conn)
 
-    redis_client.set(data, cachee)
+    redis_client.setex(data, 800, cachee)
 
 # development environment
 if len(sys.argv) == 1:
