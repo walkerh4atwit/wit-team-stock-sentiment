@@ -24,4 +24,4 @@ COPY dockerized-nginx-${BUILD_ENV}.conf \
 # exposed port
 EXPOSE 80
 
-ENTRYPOINT ["sh", "-c", "nginx -t && nginx"]
+ENTRYPOINT ["sh", "-c", "nginx -t && nginx -g daemon off;"]
