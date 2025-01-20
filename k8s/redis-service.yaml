@@ -4,7 +4,7 @@ metadata:
   name: redis-cache
 spec:
   selector:
-    app: redis-cache
+    app: my-deployment-cache-collector-${BUILD_ENV}
   ports:
   - protocol: TCP
     port: 6379
