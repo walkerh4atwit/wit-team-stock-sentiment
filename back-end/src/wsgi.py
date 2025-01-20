@@ -6,7 +6,7 @@ from db_connect import db_connect
 from oci_connect import oci_util
 import ipaddress
 import redis
-import sys
+import sys, json
 
 # that's all's we need here
 oci_util()
@@ -65,7 +65,7 @@ def do_action(id):
 # character that is provided in the request
 @app.route("/api/searchoptions")
 def get_tickers():
-    data = redis_client.get("searchoptions")
+    data = json.loads(redis_client.get("searchoptions"))
 
     if data is None:
         db_conn = db_connect()
@@ -83,7 +83,7 @@ def get_tickers():
 # for the leader tables
 @app.route("/api/leadertables")
 def leaderTables():
-    data = redis_client.get("leadertables")
+    data = json.loads(redis_client.get("leadertables"))
 
     if data is None:
         db_conn = db_connect()
