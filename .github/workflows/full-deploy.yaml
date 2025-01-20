@@ -46,7 +46,7 @@ jobs:
     
     - name: Frontend build-push
       uses: ./.github/actions/docker-kubectl
-      # if: contains(steps.dorny-paths-filter.outputs.changes,'frontend')
+      if: contains(steps.dorny-paths-filter.outputs.changes,'frontend')
       with: 
         build-environment: ${{ env.ENVIRONMENT_TAG }}
         directory: front-end
@@ -138,3 +138,4 @@ jobs:
 
         kubectl apply -f redis-service.yaml
         kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+        kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.6.1/components.yaml
