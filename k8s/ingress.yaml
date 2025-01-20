@@ -7,9 +7,9 @@ metadata:
 spec:
   ingressClassName: nginx
   tls:
-    - hosts: 
-        - ${FRONT_END_HOST}
-      secretName: my-app-tls
+  - hosts: 
+    - ${FRONT_END_HOST}
+    secretName: my-app-tls
 
   defaultBackend:
     service:
