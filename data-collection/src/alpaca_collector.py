@@ -4,6 +4,7 @@ from transformers import BertForSequenceClassification, BertTokenizer
 from oracledb.exceptions import ProgrammingError as OracleProgrammingError
 
 import traceback
+import requests
 import os, torch
 from db_connect import db_connect
 from transformers import logging as trf_logging
@@ -120,6 +121,9 @@ async def socket_handler(data: News):
                 csr.execute(post_ticker_query, (new_ticker_id_result[0], symbol))
 
                 existing_ticker_id_result = new_ticker_id_result
+
+                # updating our nice lil cache
+                requests.post("http://front-end-service/api/cache/searchoptions")
             
             # takes the id from the existing match for the symbol
             # whether or not I just created it
@@ -156,6 +160,9 @@ async def socket_handler(data: News):
     
     # committing insertions + updates
     cnx.commit()
+
+    # updating our nice lil cache for leadertables
+    requests.post("http://front-end-service/api/cache/leadertables")
 
 # grabbing the api keys
 api_key, api_secret_key = find_api_keys()

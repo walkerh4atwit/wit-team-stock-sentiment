@@ -1,13 +1,21 @@
-from flask import Flask, make_response, jsonify, request
+from flask import Flask, make_response, jsonify, request, Response
 from searchbar import getSearchOptions
 from leadertables import getLeaderTables
 from singleassetdata import getAssetData
 from db_connect import db_connect
 from oci_connect import oci_util
+import ipaddress
+import redis
 import sys
 
 # that's all's we need here
 oci_util()
+
+# for the caching
+redis_client = redis.StrictRedis(host="redis-cache", port="6379", decode_responses=True)
+allowed_subnet = ipaddress.ip_network('10.0.10.0/24')
+redis_client.setex('searchoptions', 8000)
+redis_client.setex('leadertables', 8000)
 
 app = Flask(__name__)
 
@@ -59,10 +67,15 @@ def do_action(id):
 # character that is provided in the request
 @app.route("/api/searchoptions")
 def get_tickers():
-    db_conn = db_connect()
+    data = redis_client.get("searchoptions")
+
+    if data is None:
+        db_conn = db_connect()
+        data = leaderTables(db_conn)
+        redis_client.set("searchoptions", data)
 
     response = make_response(
-        jsonify(getSearchOptions(db_conn))
+        jsonify(data)
     )
     response.headers.add("Access-Control-Allow-Origin", "*")
     response.status_code = 200
@@ -72,14 +85,39 @@ def get_tickers():
 # for the leader tables
 @app.route("/api/leadertables")
 def leaderTables():
-    db_conn = db_connect()
+    data = redis_client.get("leadertables")
+
+    if data is None:
+        db_conn = db_connect()
+        data = leaderTables(db_conn)
+        redis_client.set("leadertables", data)
 
     response = make_response(
-        jsonify(getLeaderTables(db_conn))
+        jsonify(data)
     )
     response.headers.add("Access-Control-Allow-Origin", "*")
     response.status_code = 200
     return response
+
+@app.route("/api/cache/<data>", methods=['POST'])
+def cache_data(data):
+    if data not in ["leadertables", "searchoptions"]:
+        return(make_response("Invalid datatype passed to API: " + data))
+
+    cachee: str
+
+    if request.remote_addr not in allowed_subnet:
+        return(make_response("Forbidden!"))
+    
+    db_conn = db_connect()
+
+    if data == "leadertables":
+        cachee = getLeaderTables(db_conn)
+    
+    if data == "searchoptions":
+        cachee = getSearchOptions(db_conn)
+
+    redis_client.set(data, cachee)
 
 # development environment
 if len(sys.argv) == 1:
