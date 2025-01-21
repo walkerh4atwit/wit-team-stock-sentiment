@@ -4,7 +4,7 @@ import resTopLinks from "../resources/topLinks.json";
 import { IDataQuery as IDataQuery } from "./Data";
 import logo from "../images/logo-cropped.svg";
 import "../styles/App.css";
-import "../styles/bg-Gradient.css";
+import "../styles/my-Gradient.css";
 
 const App = () => {
 	// this differentiates the server between dev and prod

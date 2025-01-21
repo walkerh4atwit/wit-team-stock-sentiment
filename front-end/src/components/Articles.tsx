@@ -1,7 +1,7 @@
 import { ReactElement, useEffect, useState } from "react";
 import '../styles/my-Articles.css'
 import '../styles/my-Card.css'
-import '../styles/bg-Gradient.css'
+import '../styles/my-Gradient.css'
 
 interface IArticleList {
     category: string,

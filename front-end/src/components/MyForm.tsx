@@ -3,7 +3,7 @@ import { Row, Col, Form, InputGroup, Button as BootButton, Container } from "rea
 import SearchBar from "./SearchBar"
 import LeaderTables from "./LeaderTables"
 import "../styles/Form.css"
-import "../styles/bg-Gradient.css"
+import "../styles/my-Gradient.css"
 import { IDataQuery } from "../pages/Data"
 
 const MyForm = (props:

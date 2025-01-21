@@ -1,7 +1,7 @@
 import logo from "../images/logo-cropped.svg";
 import Articles from "../components/Articles"
 import "../styles/App.css";
-import "../styles/bg-Gradient.css";
+import "../styles/my-Gradient.css";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ProgressBar } from "react-bootstrap";
