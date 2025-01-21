@@ -1,10 +1,22 @@
 .my-Articles {
     margin-top: 1rem;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     flex-direction: row;
 }
 
 .my-Article-Title {
-    font-size: large;
+    text-align: center;
+}
+
+.my-Article-Column {
+    flex: 1
+}
+
+.my-Article-Card-Body {
+    background: white;
+    color: black;
+    display: block;
+    padding-bottom: 0.5rem;
+    text-align: center;
 }

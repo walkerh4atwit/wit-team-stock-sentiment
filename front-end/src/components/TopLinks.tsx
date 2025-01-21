@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import "../styles/App.css"
 import "../styles/TopLinks.css"
-import "../styles/bg-gradient.css"
+import "../styles/bg-Gradient.css"
 
 export interface TopLinksProps {
 	links:

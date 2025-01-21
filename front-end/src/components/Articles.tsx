@@ -1,15 +1,11 @@
 import { ReactElement, useEffect, useState } from "react";
 import '../styles/my-Articles.css'
 import '../styles/my-Card.css'
-
-interface IArticle {
-    url: string,
-    headline: string
-}
+import '../styles/bg-Gradient.css'
 
 interface IArticleList {
     category: string,
-    list: IArticle[]
+    list: any[]
 }
 
 const Articles = (props: {type: string, id: string}) => {
@@ -72,12 +68,12 @@ const Articles = (props: {type: string, id: string}) => {
     }, [])
 
     const mapArticles = (articleList: IArticleList) => {
-        // console.log(props.type)
+        
         return articleList.list.map(
-            (article: IArticle) => {
-                return (<div className="my-Card">
-                    <div className="my-Card-Header">{article.headline}</div>
-                    <a href={article.url}>Go to article!</a>
+            (article: string[]) => {
+                return (<div key={article[1]} className="my-Card">
+                    <div className="my-Card-Header my-Header-Gradient">{article[0]}</div>
+                    <a href={article[1]} className="my-Article-Card-Body">Go to article!</a>
                 </div>)
             }
         )
@@ -85,15 +81,15 @@ const Articles = (props: {type: string, id: string}) => {
 
     return (
         <div className="my-Articles">
-            <div>
+            <div className="my-Article-Column">
                 <div className="my-Article-Title">Positive</div>
                 {mapArticles(positive)}
             </div>
-            <div>
+            <div className="my-Article-Column">
                 <div className="my-Article-Title">Neutral</div>
                 {mapArticles(neutral)}
             </div>
-            <div>
+            <div className="my-Article-Column">
                 <div className="my-Article-Title">Negative</div>
                 {mapArticles(negative)}
             </div>

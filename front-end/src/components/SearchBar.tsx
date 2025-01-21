@@ -1,6 +1,6 @@
 import Form from "react-bootstrap/Form";
 import { useState, useEffect, useRef } from "react";
-import "../styles/bg-gradient.css";
+import "../styles/bg-Gradient.css";
 import "../styles/Dropdown.css";
 
 // shape of the incoming data
