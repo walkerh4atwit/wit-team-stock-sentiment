@@ -41,7 +41,7 @@ const Articles = (props: {type: string, id: string}) => {
     const pullData = async (score: number) => {
         try {
             const response = 
-                await fetch("https://" + backEndHost + "/articles/" + "ticker" + "/" + props.id + "/" + score)
+                await fetch("https://" + backEndHost + "/articles/" + props.type + "/" + props.id + "/" + score)
             const data = await response.json()
             if (score == 2) {
                 setPositive({
