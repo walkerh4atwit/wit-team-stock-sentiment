@@ -4,7 +4,7 @@ def getArticleCards(asset_type: str, id: int, score: int, cnx: Connection):
     csr = cnx.cursor()
 
     querystring: str
-    if asset_type == "ticker":
+    if asset_type == "stock":
         with open("queries/ArticleCardsTickers.sql", "r") as file:
             querystring = file.read()
     elif asset_type == "sector":

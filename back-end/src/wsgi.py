@@ -113,7 +113,7 @@ def leaderTables():
     response.status_code = 200
     return response
 
-@app.route("/api/cache/<data>", methods=['POST'])
+@app.route("/api/cache/<data_type>", methods=['POST'])
 def cache_data(data_type):
     if data_type not in ["leadertables", "searchoptions"]:
         return(make_response("Invalid datatype passed to API: " + data_type + "\n"))
