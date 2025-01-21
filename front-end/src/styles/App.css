@@ -45,4 +45,11 @@
         margin-right: 15px;
         margin-bottom: 1rem;
     }
+
+    .my-Leader-Tables {
+        padding: 0;
+        position: absolute;
+        bottom: 1rem;
+        max-width: calc(100% - 2rem);
+    }
 }

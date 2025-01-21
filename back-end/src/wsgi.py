@@ -2,6 +2,7 @@ from flask import Flask, make_response, jsonify, request, Response
 from searchbar import getSearchOptions
 from leadertables import getLeaderTables
 from singleassetdata import getAssetData
+from article_cards import getArticleCards
 from db_connect import db_connect
 from oci_connect import oci_util
 import ipaddress, redis, sys, json
@@ -40,6 +41,17 @@ def sentiment_request(type_asset, id):
 
     response = make_response(
         getAssetData(db_conn, type_asset, id)
+    )
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.status_code = 200
+    return response
+
+@app.route("/api/articles/<type_asset>/<id>/<score>")
+def article_request(type_asset, id, score):
+    db_conn = db_connect()
+
+    response = make_response(
+        jsonify(getArticleCards(type_asset, id, score, db_conn))
     )
     response.headers.add("Access-Control-Allow-Origin", "*")
     response.status_code = 200

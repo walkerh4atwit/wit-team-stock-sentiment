@@ -1,21 +1,13 @@
-.my-Leader-Tables {
-    padding: 0;
-    position: absolute;
-    bottom: 1rem;
-    max-width: calc(100% - 2rem);
-}
 
-.my-Table-Header {
+
+.my-Card-Header {
     border-bottom: solid 1px;
     padding: 0.5rem;
     border-color: black;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
 }
 
 .my-Table-Column {
     padding: 0;
-    overflow: scroll;
     white-space: nowrap;
 }
 
@@ -34,12 +26,12 @@
     font-size: 10pt;
 }
 
-.my-Table-Row:last-child {
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-}
-
-.my-Table {
+.my-Card {
     margin: 0.5rem;
     padding: 0;
+    overflow: hidden;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }

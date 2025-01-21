@@ -1,0 +1,10 @@
+.my-Articles {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+}
+
+.my-Article-Title {
+    font-size: large;
+}

@@ -1,4 +1,5 @@
 import logo from "../images/logo-cropped.svg";
+import Articles from "../components/Articles"
 import "../styles/App.css";
 import "../styles/bg-gradient.css";
 import { useEffect, useState } from "react";
@@ -26,7 +27,7 @@ const Data = () => {
     })
 
     const { type, id } = useParams()
-    console.log(`Type: ${type}, ID: ${id}`);
+    // console.log(`Type: ${type}, ID: ${id}`);
 
     // this differentiates the server between dev and prod
     const backEndHost =
@@ -79,6 +80,7 @@ const Data = () => {
                             variant={data.score > 1.2 ? 'success' : data.score > 0.8 ? "warning" : 'danger'}>
                         </ProgressBar>
                     </div>
+                    {id && type && <Articles type={type} id={id}/>}
                 </div>
             </div>
         </>

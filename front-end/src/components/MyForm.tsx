@@ -86,7 +86,7 @@ const MyForm = (props:
                 </Row>
                 <Row className="my-Form-Row">
                     <Form.Group as={Col}>
-                        <Form.Check type="radio" label="Single stock" value="stock"
+                        <Form.Check type="radio" label="Single equity" value="stock"
                             name="formHorizontalRadios"
                             onChange={handleRadio} />
                         <Form.Check type="radio" label="Market sector" value="sector"

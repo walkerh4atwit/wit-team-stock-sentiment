@@ -1,6 +1,7 @@
 import { ReactElement, useEffect, useState } from "react";
 import { Col, Row, Container } from "react-bootstrap";
-import "../styles/LeaderTables.css";
+import "../styles/my-Card.css";
+import "../styles/App.css"
 
 export interface LeaderTablesProps {
 
@@ -35,11 +36,11 @@ const LeaderTables = (props: LeaderTablesProps) => {
         dataKey: string
     }[] = [
             {
-                label: "Top 5 stocks",
+                label: "Top 5 equities",
                 dataKey: "descTickers"
             },
             {
-                label: "Bottom 5 stocks",
+                label: "Bottom 5 equities",
                 dataKey: "ascTickers"
             },
             {
@@ -71,7 +72,7 @@ const LeaderTables = (props: LeaderTablesProps) => {
     const tableRender = (label: string, data: any[]) => {
         // a div for the header
         const tableHeader: ReactElement =
-            <div className='my-Table-Header my-Header-Gradient'>{label}</div>
+            <div className='my-Card-Header my-Header-Gradient'>{label}</div>
         // a map of divs for the rows in empty tags
         const tableBody: ReactElement = <>
             {data.map((data, index) => {
@@ -103,7 +104,7 @@ const LeaderTables = (props: LeaderTablesProps) => {
             {dataGroupsSchema.map(
                 (group) => {
                     return (
-                        <Col xs className="my-Table" key={group.dataKey}>
+                        <Col xs className="my-Card" key={group.dataKey}>
                             {tableRender(group.label, data[group.dataKey])}
                         </Col>
                     )
