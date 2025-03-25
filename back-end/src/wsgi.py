@@ -7,7 +7,6 @@ from db_connect import db_connect
 from oci_connect import oci_util
 import ipaddress, redis, sys, json
 
-# that's all's we need here
 oci_util()
 
 # for the caching
