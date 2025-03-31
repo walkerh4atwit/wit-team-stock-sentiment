@@ -9,7 +9,7 @@ import os, torch
 from db_connect import db_connect
 from transformers import logging as trf_logging
 from oci_connect import oci_util
-
+ 
 oci_util()
 
 trf_logging.set_verbosity_error()

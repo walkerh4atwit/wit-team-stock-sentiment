@@ -12,6 +12,6 @@ def getArticleCards(asset_type: str, id: int, score: int, cnx: Connection):
             querystring = file.read()
     else:
         return None
-    
+     
     csr.execute(querystring, (score, id))
     return csr.fetchall()
