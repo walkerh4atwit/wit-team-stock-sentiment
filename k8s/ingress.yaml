@@ -17,6 +17,7 @@ spec:
       port:
         number: 80
 
+  # may be unnecessary, could change in the future
   rules:
   - host: ${FRONT_END_HOST}
     http:
