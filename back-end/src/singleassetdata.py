@@ -1,7 +1,7 @@
 import oracledb
 
-def getAssetData(connection: oracledb.Connection, asset_type: str, id: int):
-    cursor = connection.cursor()
+def getAssetData(asset_type: str, id: int, cnx: oracledb.Connection):
+    cursor = cnx.cursor()
     result = {}
 
     if asset_type == 'sector':
@@ -11,7 +11,7 @@ def getAssetData(connection: oracledb.Connection, asset_type: str, id: int):
         query_string = query_file.read()
         query_file.close()
     else:
-        return "Invalid asset type"
+        raise Exception("Invalid asset type specified for single asset data, must be sector or stock")
 
     cursor.execute(query_string, (id,))
 
