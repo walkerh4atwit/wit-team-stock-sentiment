@@ -1,5 +1,6 @@
 import os
 import oracledb
+from oracledb.exceptions import OperationalError as OracleOperationalError
 
 ##
 # Raises exception if there is a problem
@@ -41,10 +42,10 @@ def db_connect():
             # the password for that user
             password=db_pass,
             # the dsn string for the database
-            # dsn=db_dsn_string,
+            dsn=db_dsn_string,
             retry_count=2
         )
-    except oracledb.exceptions.OperationalError as oe:
+    except OracleOperationalError as oe:
         print(oe)
         raise oe
     
