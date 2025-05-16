@@ -25,7 +25,8 @@ runs:
       id: build-push-image      
       with: 
         platforms: linux/arm64
-        context: ${{ inputs.directory }}
+        context: .
+        file: ${{ inputs.directory }}/Dockerfile
         build-args: |
           BUILD_ENV=${{ inputs.build-environment }}
           REACT_APP_API_URL=${{ inputs.build-environment == 'prod' && '' || 'dev.' }}sentiments.henrywalker.tech/api
