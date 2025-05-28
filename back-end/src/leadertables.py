@@ -36,8 +36,8 @@ def handleTies(data: list[any], count: int):
 
     return data_push[:-1]
 
-def getLeaderTables(connection: oracledb.Connection):
-    cursor = connection.cursor()
+def getLeaderTables(cnx: oracledb.Connection):
+    cursor = cnx.cursor()
 
     data_in = []
     data_out = {}
