@@ -1,8 +1,8 @@
 from backend_util.db_connect import db_connect
-from flask import jsonify, make_response
-from redis import Redis
+from flask import jsonify, make_response, Response
+from redis import StrictRedis
 
-def make_backend_response_cache_hit(func, *args: list, **kwargs: dict):
+def make_backend_response_cache_hit(func, *args, **kwargs):
     try:
         ...
     except:
@@ -11,11 +11,13 @@ def make_backend_response_cache_hit(func, *args: list, **kwargs: dict):
         return
 
 # Function to call in all paths to generate a repsonse
-def make_backend_response_cache_miss(func, *args: list, **kwargs: dict):
+def make_backend_response_cache_miss(func, *args, **kwargs):
+    response: Response
+
     try:
         db_cnx = db_connect()
 
-        if 'cnx' in kwargs:
+        if 'cnx' not in kwargs:
             kwargs['cnx'] = db_cnx
 
         data = func(*args, **kwargs)
@@ -27,13 +29,14 @@ def make_backend_response_cache_miss(func, *args: list, **kwargs: dict):
         response = make_response(data, 200)
 
     except KeyError as ke:
-        ...
+        raise ke
     except Exception as e:
-        ...
-    finally:
-        return response
+        raise e
+    # finally:
+
+    return response
     
-def cache_query(cache_client: Redis, key: str) -> str | None:
+def cache_query(cache_client: StrictRedis, key: str) -> str | None:
     exists_data_boolean = cache_client.exists(key)
     if not exists_data_boolean:
         return None
