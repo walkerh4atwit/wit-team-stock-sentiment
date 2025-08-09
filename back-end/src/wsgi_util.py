@@ -28,11 +28,10 @@ def make_backend_response_cache_miss(func, *args, **kwargs):
 
         response = make_response(data, 200)
 
-    except KeyError as ke:
-        raise ke
+    # except KeyError as ke:
+    #     response = make_response(ke, 500)
     except Exception as e:
-        raise e
-    # finally:
+        response = make_response(e, 500)
 
     return response
     
