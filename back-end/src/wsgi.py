@@ -42,6 +42,8 @@ allowed_subnet = ipaddress.ip_network('10.0.10.0/24')
 # THE APP
 app = Flask(__name__)
 
+# Using errorhandler decorator to catch 404's and r
+# respond with a more graceful message
 @app.errorhandler(404)
 def page_not_found(e):
     print(f"404 Error: Path '{request.path}' not found. Method: {request.method}")
@@ -134,13 +136,18 @@ def leader_tables():
     response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
+# This function puts the requested data type in the cache for 800 minutes
+# Typically requested by the data gathering component, not the front end
 @app.route("/api/cache/<data_type>", methods=["POST"])
 def cache_data(data_type):
+    # The data_type variable must be one of these as of right now
     if data_type not in ["leadertables", "searchoptions"]:
         return make_response("Invalid datatype passed to API: " + data_type), 500
 
     cachee: str
 
+    # Checking if the request was from an allowed IP
+    # from within the infrastructure, not an outside browser
     if request.remote_addr not in allowed_subnet:
         return make_response("Forbidden!", 400)
     
