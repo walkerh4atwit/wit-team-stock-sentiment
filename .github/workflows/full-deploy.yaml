@@ -138,6 +138,5 @@ jobs:
         envsubst <         redis-service.yaml | kubectl apply -f -
         envsubst <           certificate.yaml | kubectl apply -f -
         envsubst <        cluster-issuer.yaml | kubectl apply -f -
-          
-        kubectl apply --server-side -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+      
         kubectl apply --server-side -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.6.1/components.yaml

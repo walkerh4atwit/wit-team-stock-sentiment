@@ -1,7 +1,7 @@
 import oracledb
 
-def getSearchOptions(connection: oracledb.Connection):
-    cursor = connection.cursor()
+def getSearchOptions(cnx: oracledb.Connection):
+    cursor = cnx.cursor()
     result = {}
 
     # ID, NAME, COMPANY, COUNT

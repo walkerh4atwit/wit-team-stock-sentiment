@@ -11,7 +11,7 @@ def getArticleCards(asset_type: str, id: int, score: int, cnx: Connection):
         with open("queries/ArticleCardsSectors.sql", "r") as file:
             querystring = file.read()
     else:
-        return None
+        raise Exception("Invalid asset type specified for article cards, must be sector or stock")
      
     csr.execute(querystring, (score, id))
     return csr.fetchall()

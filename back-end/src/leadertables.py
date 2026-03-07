@@ -36,8 +36,8 @@ def handleTies(data: list[any], count: int):
 
     return data_push[:-1]
 
-def getLeaderTables(connection: oracledb.Connection):
-    cursor = connection.cursor()
+def getLeaderTables(cnx: oracledb.Connection):
+    cursor = cnx.cursor()
 
     data_in = []
     data_out = {}
@@ -105,7 +105,7 @@ def getLeaderTables(connection: oracledb.Connection):
             # probably won't happen
             if tie_count_result is None:
                 word = "lowest" if order == "asc" else "highest"
-                raise Exception("Error grabbing the sentiment score of the\
+                raise Exception("Error grabbing the sentiment score of the \
                                 fifth-" + word + " ticker.")
             
             tie_count = tie_count_result[0]
